@@ -1,0 +1,170 @@
+{% extends 'internal_base.html' %}
+
+{% block docs %}
+{% endblock %}
+
+{% block content %} 
+    <div class="container-fluid">
+        <h2 class="text-center mt-4">{{champ}}</h2>
+        <!--
+        <h6 class="text-center">{{champ.init_date}} | {{champ.finish_date}}</h6>
+        <p class="text-center">{{champ.event_place}}</p>
+        -->
+        <div class="card">
+            <div class="card-body">
+                <h6>Filtros</h6>
+                <!--filter_form-->
+                <form method="GET" action="{% url 'athletes_inscription' champ.pk %}" class="user" autocomplete="off">
+                    <div class="row">
+                        <div class="col-3">
+                            <input class="form-control" type="text" name="name" id="f_name" placeholder="Nombre">
+                        </div>
+                        <div class="col-3">
+                            <input class="form-control" type="text" placeholder="Club">
+                        </div>
+                         <div class="col-3">
+                             <input class="form-control" type="text" placeholder="region">
+                        </div>
+                         <div class="col-3">
+                             <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+                        </div>
+                    </div>    
+                </form>
+                <!--end_filter_form-->
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Categoria</th>
+                                <th>Club</th>
+                                <th>Region</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="list_body">
+                            {% if athletes %}
+                                {% if athletes == 'EMPTY' %}
+                                    <tr><td>Sin coincidencias</td></tr>
+                                {% else %}
+                                    {% for atle in athletes %}
+                                <tr>
+                                    <td>{{atle.first_name}} {{atle.second_name}} {{atle.flast_name}} {{atle.slast_name}}</td>
+                                    <td>{{atle.birth}}</td>
+                                    <td>{{atle.club}}</td>
+                                    <td>{{atle.gender}}</td>
+                                    <!--<td><button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">Inscribir</button></td>-->
+                                    <td><button type="button" class="btn btn-sm btn-primary" 
+                                        value="{{atle.first_name}} {{atle.flast_name}} " 
+                                        onclick="inscription(this)" id="pk{{atle.pk}}">Inscribir</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>    
+        </div>
+    </div>
+        
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pruebas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'probando' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <table class="table">
+                <thead class="table-info">
+                  <tr>
+                      <th>Prueba</th>
+                      <th>Categoria</th>
+                      <th>Marca</th>
+                      <th>Inscribir</th>
+                  </tr>    
+                </thead>
+                <tbody>
+                  <input type="hidden" name="athlete" id="athlete_inscription_pk" value="nada">
+                  {% for data in competitions %}
+                  <tr>
+                      <td>{{data.test_fk}}</td>
+                      <td>{{data.gender}}</td>
+                      <td><input type="text" id="mark{{data.pk}}" name="marka{{data.pk}}"></td>
+                      <td>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="s{{data.pk}}" name="val|{{data.pk}}">
+                            <label class="custom-control-label" for="s{{data.pk}}"></label>
+                        </div>
+                      </td>
+                  </tr>
+                  {% endfor %}          
+                </tbody>
+            </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Inscribir</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+    <script>
+        /*
+        function search(){
+            data = $('#searchid');
+            $.post( "{% url 'question' %}", 
+                {'csrfmiddlewaretoken':'{{csrf_token}}','name':data[0].value}, 
+                function(response){
+                    resp = response;
+                    table_data = ''
+                    if(resp.length > 0){
+                        for(x=0;x<resp.length;x++){
+                            data = resp[x];
+                            d_id = data[0];
+                            table_data += '<tr>\
+                                            <td>'+data[1]+' '+data[2]+' '+data[3]+' '+data[4]+'</td>\
+                                            <td>'+data[5]+'</td>\
+                                            <td>'+data[6]+'</td>\
+                                            <td>'+data[7]+'</td>\
+                                            <td> <button type="button" class="btn btn-sm btn-primary" \
+                                            value="'+data[1]+' '+data[3]+'"\
+                                            onclick="inscription(this)" id="pk'+d_id+'">Inscribir</button></td></tr>';
+                        }
+                    }
+                    else{
+                        table_data += '<tr> <td> NO HAY COINCIDENCIAS </td></tr>';
+                    }
+                    $('#list_body').html(table_data);
+            });
+        }*/
+
+        function inscription(btn){
+            text_name = btn.value;
+            $('#exampleModalLabel').html('Inscribir a '+text_name.substring(2,));
+            $('#athlete_inscription_pk')[0].value = btn.id.substring(2);
+            $('#exampleModal').modal('show');
+           
+        }
+    </script>
+
+{% endblock %}

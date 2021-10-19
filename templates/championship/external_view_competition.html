@@ -1,0 +1,35 @@
+{% extends 'external_base.html' %}
+
+{% block docs %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    
+    <h5 class="text-center mt-4">{{data.test_fk}} {{data.gender}} | Hora inicio: {{data.hour}}</h5>
+    <p class="text-center">Total de inscripciones: {{data.num_inscriptions}}</p>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="table-info">
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Club</th>
+                    <th>Marca</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for athlete in inscriptions %}
+                <tr>
+                    <td>{{athlete.otro.first_name}} {{athlete.otro.second_name}}</td>
+                    <td>{{athlete.otro.flast_name}} {{athlete.otro.slast_name}}</td>
+                    <td>{{athlete.otro.club}}</td>
+                    <td>{{athlete.mark}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

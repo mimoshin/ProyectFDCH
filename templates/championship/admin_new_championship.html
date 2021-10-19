@@ -1,0 +1,37 @@
+{% extends 'external_base.html' %}
+
+{% block content %}
+    <div class="container mt-2">
+        <form method="POST" action="{% url 'new_champ' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="champ_id">Nombre Campeonato</label>
+                <input class="form-control" type="text" name="champ" id="champ_id">
+            </div>
+            <div class="form-group">
+                <label for="init_id">Fecha de Inicio</label>
+                <input class="form-control" type="text" name="init" id="init_id">
+            </div>
+            <div class="form-group">
+                <label for="finish_id">Fecha de Termino</label>
+                <input class="form-control" type="text" name="finish" id="finish_id">
+            </div>
+            <div class="form-group">
+                <label for="region_id">Region</label>
+                <input class="form-control" type="text" name="region" id="region_id">
+            </div>
+            <div class="form-group">
+                <label for="direction_id">Direccion</label>
+                <input class="form-control" type="text" name="direction" id="direction_id">
+            </div>
+            <button class="btn btn-primary" type="submit"> Crear</button>
+        </form>
+    </div>       
+
+    <!--
+    <form method= "POST" action="{% url 'new_a' %}">
+        {% csrf_token %}
+        <button type="submit"> Generas Pruebas</button>
+    </form>
+    -->
+{% endblock %}
