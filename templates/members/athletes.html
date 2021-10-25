@@ -1,0 +1,21 @@
+{% extends 'nabvar.html' %}
+
+{% block docs %}
+{% endblock %}
+
+{% block content %} 
+
+    <div class="container-fluid">
+        <h1>SECCION PARA INSCRIBIR ATLETAS A LA PLATAFORMA Y SUS FUNCIONALIDADES</h1>
+    {% for athlete in athletes %}
+        <p>{{athlete}}</p>
+    {% endfor %}
+    <!--
+    <form method="POST" action="{% url 'load_data' %}">
+        {% csrf_token %}
+        <input type="text" name="nada" id="">
+        <button type="submit" class="btn btn-sm btn-primary"> cargar</button>
+    </form>
+    </div>
+    -->
+{% endblock %}

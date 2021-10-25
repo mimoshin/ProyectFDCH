@@ -1,0 +1,167 @@
+{% extends 'internal_base.html' %}
+
+{% block docs %}
+{% endblock %}
+
+{% block content %} 
+    <div class="container-fluid">
+        <h2 class="text-center mt-4">{{champ}}</h2>
+        <!--
+        <h6 class="text-center">{{champ.init_date}} | {{champ.finish_date}}</h6>
+        <p class="text-center">{{champ.event_place}}</p>
+        -->
+        <div class="card">
+            <div class="card-body">
+                <h6>Filtros</h6>
+                <!--filter_form-->
+                <form method="GET" action="{% url 'athletes_inscription' champ.pk %}" class="user" autocomplete="off">
+                    <div class="row">
+                        <div class="col-3">
+                            <input class="form-control" type="text" name="name" id="f_name" placeholder="Nombre">
+                        </div>
+                        <div class="col-3">
+                            <select class="form-control" name="category" id="category{{cards.pk}}">
+                                {% if champ.get_num_categorys == '1'%}
+                                  {{champ.categorys_options | safe}}
+                                {% else %}
+                                <option value="">Seleccione categoria</option>
+                                  {% for x in champ.categorys_options %}
+                                    {{x | safe}}
+                                  {% endfor %}
+                                {% endif %}
+                              </select>
+                        </div>
+                        <div class="col-3">
+                            <input class="form-control" type="text" placeholder="Club" hidden>
+                        </div>
+                         <div class="col-3">
+                             <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+                        </div>
+                    </div>    
+                </form>
+                <!--end_filter_form-->
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Categoria</th>
+                                <th>Club</th>
+                                <th>Region</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="list_body">
+                            {% if athletes %}
+                                {% if athletes == 'EMPTY' %}
+                                    <tr><td>Sin coincidencias</td></tr>
+                                {% else %}
+                                    {% for atle in athletes %}
+                                <tr>
+                                    <td>{{atle.first_name}} {{atle.second_name}} {{atle.flast_name}} {{atle.slast_name}}</td>
+                                    <td>{{atle.get_category}}</td>
+                                    <td>{{atle.club_fk}}</td>
+                                    <td>{{atle.gender}}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="inscriptiond('{{atle.gender}}','{{atle.pk}}')">Inscribir</button>
+                                        <!--<button type="button" class="btn btn-sm btn-primary" 
+                                        value="{{atle.first_name}} {{atle.flast_name}} | {{atle.gender}}" 
+                                        onclick="inscription(this)" id="pk{{atle.pk}}">Inscribir</button>
+                                        -->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>    
+        </div>
+    </div>
+        
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pruebas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'probando' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <table class="table">
+                <thead class="table-info">
+                  <tr>
+                      <th>Prueba</th>
+                      <th>Categoria</th>
+                      <th>Marca</th>
+                      <th>Inscribir</th>
+                  </tr>    
+                </thead>
+                <tbody id='competitions_body'>
+                    {% for data in competitions %}
+                    {% if data.str_cat == request.GET.category %}
+                    <tr>
+                        <td>{{data.test_fk}}</td>
+                        <td>{{data.gender}}</td>
+                        <td>{{data.categorys}}</td>
+                        <td><input type="text" id="mark{{data.pk}}" name="marka{{data.pk}}"></td>
+                        <td><div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="s{{data.pk}}" name="val|{{data.pk}}">
+                                <label class="custom-control-label" for="s{{data.pk}}"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}          
+                </tbody>
+            </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Inscribir</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+    <script>
+        function inscription(btn){
+            text_split = btn.value.split('|');
+            console.log(text_split);
+            $('#exampleModalLabel').html('Inscribir a '+text_split[0]);
+            $('#athlete_inscription_pk')[0].value = btn.id.substring(2);
+            $('#exampleModal').modal('show');
+        }
+
+        function inscriptiond(gender,id_atle){
+            console.log('{{request.GET.category}}');
+            console.log('{{champ.pk}}');
+            console.log(gender,id_atle);
+            $.get("{% url 'query_compt' %}",
+                {'obj':'load_compt','champ':'{{champ.pk}}','category':'{{request.GET.category}}',
+                 'gender':gender,'atle':id_atle},
+                  function(response){
+                      $('#competitions_body').html(response);
+                  }
+            )
+            $('#exampleModal').modal('show');        
+        }
+    </script>
+
+{% endblock %}

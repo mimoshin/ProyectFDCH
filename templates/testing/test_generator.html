@@ -1,0 +1,55 @@
+{% extends 'internal_base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-success" href="{% url 'form_test' %}"> Test</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-success" href="{% url 'form_test' %}"> Test_series</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-success" href="{% url 'ins_test' %}">Inscripciones</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-success" href="{% url 'load_menu' %}">Cargar Datos</a>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <!-- {% url 'generar_champs' %} -->
+        <form class="mt-2" action="{% url 'generar_champs' %}">
+            <button class="btn btn-primary" type="submit">Generar Campeonatos</button>
+        </form>
+        
+        <!-- {% url 'generar_etapas' %} -->
+        <form class="mt-2" action="#">
+            <button class="btn btn-primary" type="submit">Generar Etapas</button>
+        </form>
+        
+        <!-- {% url 'generar_competencias' %} -->
+        <form class="mt-2" action="#">
+            <button class="btn btn-primary" type="submit">Generar generar_competencias</button>
+        </form>
+        
+        <!-- {% url 'ins_masa' %} -->
+        <form class="mt-2" action="#">
+            <button class="btn btn-primary" type="submit">Generar inscripcion en masa</button>
+        </form>
+        
+        <!-- {% url 'load_data' %} -->
+        <form method="POST" action="{% url 'load_data' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-primary"> cargar_atletas</button>
+        </form>
+
+        <!-- {% url 'delete_all' %} -->
+        <form method="POST" action="{% url 'delete_all' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-primary"> Eliminar Atletas</button>
+        </form>
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends 'internal_base.html' %}
+{% load static %}
+
+
+{% block docs %}
+    <link rel="stylesheet" href="{% static 'bootstrap-datepicker.min.css' %}">      
+    <script src="{% static 'bootstrap-datepicker.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-12">
+                <a type="button" class="btn btn-sm btn-info float-right" href="{% url 'championships' %}">Volver</a>
+            </div>
+        </div>
+
+        <form class='user' method="POST" action="{% url 'new_champ' %}" autocomplete="off">
+            {% csrf_token %}
+            <!-- first_row -->
+            <div class="row">
+                <div class="form-group col-6">        
+                    <label for="champ_id">Nombre Campeonato</label>
+                    <input class="form-control" type="text" name="event_name" id="champ_id"  placeholder="EJ: Torneo de mediofondo" required>
+                </div>    
+
+                <div class="form-group col-3">
+                    <input type="checkbox" value="True" name="atlexclub" id="limit">
+                    <label for="axc">Limitar atletas de club</label>
+                    <select name="limit_club" id="axc" required disabled>
+                        <option value="">Selecione una opción</option>
+                        <option value="1">1 Atleta por prueba</option>
+                        <option value="2">2 Atleta por prueba</option>
+                        <option value="3">3 Atleta por prueba</option>
+                        <option value="4">4 Atleta por prueba</option>
+                        <option value="5">5 Atleta por prueba</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-3">
+                    <label for="" required>Categorias</label>
+                    <ul class="list-group" style="position: absolute;overflow-y: scroll; height: 150px;">
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="TD" required> Todo competidor</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="CD" required> Capacidades diferentes</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="M" required> Master</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="A" required> Adulto </li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u23" required> u23</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u20" required> u20</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u18" required> u18</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u16" required> u16</li>
+                    </ul>
+                </div>
+            </div>
+            <!--end_first_row -->
+          
+            <!--second_row-->
+            <div class="row">
+                <div class="form-group col-3">
+                    <label for="region_id">Región</label>
+                    <input class="form-control" type="text" name="region" id="region_id" placeholder="Region Metropolitana" >
+                </div>
+    
+                <div class="form-group col-3">
+                    <label for="direction_id">Dirección</label>
+                    <input class="form-control" type="text" name="direction" id="direction_id" placeholder="Ej:Av. grecias 2021" >
+                </div>
+
+                <div class="form-group col-3">
+                    <label for="">Máximo de pruebas por atleta</label>
+                    <select class="form-control" name="limit_athle" id="" required>
+                        <option value="">Seleccione una opcion</option>
+                        <option value="2">2 Individuales</option>
+                        <option value="21">2 Individuales + Posta</option>
+                        <option value="3">3 Individuales</option>
+                        <option value="31">3 Individuales + Posta</option>
+                        <option value="0">Sin limite</option>
+                    </select>
+                </div>
+           </div> 
+            <!--end_second_row -->
+    
+            <!--third_row -->
+            <div class="row">
+                <div class="form-group col-3">
+                    <label for="init_id">Fecha de inicio</label>
+                    <div class="input-group date">
+                        <input class="form-control" type="text" name="init_date" id="init_id">
+                        <span class="input-group-addon ml-1">
+                            <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                            </svg>
+                        </span>            
+                    </div>
+                </div>
+    
+                <div class="form-group col-3">
+                    <label for="finish_id">Fecha de termino</label>
+                    <div class="input-group date">
+                        <input class="form-control" type="text" name="finish_date" id="finish_id" >
+                        <span class="input-group-addon ml-1">
+                            <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                            </svg>
+                        </span>            
+                    </div>  
+                </div>   
+            </div>
+            <!--end_third_row-->
+    
+            <!--four_row
+            <div class="row">
+                <div class="form-group col-3">
+                    <label for="_ihour_"> Hora de inicio</label>
+                    <div class="input-group">
+                        <span class="input-group-addon mr-1">
+                            <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                                <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                        </span>
+                        <select class="form-control" name="init_hour" id="_ihour_">
+                            <option value="0" selected disabled hidden> ----- </option>
+                            <option value="08:00"> 08:00 a.m</option>
+                            <option value="09:00"> 09:00 a.m</option>
+                            <option value="10:00"> 10:00 a.m</option>
+                            <option value="11:00"> 11:00 a.m</option>
+                            <option value="12:00"> 12:00 a.m</option>
+                            <option value="13:00"> 13:00 p.m</option>
+                            <option value="14:00"> 14:00 p.m</option>
+                            <option value="15:00"> 15:00 p.m</option>
+                            <option value="16:00"> 16:00 p.m</option>
+                            <option value="17:00"> 17:00 p.m</option>
+                            <option value="18:00"> 18:00 p.m</option>
+                            <option value="19:00"> 19:00 p.m</option>
+                            <option value="20:00"> 20:00 p.m</option>
+                            <option value="21:00"> 21:00 p.m</option>
+                        </select>          
+                    </div>
+                </div>
+    
+                <div class="form-group col-3">
+                    <label for="_fhour_"> Hora de fin</label>
+                    <div class="input-group">
+                        <span class="input-group-addon mr-1">
+                            <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                                <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                        </span>
+                        <select class="form-control" name="finish_hour" id="_fhour_">
+                            <option value="0" selected disabled hidden> ----- </option>
+                        </select>  
+                    </div>
+                </div>   
+            </div>
+            end_for_row-->
+        
+            <div class="row"> 
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-sm btn-primary col-8">Crear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container-fluid"> 
+
+        <form class='user' method="POST" action="{% url 'new_champ' %}" autocomplete="off">
+            {% csrf_token%}
+            {{formulario.as_p}}
+            <button type="submit">mandar</button>
+        </form>
+        
+    </div>
+ 
+    <script>
+        $('#limit').change(function()
+        {   if(this.checked){ 
+                $('#axc')[0].disabled = false;
+            }
+            else{ 
+                $('#axc')[0].disabled = true;
+            }
+        });
+
+        $('.cate').change(function(){
+            for(x=0;x<8;x++)
+            {
+                if($('.cate')[x] != this){
+                    $('.cate')[x].required = false;
+                } 
+            }
+        })
+
+        $('.input-group.date').datepicker({
+      startDate:'24-09-2020',
+      format: 'yyyy-mm-dd',
+      weekStart: 1,
+      autoclose: true,
+      language:'es'
+    });
+
+    </script>
+
+{% endblock %}
+
+    
+   <!--
+       <form method= "POST" action="{% url 'new_a' %}">
+        {% csrf_token %}
+        <button type="submit"> Generas Pruebas</button>
+    </form>
+   -->
+    
+
+
+    

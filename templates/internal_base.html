@@ -1,0 +1,115 @@
+{% load static %}
+<html>
+    <head>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block docs %}
+    {% endblock %}
+    </head>
+    <body>
+
+      <div class="container-fluid mt-4">
+        {% if usr == 'AnonymousUser' or usr == '' %}
+        <!--navbar-->
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#e3f2fd;">
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <a class="navbar-brand text-primary" href="{% url 'principal' %}">
+            <img  height="45px" src="{% static '/logo.png' %}" alt="">
+          </a>
+
+          <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'championships' %}">Campeonatos <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-primary" href="{% url 'athletes' %}">Atletas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled text-primary" href="#">Calendario</a>
+              </li>
+            </ul>
+          </div>    
+
+          <ul class="navbar-nav ml-auto">  
+            <!-- Profile Navbar 
+            {% block alerts %}
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <span class="badge badge-danger badge-counter">Not </span>
+              </a>
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">Alerts Center</h6>
+                {% for x in u_notify.0 %}
+                  {% if x.content_object.get_type == 'event' %}
+                    <a class="dropdown-item d-flex align-items-center" href="#"> 
+                  {% else  %}
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  {% endif %}
+                      <div class="mr-3">
+                        <div class="icon-circle bg-warning"> <i class="fas fa-fw fa-bell"></i> </div>
+                      </div>
+                      <div>
+                        {% if x.content_object.get_type == 'event' %}
+                          <div class="small text-gray-600">{{x.content_object.time_create}}</div>
+                          <span class="font-weight-bold">Solicitud: {{x.content_object.event_title}}</span>
+                        {% else  %}
+                          <div class="small text-gray-600">{{x.content_object.time_create}}</div>
+                          <span class="font-weight-bold">Solicitud: {{x.content_object.event_title}}</span>
+                        {% endif %}
+                      </div>
+                    </a>  
+                {% endfor %}  
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+              </div>
+            </li>
+            {% endblock %} 
+            -->
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+            {% block profile %}
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#menu_log" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
+                <img class="img-profile rounded-circle" height="45px" src="{% static 'admin_icon.png' %}">
+              </a>
+
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown" id="menu_log">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> 
+                  Profile
+                </a>
+                
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Settings
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logouts
+                </a>
+              </div>
+            </li>
+            <!-- Profile-->
+            {% endblock %}
+          </ul>
+        </nav>
+      {% endif %}
+
+      </div>
+          {% block content %}
+          {% endblock %}
+    </body>
+</html>
+

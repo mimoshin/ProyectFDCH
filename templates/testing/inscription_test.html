@@ -1,0 +1,133 @@
+{% extends 'internal_base.html' %}
+{% load static %}
+
+<!--
+    (0,'SIN CATEGORIA') | (1,'Sub 16')
+    (2,'Sub 18') | (3,'Sub 20')
+    (4,'Sub 23') | (5,'Todo Competidor')
+    (6,'Capacidades diferentes') | (7,'Adulto')
+    (8,'Master')
+-->
+
+{% block content %}
+    <div class="container fluid mt-1">
+        <div class="row">
+            <form action="">
+                <div class="col form-group">
+                    <label for="competition_id">Consultar posible inscripcion</label>
+                    <select class="form-control" name="competition" id="competition_id">
+                        <option value="">Seleccione Prueba</option>
+                        {% for compt in competition %}
+                        <option value="{{compt.pk}}">{{compt.get_champ_compt}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+                </div>
+            </form>   
+            <form method="POST" action="{% url 'ins_test' %}">
+                {% csrf_token %}
+                <div class="col form-group">
+                    <label for="remove_id">Eliminar inscripciones</label>
+                    <select class="form-control" name="remove_insc" id="remove_id">
+                        <option value="">Seleccione Prueba</option>
+                        {% for compt in competition %}
+                        <option value="{{compt.pk}}">{{compt.get_champ_compt}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar Inscripciones</button>
+                </div>
+            </form> 
+            </div>
+        
+        
+        {% if total %}
+        <h5>Cantidad de atletas a inscribir: {{total}}</h5>
+        <form method="POST" action="{% url 'ins_test' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <label for="">Cantidad a inscribir</label>
+                    <select class="form-control" name="amount" id="">
+                        <option value="{{request.GET.competition}}10">10</option>
+                        <option value="{{request.GET.competition}}20">20</option>
+                        <option value="{{request.GET.competition}}30">30</option>
+                        <option value="{{request.GET.competition}}40">40</option>
+                        <option value="{{request.GET.competition}}AL">Todos</option>
+                    </select>
+                </div>
+                <div class="col-3 align-self-end">
+                    <button type="submit" class="btn btn-sm btn-primary"> inscribir</button>
+                </div>
+            </div>
+            
+        </form>
+        {% endif %}
+        
+        <div class="row">
+            <form method="POST" action="{% url 'ins_test' %}">
+                {% csrf_token %}
+                <div class="col form-group">
+                    <label for="new_series_id">Generar series</label>
+                    <select class="form-control" name="new_series" id="new_series_id">
+                        <option value="">Seleccione Prueba</option>
+                        {% for compt in competition %}
+                            <option value="{{compt.pk}}">{{compt.get_champ_compt}} {{compt.num_inscriptions}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+                </div>
+            </form>   
+            <form method="POST" action="{% url 'ins_test' %}">
+                {% csrf_token %}
+                <div class="col form-group">
+                    <label for="remove_sid">Eliminar Series</label>
+                    <select class="form-control" name="remove_series" id="remove_sid">
+                        <option value="">Seleccione Prueba</option>
+                        {% for compt in competition %}
+                            <option value="{{compt.pk}}">{{compt.get_champ_compt}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar Inscripciones</button>
+                </div>
+            </form> 
+        </div>
+
+
+
+    </div>
+{% endblock %}
+
+<!--
+    <div class="col form-group">
+                    <label for="championship">Torneo</label>
+                    <select class="form-control" name="" id="championship">
+                        <option value="">Seleccione Torneo</option>
+                        {% for cp in champs %}
+                            <option value="{{cp.pk}}">{{cp}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col form-group">
+                    <label for="categ">Categoria</label>
+                    <select class="form-control" name="" id="categ">
+                        <option value="">Seleccionar Categoria</option>
+                        <option value="1">Sub 16</option>
+                        <option value="2">Sub 18</option>
+                        <option value="3">Sub 20</option>
+                        <option value="4">Sub 23</option>
+                        <option value="5">Todo Competidor</option>
+                        <option value="6">Capacidades Diferentes</option>
+                        <option value="7">Adulto</option>
+                        <option value="8">Master</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label for="gender">Genero</label>
+                    <select class="form-control" name="" id="gender">
+                        <option value="">Seleccione Genero</option>
+                        <option value="0">Damas</option>
+                        <option value="1">Varones</option>
+                    </select>
+                </div>
+-->
