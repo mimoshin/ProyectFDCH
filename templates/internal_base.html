@@ -1,0 +1,64 @@
+{% load static %}
+<html>
+    <head>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    </head>
+    <body>
+
+      <div class="container-fluid mt-4">
+        {% if usr == 'AnonymousUser' or usr == '' %}
+        <!--navbar-->
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#e3f2fd;">
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'principal' %}">Inicio</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'atle_principal' %}">Atletas</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'champ_principal' %}">Campeonatos</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'compt_principal' %}">Competencias</a>        
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'principal' %}">Miembros</a>        
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'other_principal' %}">Otros</a>       
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link text-primary" href="{% url 'compt_principal' %}">Resultados</a>
+              </li>
+            </ul>
+          </div>    
+        </nav>
+      {% endif %}
+      </div>
+
+      {% block content %}
+      <div class="container-fluid mt-2">
+        <a type="button" class="btn btn-sm btn-primary" href="{% url 'atle_principal' %}">Gestionar atletas</a>
+        <a type="button" class="btn btn-sm btn-primary" href="{% url 'champ_principal' %}">Gestionar campeonatos</a>
+        <a type="button" class="btn btn-sm btn-primary" href="{% url 'compt_principal' %}">Gestionar competencias</a>
+        <a type="button" class="btn btn-sm btn-primary" href="#">Gestionar miembros</a>
+        <a type="button" class="btn btn-sm btn-primary" href="{% url 'other_principal' %}">Gestionar otros</a>
+        <a type="button" class="btn btn-sm btn-primary" href="{% url 'compt_principal' %}">Gestionar resultados</a>
+      </div>
+      {% endblock %}
+     
+          
+    </body>
+</html>
+

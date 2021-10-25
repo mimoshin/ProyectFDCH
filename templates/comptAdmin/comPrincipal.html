@@ -1,0 +1,37 @@
+{% extends 'internal_base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-2">
+    <h3 class="d-flex justify-content-center">Gestionar Competencias</h3>
+    <div class="row">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'ld_competitions' %}">Cargar competencias</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_competitions' %}">Eliminar competencias</a>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-sm btn-secondary" >Sin implementar </button>
+        </div>
+
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'view_results' 1 %}">Ver Resultados</a>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'track_principal' %}">Gestionar pista </a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'throw_principal' %}">Gestionar lanzamientos</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'jump_principal' %}">Gestionar saltos</a>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-sm btn-secondary" >Sin implementar </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'internal_base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-2">
+    <div class="table-responsive-sm">
+        <table class="table table-striped">
+            <thead>
+                <tr><th>Track_heads</th></tr>
+                <tr>
+                    {% if model1 %}
+                    {% for index in model1 %}
+                        <th style="font-size: 60%;">{{index.name}}</th>
+                    {% endfor %}
+                    {% endif %}
+                </tr>
+                <tr><th>Track_results</th></tr>
+                <tr>
+                    {% if model2 %}
+                    {% for index in model2 %}
+                        <th style="font-size: 60%;">{{index.name}}</th>
+                    {% endfor %}
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'ld_th2s' %}">Cargar track_heads</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_th2s' %}">Eliminar track_heads</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'ld_track2s' %}">Cargar track2s</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_track2s' %}">Eliminar track2s</a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'ld_resume' %}">Cargar resumen</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_resume' %}">Eliminar resumen</a>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-sm btn-primary" id="review_ruts">Revisar ruts</button>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'ncompare' %}">Comparar </a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'load_RMT' %}">Cargar RMT</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_RMT' %}">Eliminar RMT</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'load_RMJ' %}">Cargar RMJ</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_RMJ' %}">Eliminar RMJ</a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <button class="btn btn-sm btn-primary" id="anames">Revisar nombres</button>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-secondary" href="#">Sin implementar</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-secondary" href="#">Sin implementar</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-secondary" href="#">Sin implementar</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#review_ruts').on('click',function(){
+        $.post("{% url 'track_principal' %}",
+            {'results':true,'csrfmiddlewaretoken': '{{csrf_token}}'},
+            function(response){
+                console.log(response);
+            }
+        );
+    });
+
+    $('#anames').on('click',function(){
+        $.post("{% url 'track_principal' %}",
+            {'anames':true,'csrfmiddlewaretoken': '{{csrf_token}}'},
+            function(response){
+                console.log(response);
+            }
+        );
+    });
+</script>
+{% endblock %}
