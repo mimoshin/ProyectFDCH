@@ -9,4 +9,5 @@ urlpatterns = [
     path('generador',views.generate_activitys,name='new_a'),
     path('new_compt/<int:stage_id>',views.new_competition,name='new_compt'),
     path('competition/<int:c_id>',views.review_competition,name='review_competition'),
+    path('genA',views.generate_activitys,name='genActivitis'),
 ]

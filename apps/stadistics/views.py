@@ -25,7 +25,7 @@ def stats_views(request):
 
 def generar_champs(request):
     for x in data:
-        Championship_Interface.generator_champs(data,dict=x)
+        Championship_Interface.generator_champs(data)
     return redirect('stats')
 
 def generar_etapas(request):
