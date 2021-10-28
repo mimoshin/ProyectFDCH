@@ -93,5 +93,5 @@ def alternative(request):
         for b in compts:
             print(b)
             
-        return redirect('athletes_inscription',11)
+        return redirect('principal')
     return redirect('principal')

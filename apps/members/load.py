@@ -1,4 +1,6 @@
 from openpyxl import load_workbook
+from base.settings import BASE_DIR
+import os
 
 DICT = ['A','B','C','D','E','F','G','H','J','K','L','M','N',
               'O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -37,17 +39,21 @@ def load ():
     ex.save('doc.xlsx')
 
 def load_2():
-    ex = load_workbook('C:\\Users\\Franco\\Desktop\\Proyecto\\Codigo\\apps\\members\\doc.xlsx')
-    hoja2 = ex['Hoja1']
-    max_row, min_row = hoja2.max_row, hoja2.min_row
-    person_list = []
+    file = os.path.join(BASE_DIR,'doc.xlsx')
+    try:    
+        #ex = load_workbook('C:\\Users\\Franco\\Desktop\\Proyecto\\Codigo\\apps\\members\\doc.xlsx')
+        ex = load_workbook(file)
+        hoja2 = ex['Hoja1']
+        max_row, min_row = hoja2.max_row, hoja2.min_row
+        person_list = []
     
-    for row in range(min_row,max_row):
-        indice = [DICT[0]+str(row),DICT[1]+str(row),DICT[2]+str(row),DICT[3]+str(row),DICT[4]+str(row)]
-        value = [ hoja2[indice[0]].value, hoja2[indice[1]].value, hoja2[indice[2]].value, hoja2[indice[3]].value, hoja2[indice[4]].value]
-        person_list.append(value)
-    return person_list
-
+        for row in range(min_row,max_row):
+            indice = [DICT[0]+str(row),DICT[1]+str(row),DICT[2]+str(row),DICT[3]+str(row),DICT[4]+str(row)]
+            value = [ hoja2[indice[0]].value, hoja2[indice[1]].value, hoja2[indice[2]].value, hoja2[indice[3]].value, hoja2[indice[4]].value]
+            person_list.append(value)
+        return person_list
+    except:
+        pass
 """
 hoja2 = ex['Hoja2']
 max_column, min_column =  hoja2.max_column, hoja2.min_column
