@@ -1,0 +1,50 @@
+{% extends 'External/eBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    {% if competition %}
+    <div class="container mb-4">
+        <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'principal_view' %}">Volver</a>
+        <h2 class="text-center">{{competition.name}}</h2> 
+        <p class="text-center">{{competition.initDate}}</p>
+    </div>
+             
+        {% if heats_data %}
+        <div class="container">
+            {% for heat in heats_data %}
+                <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+                <table class="table table-striped table-bordered" >
+                    <thead class="table-info">
+                        <tr>
+                            <th class="text-center" style="width: 10%;">Pista</th>
+                            <th class="text-center" style="width: 50%;">Atleta</th>
+                            <th class="text-center" >A. N.</th>
+                            <th class="text-center" >Pais</th>
+                            <th class="text-center" >PB</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for atle in heat.assign %}
+                        <tr>
+                            <td class="text-center">{{atle.line}}</td>
+                            <td class="text-center">{{atle.athlete}}</td>
+                            <td class="text-center">10 ENE 2000</td>
+                            <td class="text-center">Chile</td>
+                            <td class="text-center">{{atle.personalBest}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %} 
+        </div>
+        {% else %}
+            <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+        {% endif %}
+
+    {% else %}
+        <h1 class="text-center">Error</h1>
+    {% endif %}
+</div>
+
+{% endblock %}

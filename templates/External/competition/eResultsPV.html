@@ -1,0 +1,69 @@
+{% extends 'External/eBase.html' %}
+{% load static %}
+<!--PLANILLA DE GARROCHA-->
+
+{% block content %}
+<div class="container-fluid mt-2">
+    {% if competition %}
+    <h1 class="text-center">{{competition.name}}</h1> 
+    <div class="container">
+        <a type="button" class="btn btn-sm btn-warning float-right" href="{% url 'download_results' competition.id %}" download> Planilla digital</a>
+        <h4>Serie X</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Lugar</th>
+                    <th>Pista</th>
+                    <th>Atleta</th>
+                    <th>A. N.</th>
+                    <th>Pais</th>
+                    <th>Marca</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+    {% else %}
+    <h1>titulo de la prueba</h1> 
+    <div class="container">
+        <h4>titulo de la serie</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

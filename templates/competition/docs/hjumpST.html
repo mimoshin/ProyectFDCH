@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <style>
+            .center{text-align: center;}
+            .sub{text-decoration: underline black;}
+
+            table.status th,td{
+                border: 0.5px solid black;
+                vertical-align:bottom;
+            }
+            table.status th{
+                text-align: left; 
+                height: 20px;
+                width: 6%;
+                margin-left: 2px;
+            }
+            table.status td{
+                text-align: center; 
+                height: 20px;
+                width: 20%;
+            }
+            table.content th,td{
+                text-align: center;
+                height: 20px;
+                border: 0.5px solid black;
+                vertical-align:bottom;
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        {% block content %}
+            <img src="{{url}}" alt="Image" height="45px" style="text-align:right;">
+
+            <div style="line-height: 0.5;">
+                <h1 class="center sub">Campeonato Panamericano U20</h1>
+                <h4 class="center">Concepción, Chile</h4>
+            </div>
+            
+            {% if competition %}
+                <table class="status">
+                    <tbody>
+                        <tr>
+                            <th>Fecha: </th>
+                            <td>23/10/2021 - 10:00 hrs.</td>
+                        </tr>
+                        <tr>
+                            <th>Prueba:</th>
+                            <td>{{competition.eventId.name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Ronda:</th>
+                            <td>{{competition.get_round}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        
+            
+                {% if heats %}
+                    {% for heat in heats %}
+                        <h2 class="center sub">{{heat.heat.serie}}</h2>
+                        <table class="content" style="table-layout:fixed;">
+                            <thead>
+                                <tr>
+                                    <th>Pista</th>
+                                    <th>Atleta</th>
+                                    <th>A. N.</th>
+                                    <th>Pais</th>
+                                    <th>PB</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for atle in heat.assign %}
+                                    <tr>
+                                        <td>{{atle.line}}</td>
+                                        <td>{{atle.athlete}}</td>
+                                        <td>0/0/0000</td>
+                                        <td>Chile</td>
+                                        <td>20.20</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                {% else %}
+                    <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+                {% endif %}
+            {% else %}
+                <h1>titulo de la prueba</h1> 
+                <h4>titulo de la serie</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table> 
+            {% endif %}
+            <div style="margin-top: 100px;">
+                <pdf:nextpage>
+            </div>
+            <pdf:barcode value="000101010101x" type="code128" humanreadable="1"/>
+            <p>hola hola</p>
+            <pdf:toc>
+            <pdf:pagecount>
+            
+            
+        {% endblock %}
+    </body>
+</html>

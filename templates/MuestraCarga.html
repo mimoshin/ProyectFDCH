@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- en 400 planos serie 1 utiliza PISTA 
+    400 Mujeres utiliza el RAIL
+
+-->
+{% block content %}
+<div class="container-fluid">
+    
+<h1>aqui debo mostrar datos</h1>
+<form method='GET' action="{% url 'mostrar_datos' %}">
+
+<select name="prueba" id="">
+    <option value="4x400">4x400</option> 
+<option value="400">400</option>
+<option value="800">800</option>
+<option value="200">200</option>
+<option value="100">100</option>
+<option value="110v">110v</option>
+<option value="400v">400v</option>
+<option value="10000 marcha">10000 marcha</option>
+<option value="5000">5000</option>
+<option value="3000">3000</option>
+<option value="1500">1500</option>
+<option value="Decatlón">Decatlón</option>
+<option value="3000 c/o">3000 c/o</option>
+<option value="10000">10000</option>
+<option value="Heptatlón">Heptatlón</option>
+<option value="4x100">4x100</option>
+<option value="100v">100v</option>
+</select>
+
+<select name="gender" id="">
+    <option value="F">Femenino</option>
+    <option value="M">Masculino</option>
+</select>
+<button type="submit">ver</button>
+</form>
+
+<table class="table ">
+    <thead>
+        <tr>
+            <th>atleta</th>
+            <th>prueba</th>
+            <th>serie</th>
+            <th>rut</th>
+            <th>sexo</th>
+            <th>pista</th>
+            <th>rail</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if data %}
+    {% for x in data %}
+    <tr>
+        <td>{{x.atleta}}</td>
+        <td>{{x.prueba}}</td>
+        <td>{{x.serie}}</td>
+        <td>{{x.rut}}</td>
+        <td>{{x.sexo}}</td>
+        <td>{{x.pista}}</td>
+        <td>{{x.rail}}</td>
+    </tr>
+  
+{% endfor %}
+{% endif %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,326 @@
+[
+	{
+		"id" : 1,
+		"eventId": 1,
+		"stageId": 1,
+		"gender": 1,
+		"initDate" : "09:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 2,
+		"eventId": 1,
+		"stageId": 1,
+		"gender": 2,
+		"initDate" : "09:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 3,
+		"eventId": 2,
+		"stageId": 1,
+		"gender": 1,
+		"initDate" : "10:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 4,
+		"eventId": 2,
+		"stageId": 1,
+		"gender": 2,
+		"initDate" : "10:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 5,
+		"eventId": 3,
+		"stageId": 1,
+		"gender": 1,
+		"initDate" : "11:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 6,
+		"eventId": 3,
+		"stageId": 1,
+		"gender": 2,
+		"initDate" : "11:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 7,
+		"eventId": 4,
+		"stageId": 1,
+		"gender": 1,
+		"initDate" : "12:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 8,
+		"eventId": 4,
+		"stageId": 1,
+		"gender": 2,
+		"initDate" : "12:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 9,
+		"eventId": 5,
+		"stageId": 1,
+		"gender": 1,
+		"initDate" : "13:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 10,
+		"eventId": 5,
+		"stageId": 1,
+		"gender": 2,
+		"initDate" : "13:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 11,
+		"eventId": 6,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "14:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 12,
+		"eventId": 6,
+		"stageId": 2,
+		"gender": 2,
+		"initDate" : "14:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 13,
+		"eventId": 7,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "15:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 14,
+		"eventId": 7,
+		"stageId": 2,
+		"gender": 2,
+		"initDate" : "15:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 15,
+		"eventId": 8,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "16:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 16,
+		"eventId": 8,
+		"stageId": 2,
+		"gender": 2,
+		"initDate" : "16:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 17,
+		"eventId": 9,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "17:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 18,
+		"eventId": 9,
+		"stageId": 1,
+		"gender": 2,
+		"initDate" : "17:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 19,
+		"eventId": 10,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "18:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 20,
+		"eventId": 10,
+		"stageId": 2,
+		"gender": 2,
+		"initDate" : "09:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 21,
+		"eventId": 11,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "10:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 22,
+		"eventId": 11,
+		"stageId": 2,
+		"gender": 2,
+		"initDate" : "10:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 23,
+		"eventId": 12,
+		"stageId": 2,
+		"gender": 1,
+		"initDate" : "11:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 24,
+		"eventId": 12,
+		"stageId": 2,
+		"gender": 2,
+		"initDate" : "11:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 25,
+		"eventId": 13,
+		"stageId": 3,
+		"gender": 1,
+		"initDate" : "12:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 26,
+		"eventId": 13,
+		"stageId": 3,
+		"gender": 2,
+		"initDate" : "12:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 27,
+		"eventId": 14,
+		"stageId": 3,
+		"gender": 1,
+		"initDate" : "13:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 28,
+		"eventId": 14,
+		"stageId": 3,
+		"gender": 2,
+		"initDate" : "13:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 29,
+		"eventId": 15,
+		"stageId": 3,
+		"gender": 1,
+		"initDate" : "14:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 30,
+		"eventId": 15,
+		"stageId": 3,
+		"gender": 2,
+		"initDate" : "15:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 31,
+		"eventId": 16,
+		"stageId": 3,
+		"gender": 1,
+		"initDate" : "16:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 32,
+		"eventId": 16,
+		"stageId": 3,
+		"gender": 2,
+		"initDate" : "16:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 33,
+		"eventId": 17,
+		"stageId": 3,
+		"gender": 1,
+		"initDate" : "17:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 34,
+		"eventId": 17,
+		"stageId": 3,
+		"gender": 2,
+		"initDate" : "17:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 35,
+		"eventId": 18,
+		"stageId": 3,
+		"gender": 1,
+		"initDate" : "18:00:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	},
+	{
+		"id" : 36,
+		"eventId": 18,
+		"stageId": 3,
+		"gender": 2,
+		"initDate" : "18:30:00",
+		"created_at" : "2018-05-26 02:11:01",
+		"updated_at" : "2018-05-26 02:11:01"
+	}	
+]

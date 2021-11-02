@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-2">
+    {% if competition %}
+    <h1 class="text-center">{{competition.name}}</h1> 
+    {% if heats_data %}
+    <div class="container">
+        <a type="button" class="btn btn-sm btn-secondary float-right mt-4" href="{% url 'principal_view' %}">Volver</a>
+        <a type="button" class="btn btn-sm btn-warning mt-4 mb-4" href="{% url 'prueba3' competition.id %}">Ver PDF</a>
+        <a type="button" class="btn btn-sm btn-warning mt-4 mb-4" href="{% url 'prueba3' competition.id %}" download="{{competition.name}} Series">Descargar PDF</a>
+        
+            {% for heat in heats_data %}
+                <h4>{{heat.heat.serie}}</h4>
+                <table class="table" style="table-layout:fixed;">
+                <thead>
+                    <tr>
+                        <th>Pista</th>
+                        <th>Atleta</th>
+                        <th>A. N.</th>
+                        <th>Pais</th>
+                        <th>PB</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atle in heat.assign %}
+                    <tr>
+                        <td>{{atle.line}}</td>
+                        <td>{{atle.athlete}}</td>
+                        <td>10 ENE 2000</td>
+                        <td>Chile</td>
+                        <td>{{atle.personalBest}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %} 
+    </div>
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento</h3>
+    {% endif %}
+
+    {% else %}
+    <h1>titulo de la prueba</h1> 
+    <div class="container">
+        <h4>titulo de la serie</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

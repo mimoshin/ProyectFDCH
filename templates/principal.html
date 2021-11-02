@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!--CORREGIR ALINEACION DE TABLAS CON ETAPAS-->
+{% block content %}
+
+<div class="container-fluid mt-2 hola">
+    {% if champ %}
+    <h1 class="text-center" id="titulo">{{champ.name}}</h1>
+    {% else %}
+    <h1 class="text-center">Campeonato panamericano U20 STR</h1>
+    {% endif %}
+    <p class="text-center">22,23 y 24 de Octubre - Concepción, Chile</p>
+    <p class="text-center"></p>
+    
+    <!--principal card-->
+    <div class="card bg-light mt-4">
+        <!--principal card body-->
+        <div class="card-body">
+            {% if stage %}
+                <!--secondary cards-->
+                {% for cards in stage %}
+                <div class="card mt-2">
+                    <!--card body-->
+                    <div class="card-body" id="card{{cards.stage.pk}}">
+                        <!--button collapse-->
+                        <button class="btn btn-sm float-right" 
+                            data-toggle="collapse" data-target="#coll{{cards.stage.pk}}" 
+                            aria-expanded="true" aria-controls="coll{{cards.stage.pk}}"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                            </svg>
+                        </button>
+                        <!--end button collapse-->
+                
+                        <!--title champ-->
+                        <div class="row">
+                            <h5 class="card-tittle mr-4">{{cards.stage.name}}</h5>
+                        </div>
+                        <!--end title champ-->
+              
+                        <!--table competition-->
+                        <div id="coll{{cards.stage.pk}}" class="table-responsive collapse show"
+                            aria-labelledby="card{{cards.stage.pk}}" data-parent="#card{{cards.stage.pk}}">
+                            <table class="table table-sm table-hover table-striped" style="table-layout: auto;">
+                                <thead class="table-info ">
+                                    <tr style="box-shadow:none;">
+                                        <th> HORA</th>
+                                        <th> PRUEBA</th>
+                                        <th> RONDA </th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>STARTLIST</th>
+                                        <th>RESULTADOS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>                            
+                                    {% if cards.competitions %}
+                                        {% for data in cards.competitions%}
+                                            <tr>
+                                                <td>{{data.initDate}}</td>
+                                                {% if data.combi %}
+                                                    <td>{{data.eventId.name}} {{data.get_gender}} - {{data.comb}} </td>
+                                                {% else %}
+                                                    <td>{{data.eventId.name}} {{data.get_gender}}</td>
+                                                {% endif %}
+                                                <td>{{data.get_round}}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><a type="button" class="btn btn-sm btn-warning" href="{% url 'starlist_view' data.pk %}">STARTLIST</a></td>
+                                                <td><a type="button" class="btn btn-sm btn-info" href="{% url 'results_view' data.pk %}">RESULTADOS</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td>00:00</td>
+                                            <td>100 metros</td>
+                                            <td>series</td>
+                                            <td>u20</td>
+                                            <td>damas</td>
+                                            <td>no</td>
+                                            <td><a type="button" class="btn btn-sm btn-warning" href="{% url 'starlist_view' cards.stage.pk %}">STARTLIST</a></td>
+                                            <td><a type="button" class="btn btn-sm btn-info" href="{% url 'results_view' cards.stage.pk %}">RESULTADOS</a></td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--end table competition-->
+                    </div>
+                    <!--end_card_body-->
+                </div>
+                {% endfor %}
+                <!--end_secondayr_cards-->
+        
+                <!--no_stages-->
+            {% else %}
+                <div class="card m-2 text-center">
+                    <div class="card-body"> 
+                        <h1>No existen estapas registradas.</h1>
+                    </div>
+                </div>
+            {% endif %}
+            <!--end_no_stages-->
+        </div>
+        <!--end_principal_card_body-->
+    </div>
+    <!--end_principal_card-->
+</div>
+{% endblock %}
+
