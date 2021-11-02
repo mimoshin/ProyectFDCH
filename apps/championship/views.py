@@ -19,7 +19,7 @@ def championship_general_view(request):
         pass
     elif request.method == 'GET':
         pass
-    return render(request,'championship/external_championship_view.html',{'champs':champs})
+    return render(request,'championship/external_championship_view.html',{'champs':champs,'usr': ''})
 
 def review_championship(request,c_id):
     user = request.user

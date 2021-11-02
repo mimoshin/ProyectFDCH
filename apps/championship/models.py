@@ -387,9 +387,10 @@ class Championship_Interface():
                                     limit_club=data['limit_club'],limit_athle=data['limit_athle'])
     
     @staticmethod
-    def generator_champs(dict):
-        if dict:
-            championship.objects.create(event_name=dict[0],init_date=dict[1],finish_date=dict[2])
+    def generator_champs():
+        championship.objects.create(event_name="campeonato de prueba 1")
+        championship.objects.create(event_name="campeonato de prueba 2")
+        championship.objects.create(event_name="campeonato de prueba 3")
         
 
 class stage_interface():
@@ -480,7 +481,7 @@ class stage_interface():
         """
         competition_list = {}
         try:
-            stages_list = champ.stage_set.exclude(num_compt=0)
+            stages_list = champ.stage_set.all()
             for st_index in stages_list:
                 compts = st_index.competition_set.all()
                 if compts:
