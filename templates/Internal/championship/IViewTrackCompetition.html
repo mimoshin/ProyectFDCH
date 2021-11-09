@@ -1,0 +1,79 @@
+{% extends 'Internal/iBase.html' %}
+
+
+{% block content %}
+<div class="container-fluid">
+    
+    <h5 class="text-center mt-4">{{data.test_fk}} {{data.gender}} | Hora inicio: {{data.hour}}</h5>
+    <p class="text-center">Total de inscripciones: {{data.num_inscriptions}} {{data.series}}</p>
+    <div class="row">
+        <div class="col-9">
+            <form method="POST" action="{% url 'review_competition' data.id %}" class="user" autocomplete="off">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-3">
+                        <p>Ronda: {{data.get_round}}</p>
+                    </div>
+                    <div class="col-3">
+                        <select class="form-control" name="total" id="total_id">
+                            <option value="8">8 Atletas por serie</option>
+                            <option value="16">16 Atletas por serie</option>
+                        </select>
+                    </div>
+                     <div class="col-3">
+                         <button type="submit" class="btn btn-sm btn-primary">Genera series</button>
+                    </div>
+                </div>    
+            </form>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-info float-right" href="{% url 'review_champ' data.stage_fk.champ_fk.pk %}"> volver</a>
+        </div>
+    </div>
+    
+    
+    
+    {% if inscriptions %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-info">
+                    <tr> <th>Nombres</th> <th>Apellidos</th> <th>Club</th> <th>Marca</th> </tr>
+                </thead>
+                <tbody>
+                    {% for athlete in inscriptions %}
+                    <tr>
+                        <td>{{athlete.otro.first_name}} {{athlete.otro.second_name}}</td>
+                        <td>{{athlete.otro.flast_name}} {{athlete.otro.slast_name}}</td>
+                        <td>{{athlete.otro.club_fk.club_name}}</td>
+                        <td>{{athlete.mark}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if series %}
+        {% for ser in series %}
+            <h6>{{ser.0}}</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="table-info">
+                        <tr> <th>Nombres</th> <th>Apellidos</th> <th>Club</th> <th>Marca</th> </tr>
+                    </thead>
+                    <tbody>
+                        {% for athle in ser.1 %}
+                            <tr>
+                                <td>{{athle.athlete_fk.first_name}} {{athle.athlete_fk.second_name}} </td>
+                                <td>{{athle.athlete_fk.flast_name}} {{athle.athlete_fk.slast_name}}</td>
+                                <td>{{athle.athlete_fk.club_fk}}</td>
+                                <td>{{athle.mark}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

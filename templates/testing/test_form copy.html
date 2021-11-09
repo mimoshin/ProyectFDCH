@@ -1,0 +1,90 @@
+{% load static %}
+{% extends 'internal_base.html' %}
+
+{% block content %}
+<div class=" container-fluid row mt-2">
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info" href="{% url 'init_test' %}"> Volver</a>
+    </div>
+</div>
+
+<form action="{% url 'form_test' %}" method="post">
+    {% csrf_token %}
+    <label for="your_name" class="errorlist">Your name: </label>
+    <input id="your_name" type="text" name="your_nae" value="jajaja">
+    <input type="submit" value="OK">
+</form>
+
+
+<p>Formulario dentro del form</p>
+<form action="{% url 'form_test' %}" method="POST">
+    {% csrf_token %}
+    {{form.as_table}}
+    <h1>D</h1>
+    {{form.as_p}}
+    <h1>D</h1>
+    {{form.as_ul}}
+    <button type="submit" class="btn btn-sm btn-warning">Probando</button>
+</form>
+
+
+<p>Resultado: {{result}}</p>
+
+<p>Formulario hecho aqui</p>
+<form action="{% url 'form_test' %}" method="POST">
+    {% csrf_token %}
+    <tr>
+        <th> <label for="id_your_name">Nombre:</label> </th>
+        <td><input type="text" name="your_name" maxlength="5" required id="id_your_name"> </td>
+    </tr>
+    <tr>
+        <th> <label for="id_your_lname">Apellido:</label> </th>
+        <td> <input type="text" name="your_lname" maxlength="5" required id="id_your_lname"> </td>
+    </tr>
+    <tr>
+        <th> <label for="id_your_age">Edad:</label> </th>
+        <td> <input type="number" name="your_age" max="10" required id="id_your_age"> </td>
+    </tr>
+    <tr>
+        <th> <label for="id_your_birthday">Fecha de nacimiento:</label> </th>
+        <td><input type="text" name="your_birthday" required id="id_your_birthday"> </td>
+    </tr>
+    <tr>
+        <th> <label for="id_your_datetime">Datetime:</label> </th>
+        <td> <input type="text" name="your_datetime" required id="id_your_datetime"> </td>
+    </tr>
+    <button type="submit" class="btn btn-sm btn-warning">Probando</button>
+</form>
+
+    <form action="">
+        <label for="prueba">Probando</label>
+        <input type="text" name="prueba" required id="probando">
+        <button type="menu">Probando</button>
+    </form>
+
+    <h1>descompresion</h1>
+    <form action="{% url 'form_test' %}" method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+<div class="fieldWrapper">
+    {{ form.your_name.errors }}
+    <label for="{{ form.your_name.id_for_label }}">Email subject:</label>
+    {{ form.your_name }}
+</div>
+<div class="fieldWrapper">
+    {{ form.your_lname.errors }}
+    <label for="{{ form.your_lname.id_for_label }}">Your message:</label>
+    {{ form.your_lname }}
+</div>
+<div class="fieldWrapper">
+    {{ form.your_age.errors }}
+    <label for="{{ form.your_age.id_for_label }}">Your email address:</label>
+    {{ form.your_age }}
+</div>
+<div class="fieldWrapper">
+    {{ form.your_birthday.errors }}
+    <label for="{{ form.your_birthday.id_for_label }}">CC yourself?</label>
+    {{ form.your_birthday }}
+</div><button type="submit" class="btn btn-sm btn-warning">Probando</button>
+    </form>
+{% endblock %}

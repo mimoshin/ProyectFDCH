@@ -1,0 +1,104 @@
+{% extends 'External/eBase.html' %}
+
+{% block docs %}
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+{% endblock %}
+
+{% block principalContent %}
+
+  <!--principal_content-->
+  <div class="container-fluid mt-2">
+    <h2 class="text-center mt-4">{{champ}}</h2>
+    <h6 class="text-center">{{champ.init_date}} | {{champ.finish_date}}</h6>
+    <p class="text-center">{{champ.event_place}}</p>
+  
+    <!--principal_card-->
+    <div class="card bg-light mt-4">
+      <!--principal_card_body-->
+      <div class="card-body">
+        {% if stage %}
+        <!--secondary_cards-->
+        {% for cards in stage %}
+          <div class="card mt-2 ">
+            <!--card_title-->
+            <!--end_card_title-->
+            <!--card_body-->
+            <div class="card-body" id="card{{cards.pk}}">
+              <button class="btn btn-sm float-right" data-toggle="collapse" data-target="#coll{{cards.pk}}" aria-expanded="true" aria-controls="coll{{cards.pk}}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+              </button>
+              <!--title_champ-->
+              <div class="row">
+                <h5 class="card-tittle mr-4">Horarios {{cards.stage_name}}</h5>
+               
+              </div>
+              <!--end_title_champ-->
+              <!--table_compt-->
+              <div id="coll{{cards.pk}}" class="collapse show table-responsive" aria-labelledby="card{{cards.pk}}" data-parent="#card{{cards.pk}}">
+                <table class="table table-sm" style="table-layout:fixed;" >
+                  <thead class="table-info ">
+                    <tr>
+                      <th> Hora</th>
+                      <th> Prueba</th>
+                      <th> Ronda </th>
+                      <th> Categoria </th>
+                      <th> Genero</th>
+                      <th> Accion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for key,value in activitys.items %}
+                      {% if key == cards.pk %}
+                        {% if value %}
+                          {% for data in value %}
+                          <tr>
+                            <td> {{data.hour}}</td>
+                            <td> {{data.test_fk}}</td>
+                            <td> SERIE </td>
+                            <td> CATEGORIA </td>
+                            <td> {{data.gender}}</td>
+                            <td> 
+                              <a type="button" class="btn btn-sm btn-primary" href="{% url 'review_competition' data.pk %}"> Ver </a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        {% else %}
+                          <tr>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                          </tr>
+                        {% endif %} 
+                      {% endif %}
+                    {% endfor %}
+                
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--end_card_body-->
+          </div>
+        {% endfor %}
+        <!--end_secondayr_cards-->
+        <!--no_stages-->
+        {% else %}
+        <div class="card m-2 text-center">
+          <div class="card-body"> 
+            <h1>Programa horario por definirse.</h1>
+          </div>
+        </div>
+        <!--end_no_stages-->
+        {% endif %}
+      </div>
+      <!--end_principal_card_body-->
+    </div>
+    <!--end_principal_card-->
+  <div> 
+  <!--end_principal_content-->
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'internal_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-2"> 
+    <div class="row">
+        <div class="col-3">
+            <form method="POST" action="{% url 'load_clubs' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-primary">Cargar Clubs (JSON)</button>
+            </form>
+        </div>
+        <div class="col-3">
+            <form method="POST" action="{% url 'load_clubs' %}">
+                {% csrf_token %}
+                <input type="text" name="category" value="masculino" hidden>
+                <button type="submit" class="btn btn-sm btn-primary">inscribir Clubs(JSON)</button>
+            </form>
+        </div>
+    </div>
+
+    {% if clubs %}
+    <table class="table table-sm table-bordered table-responsive-sm">
+        <thead class="table-info">
+            <tr class="center_text">
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Region</th>
+                <th>Creado</th>
+                <th>Actualizado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in clubs %}
+            <tr class="center_text">
+                <td>{{x.id}}</td>
+                <td>{{x.name}}</td>
+                <td>{{x.region_id}}</td>
+                <td>{{x.created_at}}</td>
+                <td>{{x.updated_at}}</td>             
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</div>
+
+<style>
+.center_text th,td{
+    text-align: center;
+}
+</style>
+{% endblock %}

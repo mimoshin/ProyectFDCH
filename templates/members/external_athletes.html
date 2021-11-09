@@ -1,0 +1,163 @@
+{% extends 'external_base.html' %}
+
+{% block docs %}
+{% endblock %}
+
+{% block content %} 
+  <div class="container-fluid">
+    <h6>Filtrar</h6>
+
+    <!--filter_form-->
+    <form method="GET" action="{% url 'athletes' %}" class="user" autocomplete="off">
+      <div class="row">
+          <div class="col-3">
+              <input class="filterbox" type="checkbox" id="nbox">
+              <label for="nbox">Nombre</label>
+              <input class="form-control" type="text" name="name" id="f_name" placeholder="Fulano de tales" disabled>
+          </div>
+
+          <div class="col-3">
+              <input class="filterbox" type="checkbox" id="cbox">
+              <label for="cbox">Club</label>
+              <select class="form-control" name="" id="selclub" disabled>
+                <option value="">Seleccione club</option>
+              </select>
+          </div>
+                
+          <div class="col-3">
+            <input class="filterbox" type="checkbox" id="rbox">
+            <label for="rbox">Región</label>
+            <select class="form-control" name="" id="selregion" disabled>
+              <option value="">Seleccione región</option>
+            </select>
+          </div>
+          <div class="col-3">
+              <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+          </div>
+      </div>
+    </form>
+    <!--end_filter_form-->
+        
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoria</th>
+                        <th>Club</th>
+                        <th>Region</th>
+                        <th></th>
+                    </tr>
+                        </thead>
+                        <tbody id="list_body">
+                            {% if athletes %}
+                                {% if athletes == 'EMPTY' %}
+                                    <tr><td>Sin coincidencias</td></tr>
+                                {% else %}
+                                    {% for atle in athletes %}
+                                <tr>
+                                    <td>{{atle.first_name}} {{atle.second_name}} {{atle.flast_name}} {{atle.slast_name}}</td>
+                                    <td id="category">{{atle.get_category}}</td>
+                                    <td>{{atle.club}}</td>
+                                    <td>{{atle.gender}}</td>
+                                    <td><button type="button" class="btn btn-sm btn-primary" 
+                                        value="{{atle.first_name}} {{atle.flast_name}} " 
+                                        onclick="inscription(this)" id="pk{{atle.pk}}">ver</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+        <nav aria-label="...">
+            <ul class="pagination">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item active">
+                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+    </div>
+    
+        
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pruebas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'probando' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <table class="table">
+                <thead class="table-info">
+                  <tr>
+                      <th>Prueba</th>
+                      <th>Categoria</th>
+                      <th>Marca</th>
+                      <th>Inscribir</th>
+                  </tr>    
+                </thead>
+                <tbody>
+                  <input type="hidden" name="athlete" id="athlete_inscription_pk" value="nada">
+                  {% for data in competitions %}
+                  <tr>
+                      <td>{{data.test_fk}}</td>
+                      <td>{{data.gender}}</td>
+                      <td><input type="text" id="mark{{data.pk}}" name="marka{{data.pk}}"></td>
+                      <td>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="s{{data.pk}}" name="val|{{data.pk}}">
+                            <label class="custom-control-label" for="s{{data.pk}}"></label>
+                        </div>
+                      </td>
+                  </tr>
+                  {% endfor %}          
+                </tbody>
+            </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Inscribir</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+  
+  <script>
+    theBoxes = {'cbox':'selclub','rbox':'selregion','nbox':'f_name'};
+
+    $('.filterbox').on('change',function(){
+      objectBox = $('#'+theBoxes[this.id]);
+      change = !(objectBox.prop('disabled'));
+      objectBox.prop('disabled',change);
+      });
+
+    </script>
+
+{% endblock %}

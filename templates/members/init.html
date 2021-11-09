@@ -1,0 +1,67 @@
+{% extends 'internal_base.html' %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2" style="border-left: 1px solid rgb(50, 20, 185); border-left-width: 5px;
+                border-radius: 3px;">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-italic text-dark text-uppercase mb-1">
+                                    Campeonatos Realizados</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{data}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2" style="border-left: 1px solid rgb(20, 185, 69); border-left-width: 5px;
+                border-radius: 3px;">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-italic text-dark text-uppercase mb-1">
+                                    Atletas Inscritos</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{data}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2" style="border-left: 1px solid rgb(185, 127, 20); border-left-width: 5px;
+                border-radius: 3px;">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-italic text-dark text-uppercase mb-1">
+                                    Calendario</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{data}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        {% for x in champs %}
+            <p>{{x.event_name}} | {{x.event_place}} 
+                <a type="button" class="btn btn-success btn-sm" href="{% url 'review_champ' x.pk %}">Ver</a>
+            </p>
+        {% endfor %}
+    </div>
+{% endblock %}

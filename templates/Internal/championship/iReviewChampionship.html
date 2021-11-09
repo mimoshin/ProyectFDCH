@@ -1,0 +1,320 @@
+{% extends 'Internal/iBase.html' %}
+
+{% block docs %}
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+  <!--principal_content-->
+  <div class="container-fluid mt-2">
+    <h2 class="text-center mt-4">{{champ}}</h2>
+    <h6 class="text-center">{{champ.init_date}} | {{champ.finish_date}}</h6>
+    <p class="text-center">{{champ.event_place}}</p>
+    <p class="text-center" id="categorys"> Categorias: {{champ.get_categorys}}</p>
+    <a type="button" class="btn btn-sm btn-primary" href="{% url 'athletes_inscription' champ.pk %}"> Inscribir atletas</a>
+    
+    <!--principal_card-->
+    <div class="card bg-light mt-4">
+      <!--principal_card_title-->  
+      <div class="card-header bg-light"> 
+        <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
+          Nueva etapa
+        </button>
+        <h3>Etapas</h3>
+      </div>
+      <!--end_principal_card_title-->
+
+      <!--principal_card_body-->
+      <div class="card-body">
+        {% if stage %}
+        <!--secondary_cards-->
+        {% for cards in stage %}
+          <div class="card mt-2 ">
+            <!--card_title-->
+            <!--end_card_title-->
+            <!--card_body-->
+            <div class="card-body" id="card{{cards.pk}}">
+              <button class="btn btn-sm float-right" data-toggle="collapse" data-target="#coll{{cards.pk}}" aria-expanded="true" aria-controls="coll{{cards.pk}}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+              </button>
+              <!--title_champ-->
+              <div class="row">
+                <h5 class="card-tittle mr-4">{{cards.stage_name}}</h5>
+                <button class="btn btn-sm ml-2 buttonplus" id="{{cards.pk}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus" viewBox="0 0 16 16">
+                    <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                  </svg>
+                </button>
+              </div>
+              <p>{{cards.date}} | {{cards.init_hour}} | {{cards.finish_hour}}</p>
+              <!--end_title_champ-->
+              <!--table_compt-->
+              <div id="coll{{cards.pk}}" class="collapse show table-responsive" aria-labelledby="card{{cards.pk}}" data-parent="#card{{cards.pk}}">
+                <table class="table table-sm" style="table-layout:fixed;" >
+                  <thead class="table-info ">
+                    <tr>
+                      <th> Hora</th>
+                      <th> Prueba</th>
+                      <th> Ronda </th>
+                      <th> Categoria </th>
+                      <th> Genero</th>
+                      <th> Pruebas Combinadas </th>
+                      <th> Accion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for key,value in activitys.items %}
+                      {% if key == cards.pk %}
+                        {% if value %}
+                          {% for data in value %}
+                          {% if data.categorys == 2 %}
+                            <tr>
+                            {% else %}
+                          <tr>
+                            {% endif %}
+                            <td> {{data.hour}}</td>
+                            <td> {{data.test_fk}}</td>
+                            <td> {{data.get_round}} </td>
+                            <td> {{data.get_category}} </td>
+                            
+                            <td> {{data.gender}}</td>
+                            {% if data.categorys == 2 %}
+                            <td style="color: lightcoral;"> HEPTA o DECA o PENTA  </td>
+                            {% else %}
+                            <td> <select name="" id="">
+                              <option value="">NO</option>
+                              <option value="">HEPTA</option>
+                              <option value="">DECA</option>
+                              <option value="">PENTA</option>
+                              <option value="">HEXA</option>
+                            </select></td>
+                            {% endif %}
+                            <td> 
+                              <a type="button" class="btn btn-sm btn-primary" href="{% url 'review_competition' data.pk %}"> Ver </a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        {% else %}
+                          <tr>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                            <td> -- </td>
+                          </tr>
+                        {% endif %} 
+                      {% endif %}
+                    {% endfor %}
+                
+                    <tr class="competitionform d-none"  id="{{cards.pk}}">
+                        <td><input class="form-control timepicker " id="time{{cards.pk}}" type="text"></td>
+                        <td>
+                          <select class="form-control" name="compt" id="compt{{cards.pk}}">
+                            {% if tests %}
+                              {% for t in tests %}
+                                <option value="{{t.id}}">{{t.test_name}}</option>
+                              {% endfor %}
+                            {% endif %}
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control" name="round" id="round{{cards.pk}}">
+                            <option value="0">Series</option>
+                            <option value="1">Series c/t</option>
+                            <option value="2">Final</option>
+                            <option value="3">Final c/t</option>
+                            <option value="4">Semifinal</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control" name="category" id="category{{cards.pk}}">
+                            {% if champ.get_num_categorys == 1%}
+                              {{champ.categorys_options | safe}}
+                            {% else %}
+                            <option value="">Seleccione categoria</option>
+                              {% for x in champ.categorys_options %}
+                                {{x | safe}}
+                              {% endfor %}
+                            {% endif %}
+                          </select>
+                          <!--<input class="form-control" id="category{{cards.pk}}"type="text"></td>-->
+                        <td>
+                          <select class="form-control" name="gender" id="gender{{cards.id}}">
+                            <option value="1">DAMAS</option>
+                            <option value="2">VARONES</option>
+                          </select>
+                        </td>
+                        <td><button class="btn btn-sm btn-primary accept" id="{{cards.pk}}">Guardar</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--end_card_body-->
+          </div>
+        {% endfor %}
+        <!--end_secondayr_cards-->
+        <!--no_stages-->
+        {% else %}
+        <div class="card m-2 text-center">
+          <div class="card-body"> 
+            <h1>No existen estapas registradas.</h1>
+          </div>
+        </div>
+        <!--end_no_stages-->
+        {% endif %}
+      </div>
+      <!--end_principal_card_body-->
+    </div>
+    <!--end_principal_card-->
+  <div> 
+  <!--end_principal_content-->
+  
+  <!-- stage_modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 900px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header row">
+          <div class="col-8"> <h5 class="modal-title color-black">Datos nueva etapa </h5></div>
+          <div class="col-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body" style="max-height: 250px;">
+          <!-- stage_form -->
+          <form class='user' method="post" action="{% url 'review_champ' champ.pk %}" autocomplete="off">
+            {% csrf_token %}
+            <!-- first_row -->
+            <div class="row">
+              <!-- spacer -->
+              <div class="col-1"></div>
+              <div class="form-group col-6">
+                <label for="text_id" class="color-black"> Nombre de la etapa</label>
+                <input type="text" class="form-control" name="stage_name" placeholder="Etapa X mañana" id="text_id">        
+              </div>    
+              <!-- spacer -->
+              <div class="col-1"></div>
+              <div class="col-3">
+                <label class="color-black"> Seleccione Fecha</label>
+                <div class="input-group date">
+                  <input type="text" name="stage_date" class="form-control">
+                  <span class="input-group-addon ml-1">
+                    <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                      <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                  </span>            
+                </div>
+              </div>
+            </div>
+            <!-- end_first_row -->
+      
+            <!-- second_row -->
+            <div class="row">
+              <!-- spacer -->
+              <div class="col-1"></div> 
+
+              <div class="col-2">
+                <label class="color-black"> Hora de inicio</label>
+                <div class="input-group" id="f_hour">
+                  <input type="text" name="init_hour" class="form-control">
+                    <span class="input-group-addon ml-1">
+                      <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                        <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+                    </span>          
+                </div>
+              </div>
+    
+              <div class="col-2">
+                <label class="color-black"> Hora de termino</label>
+                <div class="input-group" id="f_hour">
+                  <input type="text" name="finish_hour" class="form-control">
+                    <span class="input-group-addon ml-1">
+                      <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                        <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+                    </span>  
+                </div>
+              </div>
+              <!-- spacer -->
+              <div class="col-1"></div>  
+            </div> <br>
+            <!-- end_second_row -->
+            <input type="text" name="number_stage" hidden value="{{champ.number_stages}}">
+            <div class="row">
+               <!-- spacer -->
+              <div class="col-2"></div> 
+                <button type="submit" class ="btn btn-primary btn-user col-8 mt-4" style="float:none;text-align:center;">Crear etapa</button>
+            </div>
+      </form>
+        </div>
+
+        <div class="modal-footer">
+          <!--Espacio disponible para alguna funcionalidad-->
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- end_stage_modal-->   
+  <script>
+    dict_opt = {'competitionform d':'competitionform d-none','competitionform d-none':'competitionform d'}
+    
+    $('.timepicker').timepicker({
+      timeFormat: 'h:mm p',
+      interval: 15,
+      minTime: '08',
+      maxTime: '23:00pm',
+      defaultTime: '11',
+      startTime: '08:00',
+      dynamic: false,
+      dropdown: true,
+      scrollbar: true
+    }); 
+
+    $('.buttonplus').click(function(){
+      /*boton para mostrar/ocultar la fila formulario de prueba*/
+      form = $('#'+this.id+'.competitionform');
+      classform = form[0].className; 
+      form[0].className = dict_opt[classform];
+    });
+
+    $('.accept').click(function(){
+      my_id = this.id;
+      data = {'csrfmiddlewaretoken': '{{csrf_token}}',
+              'time':$('#time'+my_id)[0].value,
+              'compt':$('#compt'+my_id)[0].value,
+              'round':$('#round'+my_id)[0].value,
+              'category':$('#category'+my_id)[0].value,
+              'gender':$('#gender'+my_id)[0].value,};
+      
+      $.post( "{% url 'new_compt' 0 %}".replace('0',my_id), 
+        data, 
+        function(response){
+          if(response === 'True'){
+            location.reload();
+          }
+          else{
+            alert('datos incorrectos');
+          }
+        });
+    });
+
+    $(document).ready(function(){
+      $('input.timepicker').timepicker({});
+    });
+
+    </script>
+{% endblock %}
+
