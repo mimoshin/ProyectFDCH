@@ -1,0 +1,86 @@
+{% extends 'Internal/iBase.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    {% if competition %}
+        <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'reviewChampionship' competition.get_CID %}">Volver</a>
+        <h2 class="text-center"> RESULTADOS {{competition.name}}</h2> 
+        <p class="text-center">{{competition.initDate}}</p>
+
+        
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-sm table-striped" style="border-collapse: separate;border-spacing: 5px;">
+                    <thead >
+                        <tr>
+                            <th class="table-info">Cantidad de inscritos</th>
+                            <td class="table-warning text-center">{{inscriptions|length}}</td>
+                            <th class="table-info">Series creadas</th>
+                            <td class="table-warning text-center">{{ heats|length }}</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-3">
+                <a type="button" class="btn btn-sm btn-primary" href="{% url 'genSeries' competition.id %}">Generar Series</a>
+            </div>
+            {% if competition.series %}
+            <div class="col-3">
+                <a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}">Ver PDF</a>
+                <a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}" download="{{competition.name}} Series">DESCARGAR PLANILLA</a>        
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="row">
+            <div class="col-4">
+                <p class="text-center">Inscritos</p>
+                <table class="table table-sm taborder table-striped">
+                    <thead class="table-info">
+                        <tr><th>Atleta</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for ins in inscriptions %}
+                        <tr>
+                            <td>{{ins.strAthle}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if competition.series %}
+            <div class="col-8">
+                <p class="text-center">Series</p>
+                <table class="table table-sm taborder table-striped">
+                    <thead class="table-info">
+                        <tr>
+                            <th>Atleta</th>
+                            <th>Serie</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for heat in heats %}
+                        {% for atle in heat.assign %}
+                        <tr>
+                            <td>{{atle.strAthle}}</td>
+                            <td><input type="text" name="" id="" value="{{heat.heat.numberHeat}}"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+       
+        
+    {% else %}
+        <h1 class="text-center">Error</h1>
+    {% endif %}
+</div>
+{% endblock %}

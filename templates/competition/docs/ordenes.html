@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <style>
+            .center{text-align: center;}
+            .sub{text-decoration: underline black;}
+
+            table.status th,td{
+                border: 0.5px solid black;
+                vertical-align:bottom;
+            }
+            table.status th{
+                text-align: left; 
+                height: 20px;
+                width: 30%;
+                margin-left: 2px;
+            }
+            table.status td{
+                text-align: center; 
+                height: 20px;
+                width: 30%;
+            }
+            table.content th,td{
+                text-align: center;
+                height: 20px;
+                border: 0.5px solid black;
+                vertical-align:bottom;
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        {% block content %}
+
+            {% if competition %}
+                {% if heats %}
+                    {% for heat in heats %}
+                    <img src="{{url}}" alt="Image" height="45px" style="text-align:right;">
+
+                    <div style="line-height: 0.5;">
+                        <h1 class="center sub">Laboratorio dental Nicole Pavez </h1>
+                    </div>
+                    <br>
+                    <table class="status">
+                        <tbody>
+                            <tr>
+                                <th>Doctor</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Paciente</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de envio</th>
+                                <td></td>
+                            </tr>
+                
+                        </tbody>
+                    </table>
+                    <table class="content" style="table-layout:fixed;">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 20px;">
+                        <label for="area">hola hola</label>
+                        <textarea name="" id="area" cols="30" rows="10"> jajaj</textarea>
+                    </div>
+                        <br><br>
+                        <p>___________________</p>
+                        <p>Firma encargado </p>
+                        <p>Rut: 12.345.678-9</p><br><br>
+
+                        <pdf:barcode value="Juez Juanito Perez" type="code128" humanreadable="1" align="right" />
+                        <pdf:nextpage>
+                    {% endfor %}
+
+                {% endif %}
+                {% endif %}   
+                 
+        {% endblock %}
+    </body>
+</html>

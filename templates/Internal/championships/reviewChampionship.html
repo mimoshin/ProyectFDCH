@@ -1,0 +1,336 @@
+{% extends 'Internal/iBase.html' %}
+
+{% block docs %}
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+{% endblock %}
+
+<!--BUSCAR FLOWTYPE.JS  Y VW -->
+
+<!--CORREGIR ALINEACION DE TABLAS CON ETAPAS-->
+
+{% block content %}
+  <div class="container-fluid mt-2">
+    <!--principal_content-->  
+    {% if champ %}
+      <h3 class="text-center">{{champ.name}}</h3>
+    {% else %}
+      <h3 class="text-center">Campeonato</h3>
+    {% endif %}
+    
+    <p class="text-center">Chile</p>
+    <p class="text-center"> Categorias: {{champ.get_categorys}}</p>
+    
+   
+    <div class="container-fluid mb-2"> 
+      <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
+        Nueva etapa
+      </button>
+      <a type="button" class="btn btn-sm btn-primary" href="{% url 'athletesInscription' champ.id %}"> Inscribir atletas</a>
+    </div>
+
+    {% if stages %}
+      <!--principal cards-->
+      {% for cards in stages %}
+        <div class="card" style="border-radius: 20px;border: 1px solid black;">
+          <!--card body-->
+          <div class="card-body" id="card{{cards.stage.id}}" >
+            <!--button collapse-->
+            <button class="btn btn-sm float-right" data-toggle="collapse" data-target="#coll{{cards.stage.id}}" aria-expanded="true" aria-controls="coll{{cards.stage.id}}"> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+              </svg>
+            </button>
+            <!--end button collapse-->
+
+            <!--title champ-->
+            <div class="row">
+              <h5 class="card-tittle mr-4">{{cards.stage.name}}</h5>
+              <button class="btn btn-sm ml-2 buttonplus" id="{{cards.stage.id}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus" viewBox="0 0 16 16">
+                  <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                </svg>
+              </button>
+            </div>
+            <!--end title champ-->
+
+            <!--table competition-->
+            <div id="coll{{cards.stage.id}}" class="table-responsive collapse show" aria-labelledby="card{{cards.stage.id}}" data-parent="#card{{cards.stage.id}}">
+              <table class="table table-sm table-hover table-striped taborder" style="width: 100%;">
+                <thead class="table-info ">
+                  <tr>
+                    <th style="width: 10%;">HORA</th>
+                    <th style="width: 50%;">PRUEBA</th>
+                    <th style="width: 10%;">CATEGORIA</th>
+                    <th style="width: 10%;">RONDA</th>
+                    <th style="width: 10%;"></th>
+                    <th style="width: 10%;"></th>
+                  </tr>
+                </thead>
+
+                <tbody>                            
+                  {% if cards.competitions %}
+                    {% for data in cards.competitions%}
+                      <tr>
+                        <td>{{data.hour}}</td>
+                        <td class="cbutton" id="{{data.id}}">
+                          <a type="button" class="btn btn-sm" href="{% url 'competition' data.id %}">{{data.description}} {{data.get_inscriptions}}</a>
+                        </td>
+                        <td>{{data.get_category}}</td>
+                        <td>{{data.get_round}}</td>
+                        <td><a type="button" class="btn btn-sm btn-warning" href="{% url 'startlistView' data.pk %}">STARTLIST</a></td>
+                        <td>
+                          <a type="button" class="btn btn-sm btn-info" href="{% url 'results_view' data.pk %}">RESULTADOS</a>
+                          {% if data.type == 3 %}
+                            <a type="button" class="btn btn-sm btn-info" href="{% url 'saltos2' data.pk %}">R2</a>
+                            {% elif data.type == 5 %}
+                            <a type="button" class="btn btn-sm btn-info" href="{% url 'lanz2' data.pk %}">R2</a>
+                          {% endif %}
+                        </td>
+                      </tr>
+                    {% endfor %} 
+                  {% else %}
+                    <tr>
+                      <td></td>
+                      <td>Sin competencias registradas</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+              <!--end table competition-->
+              
+              <!--form competition table-->
+              <table class="table competitionform d-none"  id="{{cards.stage.id}}" style="width: 100%;">
+                <thead class="table-info">
+                  <tr>
+                    <th style="width: 10%;">Hora</th>
+                    <th style="width: 20%;">Prueba</th>
+                    <th style="width: 10%;">Ronda </th>
+                    <th style="width: 10%;">Categoria </th>
+                    <th style="width: 10%;">Genero</th>
+                    <th style="width: 12%;">Pruebas Combinadas </th>
+                    <th style="width: 10%;"></th>     
+                  </tr>
+                    </thead>
+                    <tbody>
+                      <tr >
+                        <td><input class="form-control timepicker " id="time{{cards.stage.id}}" type="text"></td>
+                        <td>
+                          <select class="form-control" name="compt" id="compt{{cards.stage.id}}">
+                            {% if events %}
+                              {% for event in events %} 
+                                <option value="{{event.id}}">{{event.name}}</option>
+                              {% endfor %}
+                            {% endif %}
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control" name="round" id="round{{cards.stage.id}}">
+                            <option value="1">SERIE</option>
+                            <option value="2">SERIES C/T</option>
+                            <option value="3">FINAL</option>
+                            <option value="4">FINAL C/T</option>
+                            <option value="5">SEMIFINAL</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control" name="category" id="category{{cards.stage.id}}">
+                            {% if champ.get_num_categorys == 1%}
+                              {{champ.categorys_options | safe}}
+                            {% else %}
+                              <option value="">CATEGORIA</option>
+                              {% for x in champ.categorys_options %}
+                                {{x | safe}}
+                              {% endfor %}
+                            {% endif %}
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control" name="gender" id="gender{{cards.stage.id}}">
+                            <option value="1">DAMAS</option>
+                            <option value="2">VARONES</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control" name="comb" id="comb{{cards.stage.id}}">
+                            <option value="0">NO</option>
+                            <option value="1">HEPTATLÓN</option>
+                            <option value="2">DECATLÓN</option>
+                          </select>
+                        </td>
+                        <td><button class="btn btn-sm btn-primary accept" id="{{cards.stage.id}}">CREAR</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--end table competition-->
+              </div>
+              <!--end_card_body-->
+            </div>
+          {% endfor %}
+          <!--end_secondayr_cards-->
+        
+          <!--no_stages-->
+        {% else %}
+          <div class="card m-2 text-center">
+            <div class="card-body"> 
+              <h1>No existen estapas registradas.</h1>
+            </div>
+          </div>
+        {% endif %}
+        <!--end no stages-->
+  </div>
+  
+  <!-- stage_modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 900px;" role="document">
+      <div class="modal-content">
+        <div class="modal-header row">
+          <div class="col-8"> <h5 class="modal-title color-black">Datos nueva etapa </h5></div>
+          <div class="col-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body" style="max-height: 250px;">
+          <!-- stage_form -->
+          <form class='user' method="post" action="{% url 'reviewChampionship' champ.pk %}" autocomplete="off">
+            {% csrf_token %}
+            <!-- first_row -->
+            <div class="row">
+              <!-- spacer -->
+              <div class="col-1"></div>
+              <div class="form-group col-6">
+                <label for="text_id" class="color-black"> Nombre de la etapa</label>
+                <input type="text" class="form-control" name="stage_name" placeholder="Etapa X mañana" id="text_id">        
+              </div>    
+              <!-- spacer -->
+              <div class="col-1"></div>
+              <div class="col-3">
+                <label class="color-black"> Seleccione Fecha</label>
+                <div class="input-group date">
+                  <input type="text" name="stage_date" class="form-control">
+                  <span class="input-group-addon ml-1">
+                    <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                      <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                  </span>            
+                </div>
+              </div>
+            </div>
+            <!-- end_first_row -->
+      
+            <!-- second_row -->
+            <div class="row">
+              <!-- spacer -->
+              <div class="col-1"></div> 
+
+              <div class="col-2">
+                <label class="color-black"> Hora de inicio</label>
+                <div class="input-group" id="f_hour">
+                  <input type="text" name="init_hour" class="form-control">
+                    <span class="input-group-addon ml-1">
+                      <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                        <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+                    </span>          
+                </div>
+              </div>
+    
+              <div class="col-2">
+                <label class="color-black"> Hora de termino</label>
+                <div class="input-group" id="f_hour">
+                  <input type="text" name="finish_hour" class="form-control">
+                    <span class="input-group-addon ml-1">
+                      <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                        <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+                    </span>  
+                </div>
+              </div>
+              <!-- spacer -->
+              <div class="col-1"></div>  
+            </div> <br>
+            <!-- end_second_row -->
+            <input type="text" name="number_stage" hidden value="{{champ.number_stages}}">
+            <div class="row">
+               <!-- spacer -->
+              <div class="col-2"></div> 
+                <button type="submit" class ="btn btn-primary btn-user col-8 mt-4" style="float:none;text-align:center;">Crear etapa</button>
+            </div>
+      </form>
+        </div>
+
+        <div class="modal-footer">
+          <!--Espacio disponible para alguna funcionalidad-->
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- end_stage_modal-->  
+
+
+
+  <script>
+
+    $('.timepicker').timepicker({
+      timeFormat: 'h:mm p',
+      interval: 15,
+      minTime: '08',
+      maxTime: '23:00pm',
+      defaultTime: '11',
+      startTime: '08:00',
+      dynamic: false,
+      dropdown: true,
+      scrollbar: true
+    }); 
+
+    dict_opt = {'table competitionform d':'table competitionform d-none','table competitionform d-none':'table competitionform d'}
+
+    $('.buttonplus').click(function(){
+      form = $('#'+this.id+'.competitionform');
+      classform = form[0].className; 
+      form[0].className = dict_opt[classform];
+    });
+
+    $('.accept').click(function(){
+      my_id = this.id;
+      data = {'csrfmiddlewaretoken': '{{csrf_token}}',
+              'time':$('#time'+my_id)[0].value,
+              'compt':$('#compt'+my_id)[0].value,
+              'round':$('#round'+my_id)[0].value,
+              'category':$('#category'+my_id)[0].value,
+              'gender':$('#gender'+my_id)[0].value,
+              'comb':$('#comb'+my_id)[0].value,};
+      
+      $.post("{% url 'newCompetition' 0 %}".replace('0',my_id), 
+        data, 
+        function(response){
+          if(response === 'True'){
+            location.reload();
+          }
+          else{
+            alert('datos incorrectos');
+          }
+        });
+    });
+
+    $('cbutton').on('click',function(){
+      console.log("redireccionado")
+    })
+
+    $(document).ready(function(){
+    $('input.timepicker').timepicker({});
+});
+    </script>
+{% endblock %}

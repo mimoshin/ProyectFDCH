@@ -1,0 +1,36 @@
+from django.urls import path
+from .views import*
+
+urlpatterns = [
+    path('',principalView,name='testPrincipal'),
+    path('admin_champs',adminChampionships,name='adminChamps'),
+    path('load_champs', loadChampionships,name='loadChamps'),
+    path('delete_champs', deleteChampionships,name='deleteChamps'),
+    path('load_events',loadEvents,name='loadEvents'),
+    path('delete_events',deleteEvents,name='deleteEvents'),
+    path('load_competitions',loadCompetitions,name='loadCompetitions'),
+    path('delete_competitions',deleteCompetitions,name='deleteCompetitions'),
+    path('load_athletes',loadAthletes,name='loadAthletes'),
+    path('delete_athletas',deleteAthletes,name='deleteAthletes'),
+    path('load_stages',loadStages,name='loadStages'),
+    path('delete_stages',deleteStages,name='deleteStages'),
+    path('load_clubs',loadClubs,name='loadClubs'),
+    path('delete_clubs',deleteClubs,name='deleteClubs'),
+    path('generate_series',generate_series,name='gen_series'),
+    path('delete_asn',delete_assignments,name='del_asn'),
+    path('load_jheats',loadJumpHeats,name='loadJumpHeats'),
+    path('delete_jheats',deleteJumpHeats,name='deleteJumpHeats'),
+    path('load_hjumpheats',loadHJumpHeats,name='loadHJumpHeats'),
+    path('load_hjumps',loadHJumps,name='loadHJumps'),
+    path('load_jumps',loadJumps,name='loadJumps'),
+    path('delete_jumps',deleteJumps,name='deleteJumps'),
+    path('load_theats',loadThrowHeats,name='loadThrowHeats'),
+    path('delete_theats',deleteThrowHeats,name='deleteThrowHeats'),
+    path('load_throws',loadThrows,name='loadThrows'),
+    path('delete_throws',deleteThrows,name='deleteThrows'),
+    path('load_throwsPA',loadParticipationThrows,name='loadThrowsPA'),
+    path('delete_throwsPA',deleteParticipationThrows,name='deleteThrowsPA'),
+    path('load_jpaticipation',loadJumpParticipation,name='loadJumpParticipation'),
+    path('delete_jparticipation',deleteJumpParticipation,name='deleteJumpParticipation'),
+    
+]

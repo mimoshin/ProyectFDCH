@@ -1,0 +1,33 @@
+{% extends 'Internal/competitions/iStartlist.html' %}
+
+{% block tables %}
+    {% if heats_data %}
+        {% for heat in heats_data %}
+            <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+            <table class="table table-striped table-bordered" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 10%;">Dorsal</th>
+                        <th class="text-center" style="width: 50%;">Atleta</th>
+                        <th class="text-center" style="width: 10%;">A. N.</th>
+                        <th class="text-center" style="width: 10%;">Club</th>
+                        <th class="text-center" style="width: 10%;">PB</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atle in heat.assign %}
+                    <tr>
+                        <td class="text-center">{{atle.line}}0</td>
+                        <td class="text-left">{{atle.description}}</td>
+                        <td class="text-center">10 ENE 2000</td>
+                        <td class="text-center">Chile</td>
+                        <td class="text-center">{{atle.personalBest}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %} 
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    {% endif %}
+{% endblock %}
