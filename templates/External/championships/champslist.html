@@ -1,0 +1,34 @@
+{% extends 'External/ebase.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Nombre</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Termino</th>
+                        <th>Direccion</th>
+                        <th>Region</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in champs %}
+                    <tr>
+                        <th>STATUS</th>
+                        <td>{{x.championshipName}}</td>
+                        <td>{{x.init_date}}</td>
+                        <td>{{x.finish_date}}</td>
+                        <td>{{x.direction}}</td>
+                        <td>{{x.region}}</td>
+                        <td><a type="button" class="btn btn-success btn-sm" href="{% url 'reviewChampionship' x.pk %}">Ver</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

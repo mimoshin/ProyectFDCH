@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid row mt-2 mb-2">
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info" href="{% url 'adminChamps' %}">Gestion Campeonatos</a>
+    </div>
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info"  href="{% url 'adminCompts' %}">Gestion Competencias</a>
+    </div>
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info"  href="{% url 'adminInsc' %}">Gestion Inscripciones</a>
+    </div>
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info"  href="{% url 'adminAthles' %}">Gestion Atletas</a>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadChamps' %}">Cargar Campeonatos</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteChamps' %}">Eliminar Campeonatos</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadStages' %}">Cargar Etapas</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteStages' %}">Eliminar Etapas</a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadEvents' %}">Cargar Eventos</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteEvents' %}">Eliminar Eventos</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadCompetitions' %}">Cargar Competencias</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteCompetitions' %}">Eliminar Competencias</a>
+        </div>
+    </div>
+    
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadAthletes' %}">Cargar atletas</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteAthletes' %}">Eliminar atletas</a>
+        </div>
+        
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-warning" href="{% url 'gen_series' %}">Generar series</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'del_asn' %}">Eliminar ASIGNS</a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadClubs' %}">Cargar club</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteClubs' %}">Eliminar club</a>
+        </div>
+    </div>
+
+
+    <h2 class="text-center mt-2">jumps</h2>
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadJumpHeats' %}">Cargar jumpheats</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteJumpHeats' %}">Eliminar jumpheats</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadJumps' %}">Cargar jumps</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteJumps' %}">Eliminar jumps</a>
+        </div>
+    </div>
+
+    <h2 class="text-center mt-2">JumpParticipation</h2>
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadJumpParticipation' %}">Cargar JumpParticipation</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteJumpParticipation' %}">Eliminar JumpParticipation</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadHJumpHeats' %}">Cargar HjumpHEATSs</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadHJumps' %}">Cargar HIGHjumps</a>
+        </div>
+    </div>
+    <h2 class="text-center mt-2">Lanzamientos</h2>
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadThrowHeats' %}">Cargar htrows</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteThrowHeats' %}">Eliminar htrows</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadThrows' %}">Cargar throws</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteThrows' %}">Eliminar thows</a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadThrowsPA' %}">Cargar trowsparticipation</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteThrowsPA' %}">Eliminar trowsparticipation</a>
+        </div>
+    </div>
+
+
+
+    <h2 class="text-center mt-2">jumps</h2>
+    <div class="row mt-2">
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadJumpHeats' %}">Cargar jumpheats</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteJumpHeats' %}">Eliminar jumpheats</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-primary" href="{% url 'loadJumps' %}">Cargar jumps</a>
+        </div>
+        <div class="col-3">
+            <a type="button" class="btn btn-sm btn-danger" href="{% url 'deleteJumps' %}">Eliminar jumps</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

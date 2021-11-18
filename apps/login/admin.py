@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import *
+from .models import AsociationAdmin,ClubAdmin,FedachiAdmin,ResultsAdmin,SuperAdmin,TrackAdmin
 
-# Register your models here.
-admin.site.register(superAdmin)
-admin.site.register(fedachiAdmin)
-admin.site.register(asociationAdmin)
-admin.site.register(clubAdmin)
+admin.site.register(AsociationAdmin)
+admin.site.register(ClubAdmin)
+admin.site.register(FedachiAdmin)
+admin.site.register(ResultsAdmin)
+admin.site.register(SuperAdmin)
+admin.site.register(TrackAdmin)

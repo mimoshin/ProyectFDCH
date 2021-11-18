@@ -1,0 +1,47 @@
+
+{% if inscriptions %}
+<button class="btn btn-sm btn-danger float-right mb-2" id="removeAll" data-option="hola">Eliminar todo</button>
+<div class="table table-responsive taborder">
+    <table class="table table-sm">
+        <thead class="table-info">
+            <tr>
+                <th>Atleta</th>
+                <th>Club</th>
+                <th>PB</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inscription in inscriptions %}
+            <tr>
+                {% if inscription.strAthle == 'PIVOTE' %}
+                    <td>{{inscription.athleteId.name}}</td>
+                    <td>{{inscription.athleteId.clubId}}</td>
+                {% else %}
+                    <td>{{inscription.strAthle}}</td>
+                    <td>{{inscription.strClub}}</td>
+                {% endif %}
+                <td>{{inscription.personalBest}}</td>
+                <td><button class="btn btn-sm btn-success" id="modButton" data-athle={{inscription.id}}>Modificar</button></td>
+                <td><button class="btn btn-sm btn-danger" id="removeButton" data-athle={{inscription.id}}>Eliminar</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+    <p class="text-center">No hay inscritos</p>
+    <label for="numInscriptions">Generar Inscripciones</label>
+    <div class="col-3 input-group">
+        <select class="form-control" name="numInsc" id="numInscriptions">
+            <option value="0">Cantidad de inscripciones</option>
+            <option value="8">8</option>
+           <option value="16">16</option>
+            <option value="24">24</option>
+        </select>
+        <button class="ml-2 btn btn-sm btn-primary" id="genButton">Generar</button>
+    </div>
+{% endif %}
+

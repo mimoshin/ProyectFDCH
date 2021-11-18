@@ -9,9 +9,8 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import sys,os
 from pathlib import Path
-import os, sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,19 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=*g8rwe@7kgd-1)f#+9k=8b2nc@%6=rdc!fncd3hd!9n=h_=2p'
+SECRET_KEY = 'a47!fvp0qt=6ad1i=!mmep=p55-8_^1-3tx8*gh$&!k(_0+bn='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-PROJECT_ROOT = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(BASE_DIR, 'Apps'))
-
+#PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,11 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.admins.apps.AdminsConfig',
+    'apps.athlete.apps.AthleteConfig',
     'apps.championship.apps.ChampionshipConfig',
-    'apps.members.apps.MembersConfig',
-    'apps.stadistics.apps.StadisticsConfig',
+    'apps.competition.apps.CompetitionConfig',
     'apps.login.apps.LoginConfig',
+    'apps.member.apps.MemberConfig',
+    'apps.testing.apps.TestingConfig',
 ]
 
 MIDDLEWARE = [
@@ -112,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-#LANGUAGE_CODE = 'es-CL'
 LANGUAGE_CODE = 'en-US'
 
 TIME_ZONE = 'America/Santiago'
@@ -127,6 +124,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)

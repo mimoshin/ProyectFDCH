@@ -1,0 +1,63 @@
+{% load static %}
+<!--UTILIZAR FUENTE ELEGIDA: HELVETICA-->
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <style>
+        @font-face {font-family: Helvetica;src: url("/static/fonts/Helvetica-Font/Helvetica.ttf");}
+        .hola{font-family: 'Helvetica';}
+    </style>
+    
+    <body class="hola">
+        <div class="container-fluid mt-4">
+            <!--navbar-->
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#e3f2fd;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+  
+                <a class="navbar-brand text-primary" href="{% url 'principalView' %}">
+                    <img  height="45px" src="{% static 'img/logo.png' %}" alt="Image">
+                </a>
+  
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link text-primary" href="#">Campeonatos <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-primary" href="#">Atletas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled text-primary" href="#">Calendario</a>
+                        </li>
+                    </ul>
+                </div>    
+                <a class="nav-link text-primary float-right mt-1" href="#">Iniciar sesion</a>
+            </nav>
+        </div>
+
+        {% if fonts %}
+        <div class="container-fluid mt-2 row">
+            <div class="col-3">
+                <select name="selectFonts" id="select">
+                    {% for f in fonts %}
+                     <option value="{{f}}">{{f}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-sm btn-success options" id="previous" value="0">Anterior</button>
+                <button class="btn btn-sm btn-success options" id="next" value="0">Siguiente</button>
+            </div>
+        </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
