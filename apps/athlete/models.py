@@ -1,14 +1,12 @@
 from datetime import datetime
+from os import stat
 from django.db import models
-from base.const import GENDER_CHOICES,CATEGORY_CHOICES
+from base.const import GENDER_CHOICES,CATEGORY_CHOICES, SEX_CHOICES
 from member.models import Clubs
 
 class fileslif(models.Model):
     archivo = models.CharField(max_length=200)
     texto = models.CharField(max_length=100000)
-
-
-
 
 class Athletes(models.Model):
     clubId = models.ForeignKey(Clubs,null=False,blank=False,on_delete=models.CASCADE)
@@ -82,8 +80,21 @@ class Athletes(models.Model):
             return True
         else:
             return False
+
+    def get_gender(self):
+        return SEX_CHOICES[self.gender][1]
         
 class AthleteInterface():
+    @staticmethod
+    def get_all_athletes():
+        athletes_list = Athletes.objects.all()
+        return athletes_list
+    
+    @staticmethod
+    def get_athletes_club(clID):
+        athletes_list = Athletes.objects.filter(clubId_id=clID)
+        return athletes_list
+        
     @staticmethod
     def get_athletes(data):
         if data['name']:

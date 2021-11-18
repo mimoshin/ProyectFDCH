@@ -29,8 +29,8 @@
             
         </style>
     </head>
+
     <body>
-        {% block content %}
             {% if competition %}
                 {% if heats %}
                     {% for heat in heats %}
@@ -100,7 +100,7 @@
                         <pdf:nextpage>
                     {% endfor %}
                 {% else %}
-                    <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+                    <h3 class="text-center">No hay series registradas hasta el momento. 33</h3>
                 {% endif %}
             {% else %}
                 <h1>titulo de la prueba</h1> 
@@ -131,6 +131,5 @@
                 </table> 
             {% endif %}
             
-        {% endblock %}
     </body>
 </html>

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="text-center">Gestion de Atletas</h1>
+    <p>Buscar por: </p>
+    <div class="row">
+        <label for="nboxID">Nombre</label>
+        <input type="checkbox" name="namebox" id="nboxID">
+        <label for="nboxID">Club</label>
+        <input type="checkbox" name="namebox" id="nboxID">
+        <label for="nboxID">Rut</label>
+        <input type="checkbox" name="namebox" id="nboxID">
+        <div class="col-4 input-group">
+            <select class="form-control" name="clubs" id="idClub">
+                <option class="form-control" value="">Seleccione un Campeonatos</option>
+                {% for club in clubs %}
+                    <option value="{{club.id}}">{{club.clubName}}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-sm btn-primary ml-2">Buscar</button>
+            
+        </div>
+    </div>
+
+    <div class="" id="magia">
+    
+    </div>
+
+    <div class="container-fluid" id="magia2">
+    </div>
+
+</div>
+
+<script>
+    $('#idClub').change(function(){ 
+        $('#magia').load("{% url 'Q_athletes' %}?id="+this.value);
+    });
+
+    /*
+    $('#magia').on('click','button.botonB',function(){
+        selected = $('#magia #competitions ')[0].value;
+        $('#magia2').load("{% url 'Q_inscriptions' %}?id="+selected);
+    });
+
+    $('#magia2').on('click','button',function(){
+        if(this.id == 'removeAll'){
+            selected_id = $('#magia #competitions ')[0].value;
+            $.get("{% url 'remove_inscriptions' %}",
+                    {'cID':selected_id,'option':'all'},
+                    function(response){
+                        console.log(response);
+                    });
+        }
+
+        else if(this.id == 'modButton'){
+            console.log("Modificar inscripcion",$(this).data('athle'));
+        }
+        else if(this.id == 'removeButton'){
+            console.log("Eliminar inscripcion",$(this).data('athle'));
+            selected_id = $(this).data('athle');
+            $.get("{% url 'remove_inscriptions' %}",
+                    {'id':selected_id,'option':'only'},
+                    function(response){
+                        console.log(response);
+                    });
+        }
+        else if(this.id == 'genButton'){
+            selected_num = $('#magia2 #numInscriptions ')[0].value;
+            selected_id = $('#magia #competitions ')[0].value;
+
+            if(selected_num>0){
+                $.get("{% url 'New_inscriptions' %}",
+                    {'id':selected_id,'num':selected_num},
+                    function(response){
+                        console.log(response);
+                    });
+            }
+        }
+    });*/
+</script>
+
+{% endblock %}

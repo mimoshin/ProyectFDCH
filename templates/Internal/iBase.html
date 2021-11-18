@@ -65,36 +65,4 @@
         {% endblock %}
         <div class="container-fluid">internal</div>
     </body>
-
-    <style>
-    </style>
-
-    <script>
-        /*Funcion para cambiar la fuente del texto
-        primeramente se elige la carpeta que hace alusion a la fuente en cuestion
-        luego se eligue cambiar mediante los botones los distintos archivos de fuente
-        $('#select').change(function(){
-            btns = $('.options');
-            btns[0].value = 0;
-            btns[1].value = 0;   
-        });
-    
-        $('.options').on('click',function(){
-            btns = $('.options');
-            select = $('#select').val();
-            $.post( "{% url 'get_fonts' %}",
-                    {'csrfmiddlewaretoken':'{{csrf_token}}','folder':select,'function':this.id,'value':this.value},
-                    function(response){
-                        if(response['valid']){
-                            $('style')[0].innerText = '';
-                            $("style").append(response['style']);
-                            $("style").append(".hola{font-family:"+response['family']+";}");
-                            console.log(response['style']);
-                        }
-                        btns[0].value = response['value'];
-                        btns[1].value = response['value'];   
-                    }
-            );
-        });*/
-    </script>
 </html>

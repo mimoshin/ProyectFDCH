@@ -3,7 +3,12 @@ from .views import*
 
 urlpatterns = [
     path('',principalView,name='testPrincipal'),
+    #admin
     path('admin_champs',adminChampionships,name='adminChamps'),
+    path('admin_competitions',adminCompetitions,name='adminCompts'),
+    path('admin_inscriptions',adminInscriptions,name='adminInsc'),
+    path('admin_athletes',adminAthletes,name='adminAthles'),
+    #load data
     path('load_champs', loadChampionships,name='loadChamps'),
     path('delete_champs', deleteChampionships,name='deleteChamps'),
     path('load_events',loadEvents,name='loadEvents'),
@@ -32,5 +37,12 @@ urlpatterns = [
     path('delete_throwsPA',deleteParticipationThrows,name='deleteThrowsPA'),
     path('load_jpaticipation',loadJumpParticipation,name='loadJumpParticipation'),
     path('delete_jparticipation',deleteJumpParticipation,name='deleteJumpParticipation'),
+    #QUERYS
+    path('Q_competitions',QTCompetitions,name='Q_competitions'),
+    path('Q_inscriptions',QTInscriptions,name='Q_inscriptions'),
+    path('Q_athletes',QTAthletes,name='Q_athletes'),
+    #CHANGES
+    path('New_inscriptions',NewInscriptions,name='New_inscriptions'),
+    path('remove_inscriptions',RemoveInscriptions,name='remove_inscriptions'),
     
 ]

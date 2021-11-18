@@ -92,6 +92,41 @@ class championshipInterface():
 
 class competitionInterface():
     @staticmethod
+    def generate_inscriptions(comptID,num):
+        compt = Competitions.objects.get(id=comptID)
+        athles_list = Athletes.objects.filter(gender=compt.gender)
+        ready = 0
+        print(compt,len(athles_list))
+
+        for athlete in athles_list:
+            if ready == int(num):
+                break
+            else:
+                Q = Inscriptions.objects.filter(competitionId_id=compt.id,athleteId_id=athlete.id).exists()
+                if not Q:
+                    Inscriptions.objects.create(competitionId_id=compt.id,athleteId_id=athlete.id)
+                    ready+=1
+
+        print("ready termino en ",ready)
+        return "Generar inscripcion de %s atletas en la competencia %s"%(num,comptID)
+        
+    @staticmethod
+    def remove_inscriptions(args):
+        if args['option'] == 'all':
+            compID = args['cID']
+            insc_list = Inscriptions.objects.filter(competitionId_id=compID)
+            for x in insc_list:
+                x.delete()
+            return "Eliminadas todas las inscripciones"
+
+        elif args['option'] == 'only':
+            insID = args['id']
+            inscription = Inscriptions.objects.filter(id=insID)
+            inscription.delete()
+            return "Eliminada la inscripcion"
+        return "E"
+
+    @staticmethod
     def load_events():
         #jslist = json_to_list('generalSports.json')
         jslist = json_to_list('sports.json')
@@ -297,10 +332,14 @@ class competitionInterface():
 
                     value = JumpHeats.objects.get(id=data['jump_head2_id']).competitionId.id
                     #Inscriptions.objects.create(athleteId_id=4144,strAthle=data['athlete'],competitionId_id=value)
-                    JumpAssignments.objects.create(id=data['id'],athleteId_id=4144,heatId_id=data['jump_head2_id'],strAthle=data['athlete'],strClub=data['club'],
+                    ids = JumpAssignments.objects.create(id=data['id'],athleteId_id=4145,heatId_id=data['jump_head2_id'],strAthle=data['athlete'],strClub=data['club'],
                         place=data['place'])
+                    try:
+                        Inscriptions.objects.create(id=ids.id,athleteId_id=4145,strAthle=data['athlete'],competitionId_id=value)
+                    except:
+                        pass
         except Exception as e:
-            print("ERROR AL CARGAR JUMPHEATS",e)
+            print("ERROR AL CARGAR JUMPS",e)
 
     @staticmethod
     def delete_jumps():
@@ -641,8 +680,26 @@ class memberInterface():
     
 class testingInterface():
     @staticmethod
-    def dataGestion():
-        pass
+    def get_competitions(champID):
+        try:
+            competition_list = Competitions.objects.filter(stageId__championshipId_id=champID)
+            return competition_list
+            
+        except Exception as e:
+            print("error en get_competition",e)
+
+    @staticmethod
+    def get_inscriptions(compID):
+        try:
+            inscription_list = Inscriptions.objects.filter(competitionId_id=compID)
+            return inscription_list
+        except Exception as e:
+            print("Error en get_inscriptions",e)
+    
+
+
+
+
 
 class athleteInterface():
     @staticmethod

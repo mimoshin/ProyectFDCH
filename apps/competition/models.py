@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from base.const import EVENT_TYPE_CHOICES,ROUND_CHOICES,GENDER_CHOICES,COMBINATED_CHOICES, CATEGORY_CHOICES
 from championship.models import Stages
 from athlete.models import Athletes
+from testing.utils import loadPersonalBest
 
 
 
@@ -146,8 +147,9 @@ class AbstractAssignments(models.Model):
     personalBest = models.CharField(max_length=200,default='N/R')
     result = models.CharField(max_length=200, default=' ')
     place = models.IntegerField(default=0)
-    strAthle = models.CharField(max_length=200,null=False,blank=False,default=" ")
-    strClub = models.CharField(max_length=200,null=False,blank=False,default=" ")
+    strAthle = models.CharField(max_length=200,null=False,blank=False,default="PIVOTE")
+    strClub = models.CharField(max_length=200,null=False,blank=False,default="PIVOTE")
+
     class Meta:
         abstract=True
     def __str__(self):
@@ -207,14 +209,14 @@ class JumpAssignments(AbstractAssignments):
         return participations
 
 ########Signals########
-@receiver(post_save,sender=JumpAssignments)
-def new_assignment(sender,instance,**kwargs):
-    if kwargs['created']:
-        try:
-            athle,club,cID = instance.strAthle,instance.strClub,instance.heatId.competitionId.id
-            Inscriptions.objects.create(athleteId_id=4144,strAthle=athle,strClub=club,competitionId_id=cID)
-        except Exception as e:
-            print("error en signal new_assignment",e)
+#@receiver(post_save,sender=JumpAssignments)
+#def new_assignment(sender,instance,**kwargs):
+#    if kwargs['created']:
+#        try:
+#           athle,club,cID = instance.strAthle,instance.strClub,instance.heatId.competitionId.id
+#          Inscriptions.objects.create(athleteId_id=4144,strAthle=athle,strClub=club,competitionId_id=cID)
+#     except Exception as e:
+#        print("error en signal new_assignment",e)
             
 @receiver(post_delete,sender=JumpAssignments)
 def remove_assignmente(sender,instance,**kwargs):
@@ -375,7 +377,50 @@ class CompetitionFactory():
     @staticmethod
     def generate_series(cID):
         comp = Competitions.objects.get(id=cID)
-        comp.set_series(True)
+        inscriptions_list = list(Inscriptions.objects.filter(competitionId_id=cID))
+
+        #tipo de serie
+        heatClass = {1:SpeedHeats,2:MidHeats,3:JumpHeats,4:JumpHeats,5:ThrowHeats}
+        selectedHeat = heatClass[comp.get_type()]
+        #tipo de asignacion
+        assingClass = {1:SpeedAssignments,2:MidAssignments,3:JumpAssignments,4:JumpAssignments,5:ThrowAssignments}
+        selectedAssing = assingClass[comp.get_type()]
+
+        """
+            Seleccionar tipo de serie
+            Filtrar atletas por genero
+            Comprobar si los heats estan creadas | si no hay, se crean
+            Calcular la cantidad de series y atletas por serie, por defecto son 8
+        """
+        try:
+            if comp.series:
+                relateds = comp.get_relatedHeats()
+                for x  in relateds:
+                    x.delete()
+            else:
+                max_series = int(len(inscriptions_list)/8)
+
+                for a in range(max_series):
+                    selectedHeat.objects.create(competitionId_id=comp.id,numberHeat=a+1)
+                
+                relateds = comp.get_relatedHeats()
+
+                for heat in relateds:
+                    
+                    cont = 0
+                    while cont <8:
+                        insc = inscriptions_list[0]
+                        if cont == 8:
+                            break
+                        else:
+                            #PB = loadPersonalBest(comp.eventId.id,comp.get_type())
+                            selectedAssing.objects.create(heatId_id=heat.id,athleteId_id=insc.athleteId.id)
+                            cont+=1
+                            inscriptions_list = inscriptions_list[1:]
+            comp.set_series(True)
+        except Exception as e:
+            print("Error al generar series",e)  
+
 
     @staticmethod
     def new_competition(stageID,data):
@@ -389,5 +434,9 @@ class CompetitionFactory():
         except Exception as e:
             print(e)
             return False
-    
-    
+ 
+    @staticmethod
+    def new_inscription(athle,compt):
+        Inscriptions.objects.create(athleteId_id=athle,competitionId_id=compt)
+        # ID	ATLETA	COMPETICION	MARCA
+        # otro athlete compt_fk    mark

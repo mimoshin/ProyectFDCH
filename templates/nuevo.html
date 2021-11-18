@@ -1,4 +1,15 @@
 
-<form action="">
-    {% csrf_token %}
-</form>
+{% if compts %}
+<div class="input-group">
+    <select class="form-control mr-2" name="vale" id="competitions">
+        <option value="0000">Seleccione</option>
+        {% for option in compts %}
+            <option value="{{option.id}}">{{option.description}}</option>
+        {% endfor %}
+    </select>
+    <button class="botonB btn btn-sm btn-primary">Buscar</button>
+</div>
+    
+    
+    
+{% endif %}

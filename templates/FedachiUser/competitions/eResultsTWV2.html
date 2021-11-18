@@ -1,6 +1,6 @@
-{% extends 'Internal/competitions/iResults.html' %}
+{% extends 'External/competitions/eResults.html' %}
 
-<!--PLANILLA DE SALTOS-->
+<!--PLANILLA DE LANZAMIENTOS-->
 {% block tables %}   
     {% if heats_data %}
         {% for heat in heats_data %}
@@ -22,10 +22,10 @@
                     <tr>
                         <td class="text-center">0</td>
                         <td class="text-center">0</td>
-                        <td class="text-left">{{atle.strAthle}}</td>
+                        <td class="text-left">{{atle.athlete}}</td>
                         <td class="text-center">10 ENE 2000</td>
                         <td class="text-center">Chile</td>
-                        <td class="text-center">Mejor Salto</td>
+                        <td class="text-center">0</td>
                         <td><button class="btn btn-sm btn-primary intentos" id="{{atle.id}}">Ver Intentos</button></td>
                     </tr>
                     {% endfor %}
@@ -95,8 +95,9 @@
 
       <script>
           $('.intentos').on('click',function(){
-            //+$('.modal-body').html("<p id="hola">CARGAR RESULTADOS DEL ATLETA "+this.id+"</p>");
+            //$('.modal-body').html("<p>CARGAR RESULTADOS DEL ATLETA "+this.id+"</p>");
             $('#exampleModal').modal('show');
           })
+          
       </script>
 {% endblock %}

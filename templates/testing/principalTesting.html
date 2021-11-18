@@ -2,7 +2,22 @@
 {% load static %}
 
 {% block content %}
-<a href="{% url 'adminChamps' %}">Gestion Campeonatos</a>
+<div class="container-fluid row mt-2 mb-2">
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info" href="{% url 'adminChamps' %}">Gestion Campeonatos</a>
+    </div>
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info"  href="{% url 'adminCompts' %}">Gestion Competencias</a>
+    </div>
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info"  href="{% url 'adminInsc' %}">Gestion Inscripciones</a>
+    </div>
+    <div class="col-3">
+        <a type="button" class="btn btn-sm btn-info"  href="{% url 'adminAthles' %}">Gestion Atletas</a>
+    </div>
+</div>
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-3">

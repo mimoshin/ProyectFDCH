@@ -37,9 +37,7 @@
                 text-align: center;
                 border: 0.5px solid black;
                 vertical-align:bottom;
-            }
-            
-            
+            }     
         </style>
     </head>
     <body>
@@ -81,27 +79,33 @@
                     </tbody>
                 </table>
 
-                <h2 class="sub">{{heat.heat.serie}}</h2>
 
+                <p style="margin-left: 350px;">Observaciones: ______________________________________________________________________________________________________________________</p>
+                <p style="margin-left: 422px;">______________________________________________________________________________________________________________________</p>
+                <h2 class="sub">{{heat.heat.serie}}</h2>
+                
+                
                 <table class="content">
                     <thead>
                         <tr>
-                            <th style="width: 22%;">Atleta</th>
+                            <th style="width: 25%;">Atleta</th>
                             <th style="width: 6%;">A. N.</th>
                             <th style="width: 6%;">Club</th>
-                            <th style="width: 5%;">I.1</th>
-                            <th style="width: 5%;">V.V</th>
-                            <th style="width: 5%;">I.2</th>
-                            <th style="width: 5%;">V.V</th>
-                            <th style="width: 5%;">I.3</th>
-                            <th style="width: 5%;">V.V</th>
-                            <th style="width: 5%;">OP</th>
-                            <th style="width: 5%;">I.4</th>
-                            <th style="width: 5%;">V.V</th>
-                            <th style="width: 5%;">I.5</th>
-                            <th style="width: 5%;">V.V</th>
-                            <th style="width: 5%;">I.6</th>
-                            <th style="width: 5%;">V.V</th>
+                            <th style="width: 4%;">I.1</th>
+                            <th style="width: 4%;">V.V</th>
+                            <th style="width: 4%;">I.2</th>
+                            <th style="width: 4%;">V.V</th>
+                            <th style="width: 4%;">I.3</th>
+                            <th style="width: 4%;">V.V</th>
+                            <th style="width: 4%;">OP</th>
+                            <th style="width: 4%;">I.4</th>
+                            <th style="width: 4%;">V.V</th>
+                            <th style="width: 4%;">I.5</th>
+                            <th style="width: 4%;">V.V</th>
+                            <th style="width: 4%;">I.6</th>
+                            <th style="width: 4%;">V.V</th>
+                            <th style="width: 6%;">Marca Final</th>
+                            <th style="width: 4%;">Lugar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -110,6 +114,8 @@
                                 <td>{{atle.strAthle}}</td>
                                 <td>00/00/0000</td>
                                 <td>Chile</td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -135,7 +141,7 @@
                 <pdf:nextpage>
             {% endfor %}
                 {% else %}
-                    <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+                    <h3 class="text-center">No hay series registradas hasta el momento. 1</h3>
             {% endif %}
         {% endif %}   
     </body>

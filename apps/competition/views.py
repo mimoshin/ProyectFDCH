@@ -196,11 +196,12 @@ class otroview(View):
 
 
 def pdfView(request,c_id):
-    templates = {1:'competition/lista.html',2:'competition/docs/mdST.html',
+    templates = {1:'competition/docs/speedST.html',2:'competition/docs/mdST.html',
                  3:'competition/docs/jumpST.html',4:'competition/docs/hjumpST.html',5:'competition/docs/throwST.html',}
                #3:'competition/docs/jumpST.html'
     if request.method == 'GET':
         competition = CF.get_competition(c_id)
+        print(templates[competition.get_type()])
         ctype = competition.get_type()
         heats = CF.get_heats(c_id,ctype)
         data = {'competition':competition,'heats':heats,'url':FEDACHI_LOGO}

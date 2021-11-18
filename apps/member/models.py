@@ -1,3 +1,4 @@
+from os import stat
 from django.db import models
 
 class Countries(models.Model):
@@ -15,3 +16,9 @@ class Clubs(models.Model):
     def __str__(self):
         return "%s %s"%(self.clubName,self.id)
 
+
+class MembersFactory():
+    @staticmethod
+    def get_all_clubs():
+        club_list = Clubs.objects.all()
+        return club_list

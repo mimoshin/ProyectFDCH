@@ -33,7 +33,7 @@
         </div>
         
         <div class="row">
-            <div class="col-4">
+            <div class="table-responsive col-4">
                 <p class="text-center">Inscritos</p>
                 <table class="table table-sm taborder table-striped">
                     <thead class="table-info">
@@ -42,7 +42,11 @@
                     <tbody>
                         {% for ins in inscriptions %}
                         <tr>
+                            {% if ins.strAthle == 'PIVOTE' %}
+                            <td>{{ins.athleteId.name}}</td>
+                            {% else %}
                             <td>{{ins.strAthle}}</td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -65,9 +69,13 @@
                     {% for heat in heats %}
                         {% for atle in heat.assign %}
                         <tr>
+                            {% if atle.strAthle == 'PIVOTE' %}
+                            <td>{{atle.athleteId.name}}</td>
+                            {% else %}
                             <td>{{atle.strAthle}}</td>
+                            {% endif %}
                             <td><input type="text" name="" id="" value="{{heat.heat.numberHeat}}"></td>
-                            <td></td>
+                            <td><button class="btn btn-sm btn-success">Modificar</button></td>
                             <td></td>
                         </tr>
                         {% endfor %}

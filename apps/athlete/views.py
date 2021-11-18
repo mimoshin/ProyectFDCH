@@ -21,6 +21,9 @@ def athletesInscription(request,cID):
             return render(request,'Internal/athlete/inscription.html',{'champ':champ,'athletes':athletes})
     return render(request,'Internal/athlete/inscription.html',{'champ':champ})
 
+@login_required(login_url='/')
+def newAthlete(request):
+    return redirect(request,'FedachiUser/athletes/newathlete.html')
 
 def alternative(request):
     if request.method == 'POST':
@@ -36,8 +39,8 @@ def alternative(request):
         
         for a in id_comp:
             compts.append(CF.get_competition(a))
-        #for x in id_comp:
-            #CF.new_inscription(atleta,x)
+        for x in id_comp:
+            CF.new_inscription(atleta,x)
 
         print("atleta %s queriendo inscribirse a las pruebas:" %(atleta))
         for b in compts:
@@ -46,6 +49,8 @@ def alternative(request):
         #return redirect('/atletas/inscripcion/33?name=&category=1')
     return redirect('principalView')
 #----------------------------------------------------------
+
+
 #-----------------EXTERNAL VIEWS --------------------------
 def veratleta(request,AID):
     athle = AI.get_athlete(AID)

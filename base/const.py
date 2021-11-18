@@ -5,6 +5,7 @@
 """
 #ATHLETE
 GENDER_CHOICES = ((0,'DEFAULT'),(1,'DAMAS'),(2,'VARONES'),(3,' '))
+SEX_CHOICES = ((0,'DEFAULT'),(1,'MUJER'),(2,'HOMBRE'),(3,' '))
 
 CATEGORY_CHOICES = [(0,'SIN CATEGORIA'),(1,'U16'),(2,'U18'),(3,'U20'),
                     (4,'U23'),(5,'TD'),(6,'CD'),
