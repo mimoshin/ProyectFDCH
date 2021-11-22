@@ -3,6 +3,7 @@ from django.db.models import signals
 from django.dispatch import receiver
 from django.db.models.signals import pre_save,post_save,pre_delete,post_delete
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import tree
 from base.const import EVENT_TYPE_CHOICES,ROUND_CHOICES,GENDER_CHOICES,COMBINATED_CHOICES, CATEGORY_CHOICES
 from championship.models import Stages
 from athlete.models import Athletes
@@ -22,6 +23,10 @@ class Events(models.Model):
     def name(self):
         return self.eventName
 
+    def get_type(self):
+        return EVENT_TYPE_CHOICES[self.eventType][1]
+
+
     ########Signals########
     #######################
 
@@ -34,6 +39,7 @@ class Competitions(models.Model):
     gender = models.IntegerField(choices=GENDER_CHOICES,null=False,blank=False,default=0)
     combinated= models.IntegerField(choices=COMBINATED_CHOICES,null=False,blank=False,default=0)
     series = models.BooleanField(null=False,blank=False,default=False)
+    observation = models.CharField(max_length=200,null=True,blank=True,default='S/C')
 
     def __str__(self):
         return "ID: %s %s %s %s "%(self.id,self.eventId.name(),self.get_gender(),self.stageId.champ_name())
@@ -296,16 +302,25 @@ class CompetitionFactory():
 
     @staticmethod
     def get_all_competitions():
-        listcompetitions = Competitions.objects.all()
-        return listcompetitions
+        competition_list = Competitions.objects.all()
+        return competition_list
 
     @staticmethod
     def get_competition(cID):
         try:
-            competition = Competitions.objects.get(id=cID)
-            return competition
+            competition_list = Competitions.objects.get(id=cID)
+            return competition_list
         except Exception as e:
             print("error en get_competition",e)
+    
+    @staticmethod 
+    def get_competitions_champ(champID):
+        try:
+            competition_list = Competitions.objects.filter(stageId__championshipId__id=champID).order_by('stageId','hour')
+            return competition_list
+        except Exception as e:
+            print("error en get_competitions_champ",e)
+
     @staticmethod
     def get_inscriptions(cID):
         inslist = Inscriptions.objects.filter(competitionId=cID)
@@ -440,3 +455,7 @@ class CompetitionFactory():
         Inscriptions.objects.create(athleteId_id=athle,competitionId_id=compt)
         # ID	ATLETA	COMPETICION	MARCA
         # otro athlete compt_fk    mark
+    
+    @staticmethod
+    def new_event(data):
+        Events.objects.create(eventName=data['eventName'],eventType=data['eventType'])

@@ -44,5 +44,7 @@ urlpatterns = [
     #CHANGES
     path('New_inscriptions',NewInscriptions,name='New_inscriptions'),
     path('remove_inscriptions',RemoveInscriptions,name='remove_inscriptions'),
+    #DETECT
+    path('detectandofile',detectFile,name='detectFiles'),
     
 ]

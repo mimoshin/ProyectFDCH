@@ -1,0 +1,15 @@
+{% extends 'Internal/iBase.html' %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <form action="{% url 'detectFiles' %}" method="post" enctype="multipart/form-data" target="_blank">
+        {% csrf_token %}  
+        <p>Sube un archivo:
+            <input type="file" name="archivosubido">
+            <input type="submit" value="Enviar datos">
+        </p>
+        </form> 
+    </div>
+    
+{% endblock %}

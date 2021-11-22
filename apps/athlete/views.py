@@ -21,9 +21,7 @@ def athletesInscription(request,cID):
             return render(request,'Internal/athlete/inscription.html',{'champ':champ,'athletes':athletes})
     return render(request,'Internal/athlete/inscription.html',{'champ':champ})
 
-@login_required(login_url='/')
-def newAthlete(request):
-    return redirect(request,'FedachiUser/athletes/newathlete.html')
+
 
 def alternative(request):
     if request.method == 'POST':
@@ -63,3 +61,24 @@ def fileslifV(request):
     todo = fileslif.objects.all()
     return render(request,'texto.html',{'total':todo})
 #----------------------------------------------------------
+
+
+#_____________ QUERYS ____________________________________
+def QFathletes(request):
+    #Obtener listado de atletas
+    if request.method == 'GET':
+        data = request.GET.dict()
+        athletes_list = AI.get_athletes_club(data['id'])
+        dataT = {'athletes':athletes_list}
+        template = 'members/FedachiUser/athletes/athletesList.html'
+        return render(request,template,dataT)
+#_____________ END QUERYS ________________________________
+
+#_____________ QUERYS ____________________________________
+@login_required(login_url='/')
+def newAthlete(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        AI.new_athlete(data)
+        return redirect('fedachi_athletes')
+#_____________ END QUERYS ____________________________________

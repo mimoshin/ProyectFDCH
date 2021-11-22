@@ -1,0 +1,14 @@
+<div class="col-6">
+    {% if athletes %}
+        Atletas
+        <select class="form-control detect" name="competition" id="compID">
+            <option value="">Seleccione un atleta</option>
+            {% for athlete in athletes %}
+                <option value="{{competition.id}}">{{athlete.name}}</option>
+            {% endfor %}
+        </select>     
+
+    {% else %} 
+        <h5 class="text-center">No hay atletas registrados</h5>
+    {% endif %}
+</div>

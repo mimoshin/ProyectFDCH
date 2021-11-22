@@ -225,8 +225,7 @@ def nuevoatleta(request):
         print("ingresar atleta",request.POST)
     return render(request,'External/nuevo.html',{'atleta':'data'})
 
-
-#-----------QUERYS----------------
+#_____________ QUERYS ____________________________________
 def Qjumps(request,asID):
     if request.method == 'POST':
         print("consultando saltos del atleta en la serie : ",asID)
@@ -234,3 +233,28 @@ def Qjumps(request,asID):
     elif request.method == 'GET':
         print("METODO GET LLAMADO, REVISAR Qjumps")
     return redirect('principalView')
+
+def QFcompetitions(request):
+    if request.method == 'GET':
+        data = request.GET.dict()
+        if data['option'] == 'all':
+            competitions_list = CF.get_competitions_champ(data['id'])
+            dataT = {'competitions':competitions_list}
+            template = 'members/FedachiUser/competitions/competitionsList.html'
+        elif data['option'] == 'dataC':
+            competition = CF.get_competition(data['id'])
+            print(competition)
+            dataT = {'competition':competition}
+            template = 'members/FedachiUser/competitions/competitionsData.html'
+        return render(request,template,dataT)
+
+#__________________________________
+
+#_____________ CHANGES ____________________________________
+@login_required(login_url=('/'))
+def newEvent(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        CF.new_event(data)
+        return redirect('fedachi_events')
+#_____________ END CHANGES ________________________________

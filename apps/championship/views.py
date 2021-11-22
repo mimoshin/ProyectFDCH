@@ -6,6 +6,7 @@ from athlete.models import Athletes
 from login.models import UserFactory as UF
 from competition.models import CompetitionFactory as CF
 from .models import ChampionshipInterface as CI, Championships
+from .models import ChampionshipFactory as CHF
 from .forms import ChampForm
 
 
@@ -13,7 +14,7 @@ from .forms import ChampForm
 def principalView(request):
     if Qlog_user(request.user):
         options = {'Fedachi':fedachiPV,False:internalPV}
-        user = UF.get_type_user(request.user)
+        user = UF.get_type_user2(request.user)
         return options[user](request)
     else:
         return externalPV(request)
@@ -21,7 +22,7 @@ def principalView(request):
 def allChampionshipsView(request):
     if Qlog_user(request.user):
         options = {'Fedachi':fedachiACV,False:internalACV}
-        user = UF.get_type_user(request.user)
+        user = UF.get_type_user2(request.user)
         return options[user](request)
     else:
         return externalACV(request)
@@ -29,7 +30,7 @@ def allChampionshipsView(request):
 def reviewChampionship(request,cID):
     if Qlog_user(request.user):
         options = {'Fedachi':fedachiRC,False:internalRC}
-        user = UF.get_type_user(request.user)
+        user = UF.get_type_user2(request.user)
         return options[user](request,cID)
     else:
         return externalRC(request,cID)
@@ -80,7 +81,7 @@ def newChampionship(request):
 
 #-------------------EXTERNAL VIEWS-------------------------
 def externalPV(request):
-    return render(request,'External/Principal.html',{'data':'data'})
+    return render(request,'External/principal.html',{'data':'data'})
 
 def externalACV(request):
     if request.method == 'POST':
@@ -103,7 +104,7 @@ def externalRC(request,cID):
 
 @login_required(login_url='/')
 def fedachiPV(request):
-    return render(request,"FedachiUser/principal.html",{'data':'data'})
+    return render(request,"members/FedachiUser/initView.html",{'data':'data'})
 
 @login_required(login_url='/')
 def fedachiACV(request):
@@ -112,7 +113,8 @@ def fedachiACV(request):
     elif request.method == 'GET':
         pass
     allchamps = CI.get_all_championships()
-    return render(request,"FedachiUser/championships/champslist.html",{'champs':allchamps})
+    return render(request,"Internal/championships/champslist.html",{'champs':allchamps})
+    #return render(request,"members/FedachiUser/championships/champslist.html",{'champs':allchamps})
 
 
 @login_required(login_url=('/'))
@@ -124,9 +126,26 @@ def fedachiRC(request,cID):
         pass
     champ,stages = CI.get_allfor_championship(cID)
     events = CF.get_all_events()
-    return render(request,'FedachiUser/championships/reviewChampionship.html',{'champ':champ,'stages':stages,'events':events})
+    return render(request,'members/FedachiUser/championships/reviewChampionship.html',{'champ':champ,'stages':stages,'events':events})
 
 
+@login_required(login_url=('/'))
+def QFChampionship(request):
+    #cargar todas los torneos
+    if request.method == 'GET':
+        data = request.GET.dict()
+        champ,stages = CHF.get_champ_and_stages(data['id'])
+        dataT = {'champ':champ,'stages':stages}
+        template = 'members/FedachiUser/championships/champsData.html'
+        return render(request,template,dataT)
+
+@login_required(login_url=('/'))
+def newStage(request,champID):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        CHF.create_stage(data,champID)
+        return redirect('fedachi_championships')
+        
 """
 
 def get_fonts(request):
@@ -189,3 +208,4 @@ def get_fonts(request):
             );
         });*/
 """
+

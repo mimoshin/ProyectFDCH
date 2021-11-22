@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (Qcompetitions, Qjumps, change_result, competitionView, download_file, download_startlist, genSeries, lanzV2, newCompetition, nuevoatleta, 
+from .views import (QFcompetitions, Qcompetitions, Qjumps, change_result, competitionView, download_file, download_startlist, genSeries, lanzV2, newCompetition, newEvent, nuevoatleta, 
                     otroview, pdfView, probandoGET, resultsView, saltoV2, startView, startlistView, verAtleta)
 
 urlpatterns = [
@@ -20,5 +20,9 @@ urlpatterns = [
     path('change',change_result,name='changeResult'),
     path('veratle/<int:id>',verAtleta,name='veratleta'),
     path('nuevoatleta',nuevoatleta,name='nuevoatle'),
-    path('Q_jumps/<int:asID>',Qjumps,name='Qjumps')
+    path('Q_jumps/<int:asID>',Qjumps,name='Qjumps'),
+    #CHANGES
+    path('new_event',newEvent,name='create_event'),
+    #QUERYS
+    path('QF_competitions',QFcompetitions,name='Query_competitions'),
 ]

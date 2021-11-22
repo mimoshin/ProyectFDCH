@@ -1,0 +1,10 @@
+
+{% if competitions %}
+    Competencias
+    <select class="form-control detect" name="competition" id="compID">
+        <option value="">Seleccione una Competencias</option>
+        {% for competition in competitions %}
+            <option value="{{competition.id}}">{{competition.description}}</option>
+        {% endfor %}
+    </select>        
+{% endif %}

@@ -1,6 +1,6 @@
 from datetime import datetime
-from os import stat
 from django.db import models
+from django.utils.dateparse import parse_date
 from base.const import GENDER_CHOICES,CATEGORY_CHOICES, SEX_CHOICES
 from member.models import Clubs
 
@@ -116,3 +116,25 @@ class AthleteInterface():
     def get_athlete(aid):
         atleta = Athletes.objects.get(id=aid)
         return atleta
+
+    @staticmethod
+    def new_athlete(data):
+        """
+
+                        clubId  
+                        firstName  secondName  surname  secondSurname  
+                        rut  gender  birthdate  age  
+                        categoria (autocompletado)
+                        size  height  cellphone email coach region 
+        """
+        try:
+            pbirthdate = parse_date(data['birthdate'])
+            # birthdate gender rut clubAthle secondSurname surname secondName firstName
+
+            Athletes.objects.create(rut=data['rut'],firstName=data['firstName'],secondName=data['secondName'],
+                                surname=data['surname'],secondSurname=data['secondSurname'],gender=data['gender'], birthdate=pbirthdate,
+                                clubId_id=data['clubAthle'])
+        except Exception as e:
+            for a in data:
+                print(a,type(a))
+            print("Error al cargar atletas:",e,"|",data)

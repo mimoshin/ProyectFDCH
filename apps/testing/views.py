@@ -1,10 +1,9 @@
 
+import json
 from django.contrib.auth.decorators import login_required
-from django.db.models.query import QuerySet
-from django.http import response
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from .models import athleteInterface as AI, championshipInterface as CI, competitionInterface as CPI
+from .models import athleteInterface as AI, championshipInterface as CI, competitionInterface as CPI, testingInterface
 from .models import testingInterface as TI
 from championship.models import ChampionshipInterface as CHI
 from competition.models import CompetitionFactory as CF
@@ -49,7 +48,7 @@ def adminAthletes(request):
     return render(request,'testing/admAthletes.html',{'clubs':all_clubs})
 #______________end principal views________________________
 
-#_____________ Querys ____________________________________
+#_____________ QUERYS ____________________________________
 @login_required(login_url=('/'))
 def QTCompetitions(request):
     #Carga todas las competencias relacionadas a un torneo
@@ -73,7 +72,7 @@ def QTAthletes(request):
         data = request.GET.dict()
         insc = ATI.get_athletes_club(data['id'])
         return render(request,'athle.html',{'athletes':insc})
-#_____________end Querys ____________________________________
+#_____________ END QUERYS ___________________________________
 
 #_____________Changes _______________________________________
 @login_required(login_url=('/'))
@@ -206,3 +205,18 @@ def loadParticipationThrows(request):
 def deleteParticipationThrows(request):
     CPI.delete_throws_participations()
     return redirect('testPrincipal')
+
+
+def detectFile(request):
+    if request.method == 'POST':
+        print(request.method)
+        files = request.FILES
+        if files:
+            data = request.FILES['archivosubido']
+            jFile = json.load(data)
+            testingInterface.detectFile(data,jFile)
+        else:
+            print("aqui no ha pasado nada")
+        return redirect('fedachi_championships')
+        #return render(request,"testing/uploadFiles.html",{'data':'data'})
+    return render(request,"testing/uploadFiles.html",{'data':'data'})

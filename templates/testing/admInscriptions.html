@@ -29,7 +29,7 @@
         $('#magia').load("{% url 'Q_competitions' %}?id="+this.value);
     });
 
-    $('#magia').on('click','button.botonB',function(){
+    $('#magia').on('click','button.botonqlo',function(){
         selected = $('#magia #competitions ')[0].value;
         $('#magia2').load("{% url 'Q_inscriptions' %}?id="+selected);
     });

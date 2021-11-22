@@ -210,7 +210,7 @@
 			// fallback to 2 letter code eg "de"
 			var lang = o.language;
 			//Comentado: console.log(o);
-			console.log("hola como estas 1");
+			//console.log("hola como estas 1");
 			if (!dates[lang]){
 				lang = lang.split('-')[0];
 				if (!dates[lang])
@@ -572,7 +572,7 @@
 		},
 
 		Saludar: function(argumento){
-			console.log(argumento);
+			//console.log(argumento);
 			$('.day').each(function(){
 				if(!$(this).hasClass('new day') && !$(this).hasClass('old day')){
 					if($(this).text() == 2){
@@ -584,7 +584,7 @@
 			})
 			var month = $('.month.focused')[0].innerText;
 			var year = $('.year.focused')[0].innerText;
-			console.log(month,year);
+			//console.log(month,year);
 		},
 
 		clearDates: function(){
@@ -1188,7 +1188,7 @@
 		},
 
 		click: function(e){
-			console.log("El dia fue clickeado");
+			//console.log("El dia fue clickeado");
 			e.preventDefault();
 			e.stopPropagation();
 
@@ -1942,19 +1942,19 @@
 			return date;
 		},
 		formatDate: function(date, format, language){
-			console.log($.fn.datepicker.defaults['admin']);
+			//console.log($.fn.datepicker.defaults['admin']);
 
 			if (!date){
-				console.log("Entro a !date linea 1948");
+				//console.log("Entro a !date linea 1948");
 				return '';
 			}
 			if (typeof format === 'string'){
-				console.log("Entro a typeof linea 1952");
+				//COMENTARIO console.log("Entro a typeof linea 1952");
 				format = DPGlobal.parseFormat(format);
 				}
 
 			if (format.toDisplay){
-				console.log('Entro al format.todisplay linea 1957');
+				//COMENTARIO console.log('Entro al format.todisplay linea 1957');
 				return format.toDisplay(date, format, language);
 			}
                 

@@ -5,6 +5,8 @@ from competition.models import*
 from member.models import*
 from base.utils import json_to_list, str_to_DateTimeField
 from .utils import loadPersonalBest
+from championship.models import ChampionshipFactory as CHF
+
 
 class championshipInterface():
     @staticmethod
@@ -42,7 +44,7 @@ class championshipInterface():
             x.delete()
     
     @staticmethod
-    def load_stages():
+    def load_stages(file):
         """ 
             championshipId = models.ForeignKey(Championships,null=False,blank=False,on_delete=models.CASCADE)
             stageName = models.CharField(max_length=200,null=False,blank=False,default='ETAPA')
@@ -55,7 +57,7 @@ class championshipInterface():
         """
         try:
             jslist = json_to_list('stages.json')
-            for data in jslist:
+            for data in file:
                 if data['fecha'] == None:
                     data['fecha'] = "1111-01-01"
                     
@@ -74,14 +76,14 @@ class championshipInterface():
             x.delete()
     
     @staticmethod
-    def load_clubs():
+    def load_clubs(file):
         jslist = json_to_list('clubs.json')
         try:
             print("CARGANDO CLUBS")
-            for data in jslist:
+            for data in file:
                 Clubs.objects.create(id=data['id'],clubName=data['name'])
         except Exception as e:
-            print("error al cargar etapas",e)
+            print("error al cargar clubes",e,data['id'])
 
     @staticmethod
     def delete_clubs():
@@ -127,14 +129,14 @@ class competitionInterface():
         return "E"
 
     @staticmethod
-    def load_events():
+    def load_events(file):
         #jslist = json_to_list('generalSports.json')
         jslist = json_to_list('sports.json')
         try:
-            for data in jslist:
+            for data in file:
                 Events.objects.create(id=data['id'],eventName=data['name'],eventType=data['type'])
         except Exception as e:
-            print("Error al cargar eventos: ",e)
+            print("Error al cargar eventos: ",e,data['id'])
             
     @staticmethod
     def delete_events():
@@ -143,7 +145,7 @@ class competitionInterface():
             x.delete()
 
     @staticmethod
-    def load_competitions():
+    def load_competitions(file):
         """
             eventId = models.ForeignKey(Events,null=False,blank=False,on_delete=models.CASCADE)
             stageId = models.ForeignKey(Stages,null=False,blank=False,on_delete=models.CASCADE)
@@ -166,7 +168,7 @@ class competitionInterface():
         jslist = json_to_list('competitions.json')
 
         try:
-            for data in jslist:
+            for data in file:
                 Competitions.objects.create(id=data['id'],eventId_id=data['sport_id'],stageId_id=data['stage_id'],
                     hour=data['hour'],gender=data['sex_id'])
             """
@@ -250,7 +252,7 @@ class competitionInterface():
 
     #_____SALTO LARGO Y TRIPLE_________________
     @staticmethod
-    def load_jumpHeats():
+    def load_jumpHeats(file):
         jslits = json_to_list('jump_head2s.json')
         try:
             """
@@ -270,7 +272,7 @@ class competitionInterface():
                 numberHeat = IntegerField(default=0)
                 observation = CharField(default='S/0')
             """
-            for data in jslits:
+            for data in file:
                 JumpHeats.objects.create(id=data['id'],competitionId_id=data['competition_id'],observation=data['serie'])
         except Exception as e:
             print("ERROR AL CARGAR JUMPHEATS",e)
@@ -282,7 +284,7 @@ class competitionInterface():
             x.delete()
     
     @staticmethod
-    def load_jumps():
+    def load_jumps(file):
         jslits = json_to_list('jump2s.json')
         try:
             """
@@ -322,7 +324,7 @@ class competitionInterface():
                 heatId = ForeignKey(JumpHeats)
    
             """
-            for data in jslits:
+            for data in file:
                 if data['athlete']:
                     if data['place'] == "DNS":
                         data['place'] = 0
@@ -348,7 +350,7 @@ class competitionInterface():
             x.delete()
     
     @staticmethod
-    def load_jump_participations():
+    def load_jump_participations(file):
         jslits = json_to_list('jump2s.json')
         """
             "id" : 3,
@@ -376,7 +378,7 @@ class competitionInterface():
         participations =   [("first","vvfirst",1),("second","vvsecond",2), 
 		                    ("third","vvthird",3),("fourth","vvfourth",4),
 		                    ("fifth","vvfifth",5),("sixth","vvsixth",6)]
-        for data in jslits:
+        for data in file:
             try:
                 for p in participations:
                     result = data[p[0]]
@@ -400,7 +402,7 @@ class competitionInterface():
 
     #______________SALTO ALTO Y CON GARROCHA__________________
     @staticmethod
-    def load_HjumpHeats():
+    def load_HjumpHeats(file):
         jslits = json_to_list('hjump_head2s.json')
         try:
             """
@@ -419,14 +421,14 @@ class competitionInterface():
                 numberHeat = IntegerField(default=0)
                 observation = CharField(default='S/0')
             """
-            for data in jslits:
+            for data in file:
                 hid = data['id']+1000
                 JumpHeats.objects.create(id=hid,competitionId_id=data['competition_id'],observation=data['serie'])
         except Exception as e:
             print("ERROR AL CARGAR JUMPHEATS",e)
     
     @staticmethod
-    def load_Hjumps():
+    def load_Hjumps(file):
         jslits = json_to_list('hjump2s.json')
         try:
             """
@@ -473,7 +475,7 @@ class competitionInterface():
     
     #______________PRUEBAS DE PISTA__________________
     @staticmethod
-    def load_midHeats():
+    def load_midHeats(file):
         jslits = json_to_list('jump_head2s.json')
         try:
             pass
@@ -487,7 +489,7 @@ class competitionInterface():
             x.delete()
 
     @staticmethod
-    def load_mids():
+    def load_mids(file):
         jslits = json_to_list('jump_head2s.json')
         try:
             pass
@@ -501,7 +503,7 @@ class competitionInterface():
             x.delete()
 
     @staticmethod
-    def load_speedHeats():
+    def load_speedHeats(file):
         jslits = json_to_list('jump_head2s.json')
         try:
             pass
@@ -514,7 +516,7 @@ class competitionInterface():
         for x in heatlist:
             x.delete()
     @staticmethod
-    def load_speeds():
+    def load_speeds(file):
         jslits = json_to_list('jump_head2s.json')
         try:
             pass
@@ -530,9 +532,9 @@ class competitionInterface():
 
 #______________LANZAMIENTOS__________________
     @staticmethod
-    def load_throwheats():
+    def load_throwheats(file):
         jslist = json_to_list('throw_head2s.json')
-        for data in jslist:
+        for data in file:
             try:
                 """
                     "id" : 1,
@@ -563,7 +565,7 @@ class competitionInterface():
             x.delete() 
 
     @staticmethod
-    def load_throws():
+    def load_throws(file):
         jslits = json_to_list('throw2s.json')
         """
                 "id" : 2,
@@ -595,7 +597,7 @@ class competitionInterface():
                 heatId = ForeignKey(JumpHeats)
    
         """
-        for data in jslits:
+        for data in file:
             try:
                 if data['athlete']:
                     if data['place'] == "DNS" or data['place'] == '':
@@ -615,7 +617,7 @@ class competitionInterface():
             x.delete()
     
     @staticmethod
-    def load_throw_participations():
+    def load_throw_participations(file):
         """
                 "id" : 2,
 		        "throw_head2_id" : 1,
@@ -651,7 +653,7 @@ class competitionInterface():
 		                    ("third",3),("fourth",4),
 		                    ("fifth",5),("sixth",6)]
 
-        for data in jslits:
+        for data in file:
             try:
                 for p in participations:
                     result = data[p[0]]
@@ -695,15 +697,24 @@ class testingInterface():
             return inscription_list
         except Exception as e:
             print("Error en get_inscriptions",e)
-    
-
+        
+    @staticmethod
+    def detectFile(name,json_file):
+        CH = championshipInterface()
+        CI = competitionInterface()
+        AI = athleteInterface
+        options = {'championship.json':CHF.load_championship,'athletes.json':AI.load_athletes,'clubs.json':CH.load_clubs,'stages.json':CH.load_stages,
+                    'sports.json':CI.load_events,'competitions.json':CI.load_competitions}
+        function = options[str(name)]
+        function(json_file)
+        
 
 
 
 
 class athleteInterface():
     @staticmethod
-    def load_athletes():
+    def load_athletes(file):
         """
             FUNCION MODIFICADA EN BASE AL ARCHIVO new_athletes.json
             id | rut
@@ -715,7 +726,7 @@ class athleteInterface():
         """
         jslist = json_to_list('athletes.json')
         try:
-            for data in jslist:
+            for data in file:
                 if data['idClub'] == None:
                     data['idClub'] = data['club_id']
                 if data['idRegion'] == None:
