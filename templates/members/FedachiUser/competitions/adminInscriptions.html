@@ -1,0 +1,91 @@
+{% extends 'members/FedachiUser/fBase.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <p>Gestionar</p>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_championships' %}">Campeonatos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_competitions' %}">Competencias</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_athletes' %}">Atletas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active bg-primary text-white" href="{% url 'fedachi_inscriptions' %}">Inscripciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_clubs' %}">Clubes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_events' %}">Eventos</a>
+                    </li>
+                       <!--
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">.</a>
+                      </li>
+                      -->
+                  </ul>
+            </div>
+        </div>
+    
+
+        <div class="row mt-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2" style="border-left: 1px solid rgb(50, 20, 185); border-left-width: 5px;
+                border-radius: 3px;">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-italic text-dark text-uppercase mb-1">
+                                    Campeonatos Realizados</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{stat_ch}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2" style="border-left: 1px solid rgb(20, 185, 69); border-left-width: 5px;
+                border-radius: 3px;">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-italic text-dark text-uppercase mb-1">
+                                    Atletas Inscritos</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{stat_athle}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2" style="border-left: 1px solid rgb(185, 127, 20); border-left-width: 5px;
+                border-radius: 3px;">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-italic text-dark text-uppercase mb-1">
+                                    Calendario</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{data}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

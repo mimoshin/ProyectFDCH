@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Gestion de Campeonatos</h1>
+    <p>total de Campeonatos: {{champs|length}}</p>
+
+    <form method="post" action="{% url 'adminChamps' %}">
+        {% csrf_token %}
+        <select name="championship" id="idChamp">
+            {% for champ in champs %}
+                <option value="{{champ.id}}">{{champ.name}}</option>
+            {% endfor %}
+        </select>
+        <select name="action" id="idAction">
+            <option value="">Seleccione opcion</option>
+            <option value="1">Crear Etapas</option>
+            <option value="2">Modificar</option>
+            <option value="3">Eliminar</option>
+        </select>
+        <button type="submit">Ejecutar</button>
+    </form>
+</div>
+
+
+
+
+{% endblock %}

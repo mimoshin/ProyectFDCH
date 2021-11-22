@@ -1,0 +1,16 @@
+{% extends 'External/ebase.html' %}
+
+{% block content %}
+    <div class="container-fluid mt-4">
+        {% if competition %}
+            <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'reviewChampionship' cID %}">Volver</a>
+            <h2 class="text-center">{{competition.name}}</h2> 
+            <p class="text-center">{{competition.initDate}}</p>
+            {% block tables %}
+
+            {% endblock %}
+        {% else %}
+            <h1 class="text-center">Error</h1>
+        {% endif %}
+    </div>
+{% endblock %}

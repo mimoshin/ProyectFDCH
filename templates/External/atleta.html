@@ -1,0 +1,127 @@
+{% extends 'External/eBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid ">
+    <a href="{% url 'nuevoatle' %}">NUEVO</a>
+    <nav class="navbar navbar-expand-lg navbar-light mt-4" style="background-color:rgb(43, 41, 41); height: 300px;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <img  height="90%" src="{% static 'img/profile.png' %}" alt="Image">
+        <div class="collapse navbar-collapse" id="navbar">
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <p class="nav-link" style="color: #bd94ff;">PAIS</p>
+                    <p class="nav-link" style="color: white;">CHILE</p>
+                </li>
+                <li class="nav-item">
+                    <p class="nav-link" style="color: #bd94ff;">AÑO DE NAC.</p>
+                    <p class="nav-link" style="color: white;">19-09-9999</p>
+                </li>
+                <li class="nav-item">
+                    <p class="nav-link" style="color: #bd94ff;">ID DE ATLETA</p>
+                    <p class="nav-link" style="color: white;">9999</p>
+                </li>
+                <li class="nav-item">
+                    <p class="nav-link" style="color: #bd94ff;">EDAD</p>
+                    <p class="nav-link" style="color: white;">99</p>
+                </li>
+            </ul>
+    
+        </div>   
+    </nav>
+
+    <table class="table table-dark table-striped mt-4">
+        <thead>
+            <tr>
+                <th>RANKING NACIONAL</th>
+                <th></th>
+                <th></th>
+                <th>RANKING INTERNACIONAL</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color:#bd94ff;">
+                <th>DISIPLINA</th>
+                <th>LUGAR</th>
+                <th>MARCA</th>
+                <th>DISIPLINA</th>
+                <th>LUGAR</th>
+                <th>MARCA</th>
+            </tr>
+            <tr>
+                <td>100 Metros plano</th>
+                <td>1</th>
+                <td>10'50</th>
+                <td>100 Metros plano</th>
+                <td>228</th>
+                <td>10'50</th>
+            </tr>
+            <tr>
+                <td>200 Metros plano</th>
+                <td>1</th>
+                <td>20'50</th>
+                <td>200 Metros plano</th>
+                <td>228</th>
+                <td>20'50</th>
+            </tr>
+            <tr>
+                <td>Lanzamiento del disco</th>
+                <td>1</th>
+                <td>100 metros</th>
+                <td>Lanzamiento del disco</th>
+                <td>1</th>
+                <td>100 metros</th>
+            </tr>
+        
+        </tbody>
+    </table>
+    <h5 class="mt-4 mb-4">COMPETENCIAS</h5>
+    <select class="mt-4 mb-4" name="compts" id="idcompts">
+        <option value="">100 Metros Planos</option>
+        <option value="">200 Metros Planos</option>
+        <option value="">Lanzamiento del Disco</option>
+    </select>
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>EVENTO</th>
+                <th>FECHA</th>
+                <th>RONDA</th>
+                <th>LUGAR</th>
+                <th>RESULTADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>NACIONAL</th>
+                <td>23-03-2021</th>
+                <td>SERIE 1</th>
+                <td>1°</th>
+                <td>10'68</th>
+            </tr>
+            <tr>
+                <td>NACIONAL</th>
+                <td>23-03-2021</th>
+                <td>SERIE 1</th>
+                <td>1°</th>
+                <td>10'68</th>
+            </tr>
+            <tr>
+                <td>NACIONAL</th>
+                <td>23-03-2021</th>
+                <td>SERIE 1</th>
+                <td>1°</th>
+                <td>10'68</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

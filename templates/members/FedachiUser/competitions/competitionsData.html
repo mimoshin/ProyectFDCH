@@ -1,0 +1,232 @@
+<!--
+    eventId  stageId  round  hour  category  
+    gender combinated series observation 
+-->
+
+{% if competition %}
+    <h1 class="text-center">{{competition.description}}</h1>
+    <div class="table-responsive mt-2">
+        <table class="table table-sm" style="border-collapse: separate;border-spacing: 5px;">
+            <body>
+                <tr>
+                    <th class="table-info" style="width: 10%; border: 1px solid black;"">Etapa:</th>
+                    <td style="width: 15%;">{{competition.stageId.name}}</td>
+                    <th class="table-info" style="width: 10%; border: 1px solid black;">Observaciones:</th>
+                    <td rowspan="3" style="border: 1px solid black;"">{{competition.observation}}</td>
+                <tr>
+                    <th class="table-info" style="width: 10%; border: 1px solid black;"">Estado:</th>
+                    <td >Espacio</td>
+                </tr>
+                <tr>
+                    <th class="table-info" style="width: 10%; border: 1px solid black;"">Estado Series:</th>
+                    <td>{{competition.series}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-striped taborder">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">HORA</th>
+                    <th style="width: 20%;">PRUEBA</th>
+                    <th style="width: 10%;">CATEGORIA</th>
+                    <th style="width: 10%;">GENERO</th>
+                    <th style="width: 10%;">RONDA</th>
+                    <th style="width: 10%;">PRUEBAS COMBINADAS</th>
+                    <th style="width: 10%;"></th>
+                    <th style="width: 10%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{competition.hour}}</td>
+                    <td>{{competition.eventId.name}}</td>
+                    <td>{{competition.get_category}}</td>
+                    <td>{{competition.get_gender}}</td>
+                    <td>{{competition.get_round}}</td>
+                    <td>{{competition.combinated}}</td>
+                    <td><button class="btn btn-sm btn-info" id="stagesButton">Etapas</button></td>
+                    <td><button class="btn btn-sm btn-primary" id="champMod">Modificar</button></td>
+                    <td><button class="btn btn-sm btn-warning" id="stagedDisabled">Desactivar</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>  
+{% else %}
+    <h6>Error</h6>
+{% endif %}
+
+
+<div class="modal fade" id="stagesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 80%;" role="document">
+      <div class="modal-content">
+        <div class="modal-header row">
+            <div class="col-8"> 
+              <h5 class="modal-title color-black" id="MTITLE">Intentos Realizados</h5>
+            </div>
+            <div class="col-1">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body" style="max-height: 250px;">
+            <table class="table table-sm table-striped table-bordered taborder" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 80%;">Etapas</th>    
+                        <th></th>
+                        <th></th>    
+                    </tr>
+                </thead>
+                <tbody id="TBODY">
+                        {% if stages%}
+                    {% for stage in stages %}
+                    <tr>
+                        <th>{{stage.name}}</th>   
+                        <td><button>.</button></td>
+                        <td><button>.</button></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td>No hay Etapas registradas</td></tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal-footer">
+          <!--Espacio disponible para alguna funcionalidad-->
+          <p>V.V = Velocidad del viento</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 80%;" role="document">
+      <div class="modal-content">
+        <div class="modal-header row">
+            <div class="col-8"> 
+              <h5 class="modal-title color-black">Intentos Realizados</h5>
+            </div>
+            <div class="col-1">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body" style="max-height: 60%;">
+            <form class='user' method="POST" action="#" autocomplete="off">
+                {% csrf_token %}
+                <!-- first_row -->
+                <div class="row">
+                    <div class="form-group col-6">        
+                        <label for="champ_id">Nombre Campeonato</label>
+                        <input class="form-control" type="text" name="event_name" id="champ_id"  placeholder="EJ: Torneo de mediofondo" required value="{{champ.championshipName}}">
+                    </div>    
+    
+                    <div class="form-group col-3">
+                        <input type="checkbox" value="True" name="atlexclub" id="limit">
+                        <label for="axc">Limitar atletas de club</label>
+                        <select name="limit_club" id="axc" required disabled>
+                            <option value="">Selecione una opción</option>
+                            <option value="1">1 Atleta por prueba</option>
+                            <option value="2">2 Atleta por prueba</option>
+                            <option value="3">3 Atleta por prueba</option>
+                            <option value="4">4 Atleta por prueba</option>
+                            <option value="5">5 Atleta por prueba</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group col-3">
+                        <label for="" required>Categorias</label>
+                        <ul class="list-group" style="position: absolute;overflow-y: scroll; height: 150px;">
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="TD" required> Todo competidor</li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="CD" required> Capacidades diferentes</li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="M" required> Master</li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="A" required> Adulto </li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u23" required> u23</li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u20" required> u20</li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u18" required> u18</li>
+                            <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u16" required> u16</li>
+                        </ul>
+                    </div>
+                </div>
+                <!--end_first_row -->
+              
+                <!--second_row-->
+                <div class="row">
+                    <div class="form-group col-3">
+                        <label for="region_id">Región</label>
+                        <input class="form-control" type="text" name="region" id="region_id" placeholder="Region Metropolitana" >
+                    </div>
+        
+                    <div class="form-group col-3">
+                        <label for="direction_id">Dirección</label>
+                        <input class="form-control" type="text" name="direction" id="direction_id" placeholder="Ej:Av. grecias 2021" >
+                    </div>
+    
+                    <div class="form-group col-3">
+                        <label for="">Máximo de pruebas por atleta</label>
+                        <select class="form-control" name="limit_athle" id="" required>
+                            <option value="">Seleccione una opcion</option>
+                            <option value="2">2 Individuales</option>
+                            <option value="21">2 Individuales + Posta</option>
+                            <option value="3">3 Individuales</option>
+                            <option value="31">3 Individuales + Posta</option>
+                            <option value="0">Sin limite</option>
+                        </select>
+                    </div>
+               </div> 
+                <!--end_second_row -->
+        
+                <!--third_row -->
+                <div class="row">
+                    <div class="form-group col-3">
+                        <label for="init_id">Fecha de inicio</label>
+                        <div class="input-group date">
+                            <input class="form-control" type="text" name="init_date" id="init_id">
+                            <span class="input-group-addon ml-1">
+                                <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                    <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                </svg>
+                            </span>            
+                        </div>
+                    </div>
+        
+                    <div class="form-group col-3">
+                        <label for="finish_id">Fecha de termino</label>
+                        <div class="input-group date">
+                            <input class="form-control" type="text" name="finish_date" id="finish_id" >
+                            <span class="input-group-addon ml-1">
+                                <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                    <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                </svg>
+                            </span>            
+                        </div>  
+                    </div>   
+                </div>
+                <!--end_third_row-->
+        
+                <div class="row"> 
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-sm btn-primary col-8">Modificar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+          <!--Espacio disponible para alguna funcionalidad-->
+        </div>
+
+      </div>
+    </div>
+  </div>

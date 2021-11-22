@@ -1,0 +1,82 @@
+{% extends 'Internal/competitions/iResults.html' %}
+
+<!--PLANILLA DE SALTOS-->
+{% block tables %}   
+    {% if heats_data %}
+        {% for heat in heats_data %}
+            <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+            <table class="table table-sm table-striped table-bordered" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 25%;">Atleta</th>
+                        <th class="text-center" style="width: 10%;">A. N.</th>
+                        <th class="text-center" style="width: 5%;">Pais</th> 
+                        <th class="text-center" style="width: 5%;">1</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>
+                        <th class="text-center" style="width: 5%;">2</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">3</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">4</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">5</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">6</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>                 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atle in heat.assign %}
+                    <tr>
+                        <td class="text-center">{{atle.strAthle}} {{atle.id}}</td>
+                        <td class="text-center">10 ENE 2000</td>
+                        <td class="text-center">Chile</td>
+                        {% for p in atle.render_participations %}
+                            <td class="text-center">
+                                <input class="marks" type="text" id="{{heat.heat.id}}-1-{{atle.id}}" value="{{p.result}}">
+                            </td>
+                            <td class="text-center">
+                                <input class="marks" type="text" id="{{heat.heat.id}}-1v-{{atle.id}}" value="{{p.wind}}">
+                            </td>
+                        {% endfor %}
+                        <!--
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-1-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-1v-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-2-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-2v-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-3-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-3v-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-4-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-4v-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-5-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-5v-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-6-{{atle.id}}"></td>
+                        <td class="text-center"><input class="marks" type="text" id="{{heat.heat.id}}-6v-{{atle.id}}"></td>
+                --></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %} 
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    {% endif %}
+    <script>
+        $('.marks').change(function(){
+            $.post("{% url 'changeResult' %}",
+                {'csrfmiddlewaretoken':'{{csrf_token}}','comp':'{{cpi}}','data':this.id},
+                function(response){
+                    console.log('error');
+                }
+                
+            );
+            console.log("ALGO CAMBIO en ",this.id);
+        });
+    </script>
+    <style>
+       
+        .marks{
+            float: center;
+            width:90%;
+        }
+    </style>
+{% endblock %}
