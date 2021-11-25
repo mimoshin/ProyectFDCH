@@ -1,0 +1,256 @@
+{% extends 'members/FedachiUser/fBase.html' %}
+{% load static %}
+
+{% block docs %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.min.css' %}">      
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <p>Gestionar</p>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_championships' %}">Campeonatos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_competitions' %}">Competencias</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active bg-primary text-white" href="{% url 'fedachi_athletes' %}">Atletas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_inscriptions' %}">Inscripciones</a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_clubs' %}">Clubes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_events' %}">Eventos</a>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">.</a>
+                    </li>
+                    -->
+                  </ul>
+            </div>
+        </div>
+        
+        <div class="mt-2"> 
+            <button class="btn btn-sm btn-success float-right ml-2" id="buttonJson">Cargar Archivo</button>
+            <button class="btn btn-sm btn-PRIMARY float-right mb-2" id="buttonNew">Nuevo Atleta</button>
+        </div>
+
+        {% if clubs %}
+            <div class="row">
+                <div class="col-6">
+                    Clubes
+                    <select class="form-control" name="selectClub" id="idclub">
+                        <option value="">Seleccione campeonato</option>
+                        {% for club in clubs %}
+                            <option value="{{club.id}}">{{club.clubName}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-8">
+                    <h1>No hay clubes registrados.</h1>
+                    <p>Antes de registrar atletas, asegurese de que hayan clubes registrados</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row mt-2" id="magia">
+
+        </div>
+    </div>
+
+    <!-- FILE MODAL -->
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header row">
+                    <div class="col-8"> 
+                        <h5 class="modal-title color-black" id="MTITLE">Subir archivo con datos</h5>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="modal-body" style="max-height: 250px;">
+                    <form action="{% url 'fedachi_championships' %}" id="fileform" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-3">
+                            <label for="optionID">Datos a cargar:</label>
+                            <select class="form-control" name="option" id="optionID">
+                                <option value="1">Atletas</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label for="fileID">Sube un archivo:</label>
+                            <input type="file" name="archivosubido" id="fileID">
+                            <button class="btn btn-sm btn-secondary mt-4" type="submit">Enviar</button>
+                        </div>
+                    </form> 
+                </div>
+                <div class="modal-footer">
+                <!--Espacio disponible para alguna funcionalidad-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END FILE MODAL -->
+
+    <!--NEW ATHLETE MODAL -->
+    <div class="modal fade" id="newAthlete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header row">
+                    <div class="col-8"> 
+                        <h5 class="modal-title color-black" id="MTITLE">Nuevo Atleta</h5>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="modal-body" style="max-height: 60%;">
+                    <form class='user' method="POST" action="{% url 'create_athlete' %}" autocomplete="off">
+                        {% csrf_token %}
+                        <!-- first_row -->
+                        <div class="row">
+                            <div class="form-group col-2">        
+                                <label for="nameID">Primer nombre</label>
+                                <input class="form-control" type="text" name="firstName" id="nameID"  placeholder="Fulano" required>
+                            </div>    
+        
+                            <div class="form-group col-2">
+                                <label for="name2ID">Segundo nombre</label>
+                                <input class="form-control" type="text" name="secondName" id="name2ID"  placeholder="Antonio" required>
+                            </div>
+
+                            <div class="form-group col-2">        
+                                <label for="surnameID">Apellido paterno</label>
+                                <input class="form-control" type="text" name="surname" id="surnameID"  placeholder="De tales" required>
+                            </div>    
+        
+                            <div class="form-group col-2">
+                                <label for="surname2ID">Apellido materno</label>
+                                <input class="form-control" type="text" name="secondSurname" id="surname2ID"  placeholder="Herrera" required>
+                            </div>
+
+                            <div class="form-group col-2">
+                                {% if clubs %}
+                                    <label for="clubAID">Club:</label>
+                                    <select class="form-control" name="clubAthle" id="clubAID">
+                                        <option value="">Seleccione campeonato</option>
+                                        {% for club in clubs %}
+                                            <option value="{{club.id}}">{{club.clubName}}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!--end_first_row -->
+                  
+                        <!--second_row-->
+                        <div class="row">
+                            <div class="form-group col-2">
+                                <label for="rutID">Rut:</label>
+                                <input class="form-control" type="text" name="rut" id="rutID"  placeholder="18614435-9" required>
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="genderID">Sexo:</label>
+                                <select class="form-control" name="gender" id="genderID">
+                                    <option value="1">Femenino</option>
+                                    <option value="2">Masculino</option>
+                                    <!--<option value="">otro</option>-->
+                                </select>
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="birthdateID">Fecha de Nacimiento</label>
+                                <div class="input-group date">
+                                    <input class="form-control" type="text" name="birthdate" id="birthdateID">
+                                    <span class="input-group-addon ml-1">
+                                        <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                            <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                        </svg>
+                                    </span>            
+                                </div>
+                            </div>
+                        </div> 
+                        <!--end_second_row -->
+            
+                        <!--third_row -->
+                        <div class="row">
+                             
+                        </div>
+                        <!--end_third_row-->
+            
+                        <div class="row"> 
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-sm btn-primary col-8">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+    
+                <div class="modal-footer">
+                <!--Espacio disponible para alguna funcionalidad-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END ATHLETE MODAL -->
+
+
+
+    <script>
+        $('#buttonJson').click(function(){
+            $('#fileModal').modal('show');
+        })
+
+        $('#buttonNew').click(function(){
+            $('#newAthlete').modal('show');
+        })
+
+        $('#idclub').change(function(event){
+            $('#magia').load("{% url 'Query_athletes' %}?id="+this.value);          
+        });
+
+        $('#fileform').submit(function(event){
+            file = this['archivosubido'].value.split('\\');
+            filename = file[file.length-1];
+            typefile = $('#optionID')[0].value;
+            
+            if(filename == 'athletes.json' && typefile == '1'){
+                return true;
+            }
+            else{
+                alert("Archivo Equivocado");
+                return false;
+            }
+        });
+
+        $('.input-group.date').datepicker({
+            startDate:'24-09-2020',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            language:'es'
+        });
+    </script>
+{% endblock %}

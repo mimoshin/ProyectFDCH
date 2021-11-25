@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    @page {
+ 		size:landscape;
+         margin: 1%;
+ 	}
+  
+    .center{text-align: center;}
+    .sub{text-decoration: underline black;}
+    .small{font-size: 70%;}
+
+    table{
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table td,th{
+        border: 1px solid black;
+        
+    }
+
+    table.status{
+        width: 30%;
+    }
+
+    table.status th{
+        text-align: left; 
+        height: 15px;
+        width: 6.5%;
+        margin-left: 2px;
+    }
+
+    table.status td{
+        text-align: center; 
+        height: 15px;
+        width: 55%;
+    }
+
+    table.content{
+        width: 100%;
+    }
+    table.content th{
+        text-align: center;
+        border: 0.5px solid black;
+        vertical-align:bottom;
+        height: 20px;
+        font-size: 85%;
+    }  
+    table.content td{
+        text-align: center;
+        border: 0.5px solid black;
+        vertical-align:bottom;
+        height: 10px;
+    }
+
+
+</style>
+
+<body>
+    <img src="{{url}}" alt="Image" height="45px" style="text-align:right;">
+        <div style="line-height: 0.5;">
+            <h2 class="center sub">Campeonato </h2>
+            <h4 class="center">Chile</h4>
+        </div>        
+        
+        <table class="status">
+            <tbody>
+                <tr>
+                    <th class="small">PRUEBA</th> <td class="small">{{competition.eventId.name}}</td>
+                </tr>
+                <tr>
+                    <th class="small">FECHA</th> <td class="small">23/10/2021 - 10:00 hrs.</td>
+                </tr>
+                <tr>
+                    <th class="small">RONDA</th> <td class="small">{{competition.get_round}}</td>
+                </tr>
+                <tr>
+                    <th class="small">SEXO</th> <td class="small">{{competition.get_gender}}</td>
+                </tr>
+                <tr>
+                    <th class="small">JUEZ</th> <td class="small">MAXIMILIANO PEREZ</td>
+                </tr>
+            </tbody>
+        </table>
+
+    {% if heats %}
+        {% for heat in heats %}
+        <h2 class="sub" style="font-size: 15px;">{{heat.heat.serie}} </h2>
+        <table class="content">
+            <thead>
+                <tr>
+                    <th colspan="3"></th>
+                    <th class="center" colspan="30">Alturas</th>
+                </tr>
+                <tr>
+                    <th class="center" style="width: 18%;">Nombre</th>
+                    <th class="center" style="width: 5%;">A.N</th>
+                    <th class="center" style="width: 5%;">Club</th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th colspan="3" style="width: 5%;"></th>
+                    <th style="width: 6%;">Marca Final</th>
+                    <th style="width: 4%;">Lugar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for atle in heat.assign %}
+                    <tr>
+                        <td class="small" rowspan="2">{{atle.athleteId.name}}</td>
+                        <td class="small" rowspan="2">1-1-2001</td>
+                        <td class="small" rowspan="2">Chile</td>
+                        <td class="small" colspan="0"></td>
+                        <td class="small" colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td colspan="0"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>___________________</p>
+        <p>Firma encargado  </p>
+        <p style="float: right;">Observaciones: ______________________________________________________________________________________________________________________</p>
+       
+                    <p>Rut: 12.345.678-9 <p style="margin-left: 422px;">______________________________________________________________________________________________________________________</p>
+                </p>
+        <p style="page-break-before: always" ></p>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

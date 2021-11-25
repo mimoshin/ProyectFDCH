@@ -1,0 +1,93 @@
+{% extends 'External/eBase.html' %}
+
+
+<!--CORREGIR ALINEACION DE TABLAS CON ETAPAS-->
+{% block content %}
+    <div class="container-fluid mt-2">
+        {% if champ %}
+            <h3 class="text-center">{{champ.name}}</h3>
+        {% else %}
+            <h3 class="text-center">..Campeonato..</h3>
+        {% endif %}
+        <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'championshipsView' %}">Volver</a>
+        <p class="text-center">Chile</p>
+        {% if stages %}
+            <!--principal cards-->
+            {% for cards in stages %}
+                <div class="card" style="border-radius: 20px;">
+                    <!--card body-->
+                    <div class="card-body" id="card{{cards.stage.pk}}">
+                        <!--button collapse-->
+                        <button class="btn btn-sm float-right" data-toggle="collapse" data-target="#coll{{cards.stage.pk}}" aria-expanded="true" aria-controls="coll{{cards.stage.pk}}"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                            </svg>
+                        </button>
+                        <!--end button collapse-->
+                        <!--title champ-->
+                        <h5 class="card-tittle">{{cards.stage.name}}</h5>
+                        <!--end title champ-->
+
+                        <!--table competition-->
+                        <div id="coll{{cards.stage.pk}}" class="show" aria-labelledby="card{{cards.stage.pk}}" data-parent="#card{{cards.stage.pk}}">
+                            {% if cards.competitions %}
+                            <table class="table table-sm table-striped taborder">
+                                <thead class="table-info">
+                                    <tr>
+                                        <th style="width: 10%;">HORA</th>
+                                        <th style="width: 50%;">PRUEBA</th>
+                                        <th style="width: 10%;">CATEGORIA</th>
+                                        <th style="width: 10%;">RONDA</th>
+                                        <th style="width: 10%;"> </th>
+                                        <th style="width: 10%;"> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>                            
+                                {% for data in cards.competitions%}
+                                    <tr>
+                                        <td>{{data.hour |date:"H:i a"}}</td>
+                                        <td>{{data.description}}</td>
+                                        <td>{{data.get_category}}</td>
+                                        <td>{{data.get_round}}</td>
+                                        <td><a type="button" class="btn btn-sm btn-warning" href="{% url 'startlistView' data.pk %}">STARTLIST</a></td>
+                                        <td>
+                                            <a type="button" class="btn btn-sm btn-info" href="{% url 'results_view' data.pk %}">RESULTADOS</a>
+                                            {% if data.type == 3 %}
+                                                <a type="button" class="btn btn-sm btn-info" href="{% url 'saltos2' data.pk %}">R2</a>
+                                            {% elif data.type == 5 %}
+                                                <a type="button" class="btn btn-sm btn-info" href="{% url 'lanz2' data.pk %}">R2</a>
+                                            {% endif %}
+                                        </td>
+                                     </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                                <p class="text-center">No hay competencias registradas</p>
+                            {% endif %}
+                        </div>
+                        <!--end table competition-->
+                     </div>
+                    <!--end card body-->
+                </div>
+                <!--end principal cards-->
+            {% endfor %}
+        <!--no stages-->
+        {% else %}
+            <div class="card m-2 text-center">
+                <div class="card-body"> 
+                    <h1>No hay etapas registradas.</h1>
+                </div>
+            </div>
+        {% endif %}
+        <!--end no stages-->
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

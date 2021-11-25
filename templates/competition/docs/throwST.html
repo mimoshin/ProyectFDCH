@@ -1,0 +1,152 @@
+<html>
+    <head>
+        <style>
+            @page{
+                size: landscape;
+                margin-top: 5pt;
+                margin-left: 5pt;
+            }
+
+            .center{text-align: center;}
+
+            .sub{text-decoration: underline black;}
+
+            table{
+        width: 100%;
+        border-collapse: collapse;
+        padding: 0%;
+        margin: 0%;
+    }
+    table td,th{
+        border: 1px solid black;
+        
+    }
+    .intento{
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        grid-template-rows: 50% 50%;
+        padding: 0%;
+        margin: 0%;
+    }
+
+    table.status th{
+                text-align: left; 
+                height: 15px;
+                width: 6.5%;
+                margin-left: 2px;
+            }
+
+            table.status td{
+                text-align: center; 
+                height: 20px;
+                width: 20%;
+            }
+
+            table.content{
+                width: 100%;
+           }
+            table.content th,td{
+                text-align: center;
+                border: 0.5px solid black;
+                vertical-align:bottom;
+                height: 20px;
+                
+            }  
+            
+        </style>
+    </head>
+    <body>
+        <img src="{{url}}" alt="Image" height="45px" style="text-align:right;">
+        <div style="line-height: 0.5;">
+            <h1 class="center sub">Campeonato</h1>
+            <h4 class="center">Chile</h4>
+        </div>        
+        
+        <table class="status">
+            <tbody>
+                <tr>
+                    <th>PRUEBA</th> <td>{{competition.eventId.name}}</td>
+                </tr>
+                <tr>
+                    <th>FECHA</th> <td> </td>
+                </tr>
+                <tr>
+                    <th>RONDA</th> <td>{{competition.get_round}}</td>
+                </tr>
+                <tr>
+                    <th>SEXO</th> <td>{{competition.get_gender}}</td>
+                </tr>
+                <tr>
+                    <th>JUEZ</th> <td> </td>
+                </tr>
+                 
+            </tbody>
+        </table>
+        <h2 class="sub">{{heat.heat.serie}}</h2>
+
+        {% if competition %}      
+            {% if heats %}
+                {% for heat in heats %}
+                <h2 class="sub">{{heat.heat.serie}} </h2>
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td colspan="9">Intentos</td>
+                            </tr>
+                            <tr>
+                                <th style="width: 20%;">Nombre</th>
+                                <th style="width: 8%;">A.N</th>
+                                <th style="width: 12%;">Club</th>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>O.P</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                                <th>Marca Final</th>
+                                <th>Lugar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for atle in heat.assign %}
+                                <tr>
+                                    {% if atle.strAthle == 'PIVOTE' %}
+                                        <td>{{atle.athleteId.name}}</td>
+                                        <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>
+                                        <td>{{atle.athleteId.clubId}}</td>
+                                    {% else %}
+                                        <td >{{atle.strAthle}}</td>
+                                        <td >--/--/----</td>
+                                        <td >{{atle.strClub}}</td>
+                                    {% endif %}
+                                    <td></td>
+                                    <td></td>                                   
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>                                   
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>                                   
+                                    <td></td>            
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                <br><br>
+                <p>___________________</p>
+                <p>Firma encargado 
+                    <p style="margin-left: 350px;">Observaciones: ______________________________________________________________________________________________________________________</p>
+                </p>
+                    <p>Rut: 12.345.678-9 <p style="margin-left: 422px;">______________________________________________________________________________________________________________________</p>
+                </p>
+
+                <pdf:nextpage>
+                {% endfor %}
+            {% else %}
+                    <h3 class="text-center">No hay series registradas hasta el momento. 1</h3>
+            {% endif %}
+        {% endif %}
+    </body>
+</html>

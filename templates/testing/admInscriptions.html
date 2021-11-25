@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Gestion de Inscripciones</h1>
+    <p>total de Campeonatos: {{champs|length}}</p>
+
+    <div class="row">
+        <div class="col-4">
+            <select class="form-control" name="championship" id="idChamp">
+                <option class="form-control" value="">Seleccione un Campeonatos</option>
+                {% for champ in champs %}
+                    <option value="{{champ.id}}">{{champ.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4 form-group d-inline" id="magia">
+        </div>
+    </div>
+
+    <div class="container-fluid" id="magia2">
+
+    </div>
+
+</div>
+
+<script>
+    $('#idChamp').change(function(){ 
+        $('#magia').load("{% url 'Q_competitions' %}?id="+this.value);
+    });
+
+    $('#magia').on('click','button.botonfind',function(){
+        selected = $('#magia #competitions ')[0].value;
+        $('#magia2').load("{% url 'Q_inscriptions' %}?id="+selected);
+    });
+
+    $('#magia2').on('click','button',function(){
+        if(this.id == 'removeAll'){
+            selected_id = $('#magia #competitions ')[0].value;
+            $.get("{% url 'remove_inscriptions' %}",
+                    {'cID':selected_id,'option':'all'},
+                    function(response){
+                        console.log(response);
+                    });
+        }
+
+        else if(this.id == 'modButton'){
+            console.log("Modificar inscripcion",$(this).data('athle'));
+        }
+        else if(this.id == 'removeButton'){
+            console.log("Eliminar inscripcion",$(this).data('athle'));
+            selected_id = $(this).data('athle');
+            $.get("{% url 'remove_inscriptions' %}",
+                    {'id':selected_id,'option':'only'},
+                    function(response){
+                        console.log(response);
+                    });
+        }
+        else if(this.id == 'genButton'){
+            selected_num = $('#magia2 #numInscriptions ')[0].value;
+            selected_id = $('#magia #competitions ')[0].value;
+
+            if(selected_num>0){
+                $.get("{% url 'New_inscriptions' %}",
+                    {'id':selected_id,'num':selected_num},
+                    function(response){
+                        console.log(response);
+                    });
+            }
+        }
+    });
+</script>
+
+
+{% endblock %}

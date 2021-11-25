@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+<!--FRUTIGER FONT BUSCAR-->
+
+{% block content %}
+<div class="container-fluid mt-2">
+   {% for x in series %}
+        {{x}}
+   {% endfor %}
+</div>
+
+{% endblock %}

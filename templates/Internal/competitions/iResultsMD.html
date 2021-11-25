@@ -1,0 +1,67 @@
+{% extends 'Internal/competitions/iResults.html' %}
+
+<!--PLANILLA DE MEDIOFONDO-->
+{% block tables %}
+    {% if heats_data %}
+        {% for heat in heats_data %}
+            <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+                <table class="table table-sm table-striped taborder table-bordered" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 3%;">Lugar</th>
+                        <th class="text-center" style="width: 3%;">Dorsal</th>
+                        <th class="text-center" style="width: 20%;">Atleta</th>
+                        <th class="text-center" style="width: 6%;">A. N.</th>
+                        <th class="text-center" style="width: 12%;">Club</th>
+                        <th class="text-center" style="width: 6%;">Marca</th>                
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atle in heat.assign %}
+                    <tr>
+                        <td class="text-center">{{atle.place}}</td>
+                        <td class="text-center">0</td>
+                        {% if atle.strAthle == 'PIVOTE' %}
+                            <td>{{atle.athleteId.name}}</td>
+                            <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>
+                            <td>{{atle.athleteId.clubId}}</td>
+                        {% else %}
+                            <td >{{atle.strAthle}}</td>
+                            <td >--/--/----</td>
+                            <td >{{atle.strClub}}</td>
+                        {% endif %} 
+                        <td class="text-center marks"> 
+                            <input class="text-center inputmark" type="text" value="{{atle.result}}" id="{{heat.heat.id}}-{{atle.athleteId.id}}">
+                            <button class=" btn btn-sm btn-success markbutton" id="{{heat.heat.id}}-{{atle.athleteId.id}}">G</button>
+                            <button class=" btn btn-sm btn-warning resetmark" id="{{heat.heat.id}}-{{atle.athleteId.id}}">R</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %} 
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    {% endif %}
+    <script>
+        $('.markbutton').on('click',function(){
+            value = $('#'+this.id)[0].value;
+
+            $.post("{% url 'results_view' cpi %}",
+                {'csrfmiddlewaretoken':'{{csrf_token}}','atleta':this.id,'value':value},
+                function(response){
+                    if (response){
+                        location.reload();
+                    }
+                    console.log('error');
+                }
+            );
+        })
+    </script>
+    <style>
+        .inputmark{
+            float: left;
+            width:50%;
+        }
+    </style>
+{% endblock %}

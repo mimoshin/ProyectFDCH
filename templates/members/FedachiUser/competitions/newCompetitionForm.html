@@ -1,0 +1,110 @@
+
+
+<!--{% url 'fedachi_competitions' %}-->
+<table class="table table-sm table-striped" style="width: 100%;">
+        <thead class="table-info">
+          <tr>
+            <th style="width: 10%;">Etapa</th>
+            <th style="width: 10%;">Hora</th>
+            <th style="width: 20%;">Prueba</th>
+            <th style="width: 10%;">Ronda </th>
+            <th style="width: 10%;">Categoria </th>
+            <th style="width: 10%;">Genero</th>
+            <th style="width: 12%;">Pruebas Combinadas </th>
+            <th style="width: 10%;"></th>     
+          </tr>
+            </thead>
+            <tbody>
+              <tr >
+                <td><select class="form-control" name="stages" id="stagesID">
+                    {% if stages %}
+                      {% for stage in stages %} 
+                        <option value="{{stage.id}}">{{stage.name}}</option>
+                      {% endfor %}
+                    {% endif %}
+                  </select></td>
+                <td><input class="form-control timepicker " id="timeID" type="text"></td>
+                <td>
+                  <select class="form-control" name="compt" id="comptID">
+                    {% if events %}
+                      {% for event in events %} 
+                        <option value="{{event.id}}">{{event.name}}</option>
+                      {% endfor %}
+                    {% endif %}
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control" name="round" id="roundID">
+                    <option value="1">SERIE</option>
+                    <option value="2">SERIES C/T</option>
+                    <option value="3">FINAL</option>
+                    <option value="4">FINAL C/T</option>
+                    <option value="5">SEMIFINAL</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control" name="category" id="categoryID">
+                    {% if champ.get_num_categorys == 1%}
+                      {{champ.categorys_options | safe}}
+                    {% else %}
+                      <option value="">CATEGORIA</option>
+                      {% for x in champ.categorys_options %}
+                        {{x | safe}}
+                      {% endfor %}
+                    {% endif %}
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control" name="gender" id="genderID">
+                    <option value="1">DAMAS</option>
+                    <option value="2">VARONES</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control" name="comb" id="combID">
+                    <option value="0">NO</option>
+                    <option value="1">HEPTATLÓN</option>
+                    <option value="2">DECATLÓN</option>
+                  </select>
+                </td>
+                <td><button class="btn btn-sm btn-primary accept">CREAR</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+
+<script>
+    $('.timepicker').timepicker({
+            timeFormat: 'HH:mm p',
+            interval: 15,
+            minTime: '8',
+            maxTime: '23:00pm',
+            defaultTime: '8',
+            startTime: '08:00',
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true
+        });
+
+    $('.accept').click(function(){
+      stage = $('#stagesID')[0].value;
+      data = {'csrfmiddlewaretoken': '{{csrf_token}}',
+              'time':$('#timeID')[0].value,
+              'compt':$('#comptID')[0].value,
+              'round':$('#roundID')[0].value,
+              'category':$('#categoryID')[0].value,
+              'gender':$('#genderID')[0].value,
+              'comb':$('#combID')[0].value,};
+      
+      $.post("{% url 'newCompetition' 0 %}".replace('0',stage), 
+        data, 
+        function(response){
+          if(response === 'True'){
+            location.reload();
+          }
+          else{
+            alert('datos incorrectos');
+          }
+        });
+    });
+</script>

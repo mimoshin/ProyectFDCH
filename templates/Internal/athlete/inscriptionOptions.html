@@ -1,0 +1,32 @@
+{% if data %}
+<form method="post" action="{% url 'probandoinscripcion' %}">
+    <input type="text" name="athlete" value="{{athle}}" hidden>
+        {% csrf_token %}
+        <table class="table">
+            <thead class="table-info">
+                <tr>
+                    <th>Prueba</th>
+                    <th>Categoria</th>
+                    <th>Marca</th>
+                    <th>Inscribir</th>
+                </tr>    
+            </thead>
+            <tbody id='competitions_body'>
+                {% for compt in data %}
+                <tr>
+                    <td id="{{compt.id}}">{{compt.eventId.name}}</td>
+                    <td>{{compt.get_category}}</td>
+                    <td><input type="text" id="mark{{compt.pk}}" name="marka{{compt.pk}}"></td>
+                    <td><div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="s{{compt.pk}}" name="COMPT|{{compt.pk}}">
+                            <label class="custom-control-label" for="s{{compt.pk}}"></label>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}          
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Inscribir</button>
+    </form>
+{% endif %}

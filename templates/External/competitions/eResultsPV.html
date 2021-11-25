@@ -1,0 +1,119 @@
+{% extends 'External/competitions/eResults.html' %}
+
+<!--PLANILLA DE SALTOS-->
+{% block tables %}   
+    {% if heats_data %}
+        {% for heat in heats_data %}
+        <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+            <table class="table table-sm table-striped table-bordered taborder" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 10%;">Lugar</th>
+                        <th class="text-center" style="width: 10%;">Dorsal</th>
+                        <th class="text-center" style="width: 40%;">Atleta</th>
+                        <th class="text-center" style="width: 10%;">A. N.</th>
+                        <th class="text-center" style="width: 10%;">Club</th>
+                        <th class="text-center" style="width: 10%;">Marca</th>  
+                        <th style="width: 10%;"></th>              
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for asign in heat.assign %}
+                    <tr>
+                        <td class="text-center">{{asign.place}}</td>
+                        <td class="text-center">-</td>
+                        {% if asign.strAthle == 'PIVOTE' %}
+                            <td class="text-left">{{asign.athleteId.name}}</td>
+                        {% else %}
+                            <td class="text-left">{{asign.strAthle}}</td>
+                        {% endif %}
+                        <td class="text-center">10 ENE 2000</td>
+                        <td class="text-center">Chile</td>
+                        <td class="text-center">{{asign.get_result}}</td>
+                        <td><button class="btn btn-sm btn-primary intentos" id="{{asign.id}}">Ver Intentos</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %} 
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    {% endif %}
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 80%;" role="document">
+          <div class="modal-content">
+            <div class="modal-header row">
+                <div class="col-8"> 
+                  <h5 class="modal-title color-black" id="MTITLE">Intentos Realizados</h5>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="max-height: 250px;">
+                <table class="table table-sm table-striped table-bordered taborder" >
+                    <thead class="table-info">
+                        <tr>
+                            <th class="text-center" style="width: 9%;">Intento 1</th>
+                            <th class="text-center" style="width: 6%;">V.V</th>
+                            <th class="text-center" style="width: 9%;">Intento 2</th>
+                            <th class="text-center" style="width: 6%;">V.V</th>    
+                            <th class="text-center" style="width: 9%;">Intento 3</th>
+                            <th class="text-center" style="width: 6%;">V.V</th>    
+                            <th class="text-center" style="width: 9%;">Intento 4</th>
+                            <th class="text-center" style="width: 6%;">V.V</th>   
+                            <th class="text-center" style="width: 9%;">Intento 5</th>
+                            <th class="text-center" style="width: 6%;">V.V</th>    
+                            <th class="text-center" style="width: 9%;">Intento 6</th>
+                            <th class="text-center" style="width: 6%;">V.V</th>                 
+                        </tr>
+                    </thead>
+                    <tbody id="TBODY">
+                        <tr>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                            <td class="text-center">.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="modal-footer">
+              <!--Espacio disponible para alguna funcionalidad-->
+              <p>V.V = Velocidad del viento</p>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+
+      <script>
+        $('.intentos').on('click',function(){
+            $.post("{% url 'Qjumps' 0 %}".replace(0,this.id),
+                {'csrfmiddlewaretoken':'{{csrf_token}}'},
+                function(response){
+                    if(response){
+                        $('#MTITLE').html('Intentos Realizados: '+response['name']);
+                        $('#TBODY').html(response['body']);
+                    }
+                    else{
+                        console.log("no funciona")
+                    }
+                });
+            $('#exampleModal').modal('show');
+          });
+      </script>
+{% endblock %}

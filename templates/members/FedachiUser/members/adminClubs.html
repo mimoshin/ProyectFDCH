@@ -1,0 +1,199 @@
+{% extends 'members/FedachiUser/fBase.html' %}
+{% load static %}
+
+{% block docs %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.min.css' %}">      
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- PRINCIPAL CONTAINER -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <p>Gestionar</p>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_championships' %}">Campeonatos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_competitions' %}">Competencias</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fedachi_athletes' %}">Atletas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_inscriptions' %}">Inscripciones</a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link active bg-primary text-white" href="{% url 'fedachi_clubs' %}">Clubes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fedachi_events' %}">Eventos</a>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">.</a>
+                    </li>
+                    -->
+                  </ul>
+            </div>
+        </div>
+        <div class="mt-2"> 
+            <button class="btn btn-sm btn-success float-right ml-2" id="buttonJson">Cargar Archivo</button>
+            <button class="btn btn-sm btn-primary float-right mb-2" id="buttonNew">Nuevo Club</button>
+        </div>
+
+        {% if clubs %}
+            <p class="mt-2">total de clubes: {{clubs|length}}</p>
+            <div class="row">
+                <div class="col-6">
+                    <select class="form-control" name="selectChamp" id="idclub">
+                        <option value="">Seleccione campeonato</option>
+                        {% for club in clubs %}
+                            <option value="{{club.id}}">{{club.clubName}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-8">
+                    <h1>No hay clubes registrados.</h1>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row mt-2" id="magia">
+        </div>
+    </div>
+    <!-- END PRINCIPAL CONTAINER -->
+
+    <!--FILE MODAL -->
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 80%;" role="document">
+          <div class="modal-content">
+            <div class="modal-header row">
+                <div class="col-8"> 
+                  <h5 class="modal-title color-black" id="MTITLE">Subir archivo con datos</h5>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+    
+            <div class="modal-body" style="max-height: 250px;">
+                <form action="{% url 'fedachi_clubs' %}" id="fileform" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-3">
+                        <label for="optionID">Datos a cargar:</label>
+                        <select class="form-control" name="option" id="optionID">
+                            <option value="1">Club</option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <label for="fileID">Sube un archivo:</label>
+                        <input type="file" name="archivosubido" id="fileID">
+
+                        <button class="btn btn-sm btn-secondary mt-4" type="submit"> Enviar</button>
+                    </div>
+                    
+                </form> 
+            </div>
+    
+            <div class="modal-footer">
+              <!--Espacio disponible para alguna funcionalidad-->
+            </div>
+    
+          </div>
+        </div>
+    </div>
+    <!--END FILE MODAL -->
+
+    <!--NEW CLUB MODAL -->
+    <div class="modal fade" id="newclub" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header row">
+                    <div class="col-8"> 
+                        <h5 class="modal-title color-black" id="MTITLE">Subir archivo con datos</h5>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="modal-body" style="max-height: 250px;">
+                    <form class='user' method="POST" action="{% url 'create_club' %}" autocomplete="off">
+                        {% csrf_token %}
+                        <!-- FIRST ROW -->
+                        <div class="row">
+                            <div class="form-group col-6">        
+                                <label for="clubID">Nombre del Club</label>
+                                <input class="form-control" type="text" name="clubName" id="clubID"  placeholder="Club Atletico ...." required>
+                            </div>    
+                        </div>
+                        <!-- END FIRST ROW -->
+                
+                        <!-- SECOND ROW -->
+                        <div class="row">
+                        </div> 
+                        <!-- END SECOND ROW -->
+            
+                        <!-- THIRD ROW -->
+                        <div class="row">    
+                        </div>
+                        <!-- END THIRD ROW -->
+
+                        <!-- FOUR ROW -->
+                        <div class="row"> 
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-sm btn-primary col-8">Crear</button>
+                            </div>
+                        </div>
+                        <!-- END FOUR ROW -->
+                    </form>
+                </div>
+    
+                <div class="modal-footer">
+                <!--Espacio disponible para alguna funcionalidad-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END NEW CLUB MODAL -->
+
+    <script>
+        $('#buttonJson').click(function(){
+            $('#fileModal').modal('show');
+        })
+        $('#buttonNew').click(function(){
+            $('#newclub').modal('show');
+        })
+
+        $('#fileform').submit(function(event){
+            file = this['archivosubido'].value.split('\\');
+            filename = file[file.length-1];
+            typefile = $('#optionID')[0].value;
+            
+            if(filename == 'clubs.json' && typefile == '1'){
+                return true;
+            }
+            else{
+                alert("Archivo Equivocado");
+                return false;
+            }
+        });
+
+        $('#idclub').change(function(){
+            $('#magia').load("{% url 'Query_athletes' %}?id="+this.value);
+        });
+    </script>
+{% endblock %}

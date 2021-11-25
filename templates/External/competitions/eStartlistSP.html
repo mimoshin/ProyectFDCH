@@ -1,0 +1,39 @@
+{% extends 'External/competitions/eStartlist.html' %}   
+
+{% block tables %}
+    {% if heats_data %}
+        {% for heat in heats_data %}
+            <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+                <table class="table table-sm table-striped table-bordered taborder" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 3%;">Pista</th>
+                        <th class="text-center" style="width: 20%;">Atleta</th>
+                        <th class="text-center" style="width: 6%;">A. N.</th>
+                        <th class="text-center" style="width: 10%;">Club</th>
+                        <th class="text-center" style="width: 6%;">PB</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atle in heat.assign %}
+                    <tr>
+                        <td class="text-center">{{atle.line}}</td>
+                        {% if atle.strAthle == 'PIVOTE' %}
+                            <td>{{atle.athleteId.name}}</td>
+                            <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>
+                            <td>{{atle.athleteId.clubId}}</td>
+                        {% else %}
+                            <td >{{atle.strAthle}}</td>
+                            <td >--/--/----</td>
+                            <td >{{atle.strClub}}</td>
+                        {% endif %} 
+                        <td class="text-center">{{atle.personalBest}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %} 
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    {% endif %}
+{% endblock %}

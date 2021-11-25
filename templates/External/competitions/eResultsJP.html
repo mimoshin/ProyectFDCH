@@ -1,0 +1,60 @@
+{% extends 'External/competitions/eResults.html' %}
+
+<!--PLANILLA DE SALTOS-->
+{% block tables %}   
+    {% if heats_data %}
+        {% for heat in heats_data %}
+        <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+            <table class="table table-sm table-striped table-bordered taborder" >
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center" style="width: 25%;">Atleta</th>
+                        <th class="text-center" style="width: 10%;">A. N.</th>
+                        <th class="text-center" style="width: 5%;">Club</th> 
+                        <th class="text-center" style="width: 5%;">Intento 1</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>
+                        <th class="text-center" style="width: 5%;">Intento 2</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">Intento 3</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">Intento 4</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">Intento  5</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>    
+                        <th class="text-center" style="width: 5%;">Intento 6</th>
+                        <th class="text-center" style="width: 5%;">V.V</th>                 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atle in heat.assign %}
+                    <tr>
+                        {% if atle.strAthle == 'PIVOTE' %}
+                            <td>{{atle.athleteId.name}}</td>
+                            <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>
+                            <td>{{atle.athleteId.clubId}}</td>
+                        {% else %}
+                            <td >{{atle.strAthle}}</td>
+                            <td >--/--/----</td>
+                            <td >{{atle.strClub}}</td>
+                        {% endif %} 
+                        <td class="text-center">1</td>
+                        <td class="text-center">+2.0</td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">+2.0</td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">+2.0</td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">+2.0</td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">+2.0</td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">+2.0</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %} 
+    {% else %}
+        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    {% endif %}
+{% endblock %}
