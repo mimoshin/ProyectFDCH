@@ -1,9 +1,12 @@
-from django.http.response import HttpResponse
+import json
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
+from base.utils import json_to_list
 from championship.models import ChampionshipInterface as CI
 from .models import AthleteInterface as AI, fileslif
 from competition.models import CompetitionFactory as CF
+from member.models import MembersFactory as MF
 
 
 #-----------------FILTER VIEWS ----------------------------
@@ -77,11 +80,30 @@ def QFathletes(request):
         return render(request,template,dataT)
 #_____________ END QUERYS ________________________________
 
-#_____________ QUERYS ____________________________________
+#_____________ CHANGES ____________________________________
 @login_required(login_url='/')
 def newAthlete(request):
     if request.method == 'POST':
         data = request.POST.dict()
         AI.new_athlete(data)
         return redirect('fedachi_athletes')
+
+@login_required(login_url='/')
+def modifyAthlete(request,athleID):
+   
+    if request.method == 'POST':
+        data = request.POST.dict()
+        AI.modify_athlete(athleID,data)
+        return redirect('fedachi_athletes')
+    if request.method == 'GET':
+        athlete = AI.get_athlete(athleID)
+        allclubs = MF.get_all_clubs()
+        return render(request,'Internal/athlete/athleModify.html',{'athlete':athlete,'clubs':allclubs})
+
+@login_required(login_url='/')
+def deleteAthlete(request):
+    if request.method == 'GET':
+        data = request.GET.dict()
+        athlete = AI.delete_athlete(data['id'])
+        return HttpResponse(True)
 #_____________ END QUERYS ____________________________________

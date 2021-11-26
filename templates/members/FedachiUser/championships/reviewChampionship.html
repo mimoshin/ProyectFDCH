@@ -73,7 +73,7 @@
                   {% if cards.competitions %}
                     {% for data in cards.competitions%}
                       <tr>
-                        <td>{{data.hour}}</td>
+                        <td>{{data.hour|date:"H:i a"}}</td>
                         <td class="cbutton" id="{{data.id}}">
                           <a type="button" class="btn btn-sm" href="{% url 'competition' data.id %}">{{data.description}} {{data.get_inscriptions}}</a>
                         </td>
@@ -105,10 +105,10 @@
               <!--end table competition-->
               
               <!--form competition table-->
-              <table class="table competitionform d-none"  id="{{cards.stage.id}}" style="width: 100%;">
+              <table class="table competitionform d-none table-sm taborder"  id="{{cards.stage.id}}" style="width: 100%;">
                 <thead class="table-info">
                   <tr>
-                    <th style="width: 10%;">Hora</th>
+                    <th style="width: 8%;">Hora</th>
                     <th style="width: 20%;">Prueba</th>
                     <th style="width: 10%;">Ronda </th>
                     <th style="width: 10%;">Categoria </th>

@@ -17,13 +17,13 @@
                 {% for athlete in athletes %}
                 <tr>
                     
-                    <td>{{athlete.id}}</td>
+                    <td>{{athlete.id}} </td>
                     <td>Activo</td>
                     <td>{{athlete.firstName}}</td>
                     <td>{{athlete.surname}}</td>
                     <td>{{athlete.rut}}</td>
-                    <td><button class="btn btn-sm btn-success">Modificar</button></td>
-                    <td><button class="btn btn-sm btn-warning">Desactivar</button></td>
+                    <td><a type="button" class="btn btn-sm btn-success" href="{% url 'modify_athlete' athlete.id %}">Modificar</a></td>
+                    <td><button class="btn btn-sm btn-danger removeB" id="{{athlete.id}}">Eliminar</button></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -32,3 +32,55 @@
         <h5 class="text-center">No hay atletas registrados</h5>
     {% endif %}
 </div>
+
+<!-- FILE MODAL -->
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header row">
+                <div class="col-8"> 
+                    <h5 class="modal-title color-black" id="MTITLE">Subir archivo con datos</h5>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="max-height: 250px;">
+                <form action="{% url 'fedachi_championships' %}" id="fileform" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-3">
+                        <label for="optionID">Datos a cargar:</label>
+                        <select class="form-control" name="option" id="optionID">
+                            <option value="1">Atletas</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label for="fileID">Sube un archivo:</label>
+                        <input type="file" name="archivosubido" id="fileID">
+                        <button class="btn btn-sm btn-secondary mt-4" type="submit">Enviar</button>
+                    </div>
+                </form> 
+            </div>
+            <div class="modal-footer">
+            <!--Espacio disponible para alguna funcionalidad-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--END FILE MODAL -->
+
+<script>
+    $('.removeB').click(function(){
+        $.get("{% url 'delete_athlete' %}",
+                {'id':this.id},
+                function(response){
+                    if (response){
+                        location.reload();
+                    }
+                }
+            );
+    })
+</script>

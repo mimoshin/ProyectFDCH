@@ -109,13 +109,13 @@
               <table class="table competitionform d-none"  id="{{cards.stage.id}}" style="width: 100%;">
                 <thead class="table-info">
                   <tr>
-                    <th style="width: 10%;">Hora</th>
-                    <th style="width: 20%;">Prueba</th>
-                    <th style="width: 10%;">Ronda </th>
-                    <th style="width: 10%;">Categoria </th>
-                    <th style="width: 10%;">Genero</th>
-                    <th style="width: 12%;">Pruebas Combinadas </th>
-                    <th style="width: 10%;"></th>     
+                    <th style="width: 10%; font-size: 10%;">Hora</th>
+                    <th style="width: 20%; font-size: 90%;">Prueba</th>
+                    <th style="width: 10%; font-size: 90%;">Ronda </th>
+                    <th style="width: 10%; font-size: 90%;">Categoria </th>
+                    <th style="width: 10%; font-size: 90%;">Genero</th>
+                    <th style="width: 12%; font-size: 90%;">Pruebas Combinadas </th>
+                    <th style="width: 10%; font-size: 90%;"></th>     
                   </tr>
                     </thead>
                     <tbody>
@@ -144,7 +144,7 @@
                             {% if champ.get_num_categorys == 1%}
                               {{champ.categorys_options | safe}}
                             {% else %}
-                              <option value="">CATEGORIA</option>
+                              <option value="">CATEGORIA 233</option>
                               {% for x in champ.categorys_options %}
                                 {{x | safe}}
                               {% endfor %}

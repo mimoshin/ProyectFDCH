@@ -1,0 +1,90 @@
+ {% extends 'Internal/iBase.html' %}
+
+
+ {% block docs %}
+ {% endblock %}
+
+ {% block content %}
+    <div class="container-fluid">
+        <form class='user' method="POST" action="{% url 'modify_athlete' athlete.id %}" autocomplete="off">
+            {% csrf_token %}
+            <!-- first_row -->
+            <div class="row">
+                <div class="form-group col-3">        
+                    <label for="nameID">Primer nombre</label>
+                    <input class="form-control" type="text" name="firstName" id="nameID"  placeholder="{{athlete.firstName}}" >
+                </div>    
+
+                <div class="form-group col-3">
+                    <label for="name2ID">Segundo nombre</label>
+                    <input class="form-control" type="text" name="secondName" id="name2ID"  placeholder="{{athlete.secondName}}" >
+                </div>
+
+                <div class="form-group col-3">        
+                    <label for="surnameID">Apellido paterno</label>
+                    <input class="form-control" type="text" name="surname" id="surnameID"  placeholder="{{athlete.surname}}" >
+                </div>    
+
+                <div class="form-group col-3">
+                    <label for="surname2ID">Apellido materno</label>
+                    <input class="form-control" type="text" name="secondSurname" id="surname2ID"  placeholder="{{athlete.secondSurname}}" >
+                </div>
+            </div>
+            <!--end_first_row -->
+
+            <!--second_row-->
+            <div class="row">
+                <div class="form-group col-3">
+                    <label for="rutID">Rut:</label>
+                    <input class="form-control" type="text" name="rut" id="rutID"  placeholder="{{athlete.rut}}">
+                </div>
+                <div class="form-group col-3">
+                    <label for="genderID">Sexo:</label>
+                    <select class="form-control" name="gender" id="genderID">
+                        <option value="1">Femenino</option>
+                        <option value="2">Masculino</option>
+                        <!--<option value="">otro</option>-->
+                    </select>
+                </div>
+                <div class="form-group col-3">
+                    <label for="birthdateID">Fecha de Nacimiento</label>
+                    <div class="input-group date">
+                        <input class="form-control" type="text" name="birthdate" id="birthdateID" placeholder="{{athlete.birthdate}}">
+                        <span class="input-group-addon ml-1">
+                            <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                                <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                            </svg>
+                        </span>            
+                    </div>
+                </div>
+                <div class="form-group col-3">
+                    {% if clubs %}
+                        <label for="clubAID">Club:</label>
+                        <select class="form-control" name="clubAthle" id="clubAID">
+                            <option value="">Seleccione campeonato</option>
+                            {% for club in clubs %}
+                                <option value="{{club.id}}">{{club.clubName}}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            </div> 
+            <!--end_second_row -->
+
+            <!--third_row -->
+            <div class="row">
+                
+            </div>
+            <!--end_third_row-->
+
+            <div class="row"> 
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-sm btn-primary col-8">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

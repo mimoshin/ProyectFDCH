@@ -1,4 +1,5 @@
 from datetime import datetime
+from os import stat
 from django.db import models
 from django.utils.dateparse import parse_date
 from base.const import GENDER_CHOICES,CATEGORY_CHOICES, SEX_CHOICES
@@ -152,3 +153,38 @@ class AthleteInterface():
             for a in data:
                 print(a,type(a))
             print("Error al cargar atletas:",e,"|",data)
+        
+    @staticmethod
+    def modify_athlete(athleID,data):
+        try:
+            athlete = Athletes.objects.get(id=athleID)
+
+            if data['rut']:
+                athlete.rut=data['rut']
+            if data['firstName']:
+                athlete.firstName=data['firstName']
+            if data['secondName']:
+                athlete.secondName=data['secondName']
+            if data['surname']:
+                athlete.surname=data['surname']
+            if data['secondSurname']:
+                athlete.secondSurname=data['secondSurname']
+            if data['gender']:
+                athlete.gender=data['gender']
+            if data['birthdate']:
+               athlete.birthdate=parse_date(data['birthdate'])
+            if data['clubAthle']:
+                athlete.clubId_id=data['clubAthle']
+            
+            athlete.save()
+
+        except Exception as e:
+            for a in data:
+                print(a,type(a))
+            print("Error al modificar atletas:",e,"|",data)
+
+    @staticmethod
+    def delete_athlete(athleID):
+        athlete = Athletes.objects.get(id=athleID)
+        athlete.delete()
+

@@ -15,11 +15,17 @@
                     <td rowspan="3" style="border: 1px solid black;"">{{competition.observation}}</td>
                 <tr>
                     <th class="table-info" style="width: 10%; border: 1px solid black;"">Estado:</th>
-                    <td >Espacio</td>
+                    <td>Espacio</td>
                 </tr>
                 <tr>
                     <th class="table-info" style="width: 10%; border: 1px solid black;"">Estado Series:</th>
-                    <td>{{competition.series}}</td>
+                    <td>
+                        {% if competition.series %}
+                            Creadas
+                        {% else %}
+                            Sin crear
+                        {% endif %}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -44,8 +50,8 @@
                     <td>{{competition.get_gender}}</td>
                     <td>{{competition.get_round}}</td>
                     <td>{{competition.combinated}}</td>
-                    <td><button class="btn btn-sm btn-info" id="stagesButton">Etapas</button></td>
-                    <td><button class="btn btn-sm btn-primary" id="champMod">Modificar</button></td>
+                    <td><!--<button class="btn btn-sm btn-info" id="stagesButton">Etapas</button>--></td>
+                    <td><!--<button class="btn btn-sm btn-primary" id="champMod">Modificar</button>--></td>
                     <td><button class="btn btn-sm btn-warning" id="stagedDisabled">Desactivar</button></td>
                 </tr>
             </tbody>

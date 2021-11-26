@@ -11,7 +11,11 @@
     <div class="container mt-2">
         <div class="row">
             <div class="col-12">
-                <a type="button" class="btn btn-sm btn-info float-right" href="{% url 'championshipsView' %}">Volver</a>
+                {% if user == 'Fedachi' %}
+                    <a type="button" class="btn btn-sm btn-info float-right" href="{% url 'fedachi_championships' %}">Volver</a>
+                {% else %}
+                    <a type="button" class="btn btn-sm btn-info float-right" href="{% url 'championshipsView' %}">Volver</a>
+                {% endif %}
             </div>
         </div>
 

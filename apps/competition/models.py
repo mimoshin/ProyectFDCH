@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save,post_save,pre_delete,post_delete
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import tree
-from base.const import EVENT_TYPE_CHOICES,ROUND_CHOICES,GENDER_CHOICES,COMBINATED_CHOICES, CATEGORY_CHOICES
+from base.const import EVENT_TYPE_CHOICES,ROUND_CHOICES,GENDER_CHOICES,COMBINATED_CHOICES, CATEGORY_CHOICES, STATUS_CHOICES
 from championship.models import Stages
 from athlete.models import Athletes
 from .utils import  orderTimesSpeed
@@ -40,6 +40,7 @@ class Competitions(models.Model):
     combinated= models.IntegerField(choices=COMBINATED_CHOICES,null=False,blank=False,default=0)
     series = models.BooleanField(null=False,blank=False,default=False)
     observation = models.CharField(max_length=200,null=True,blank=True,default='S/C')
+    status = models.IntegerField(choices=STATUS_CHOICES,null=False,blank=False,default=1)
 
     def __str__(self):
         return "ID: %s %s %s %s "%(self.id,self.eventId.name(),self.get_gender(),self.stageId.champ_name())

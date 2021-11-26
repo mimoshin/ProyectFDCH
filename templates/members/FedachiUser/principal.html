@@ -3,39 +3,35 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-1"><p>Gestionar</p></div>
-            <div class="col-10">
+            <div class="col-12">
+                <p>Gestionar</p>
                 <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fedachi_championships' %}">Campeonatos</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fedachi_competitions' %}">Competencias</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fedachi_athletes' %}">Atletas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'fedachi_inscriptions' %}">Inscripciones</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'fedachi_clubs' %}">Clubes</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">.</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">.</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">.</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">.</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">.</a>
-                      </li>
+                        <li class="nav-item">
+                            <a class="nav-link active bg-primary text-white" href="{% url 'principalAminsView' %}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'fedachi_championships' %}">Campeonatos</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'fedachi_competitions' %}">Competencias</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'fedachi_athletes' %}">Atletas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'fedachi_inscriptions' %}">Inscripciones</a>
+                          </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'fedachi_clubs' %}">Clubes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'fedachi_events' %}">Eventos</a>
+                        </li>
+                        <!--
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">.</a>
+                        </li>
+                        -->
                   </ul>
             </div>
         </div>

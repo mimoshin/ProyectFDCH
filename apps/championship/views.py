@@ -50,34 +50,42 @@ def internalACV(request):
         pass
     elif request.method == 'GET':
         pass
-    allchamps = CI.get_all_championships()
+    allchamps = CHF.get_all_championships()
+    #allchamps = CI.get_all_championships()
     return render(request,'Internal/championships/champslist.html',{'champs':allchamps})
 
 @login_required(login_url=('/'))
 def internalRC(request,cID):
     if request.method == 'POST':
         data = request.POST.dict()
-        CI.create_stage(data,cID)
+        #CI.create_stage(data,cID)
+        CHF.create_stage
     elif request.method == 'GET':
         pass
-    champ,stages = CI.get_allfor_championship(cID)
+    champ,stages = CHF.get_allfor_championship(cID)
+    #champ,stages = CI.get_allfor_championship(cID)
     events = CF.get_all_events()
     return render(request,'Internal/championships/reviewChampionship.html',{'champ':champ,'stages':stages,'events':events})
 
 @login_required(login_url='/')
 def newChampionship(request):
+    data = {'user':''}
+    user = UF.get_type_user(request.user)
+    data['user'] = user[1]
+    
     if request.method == 'POST':
         data = request.POST
         form = ChampForm(data)
         if form.is_valid():
              form.is_valid_log()
-             CI.create_championship(form.data)
+             CHF.create_championship(form.data)
+             #CI.create_championship(form.data)
         else:
             print("formulario no valido")
         return redirect('championshipsView')
     elif request.method == 'GET':
         pass
-    return render(request,'Internal/championships/newChampionship.html')
+    return render(request,'Internal/championships/newChampionship.html',data)
 #----------------------------------------------------------
 
 #-------------------EXTERNAL VIEWS-------------------------
@@ -92,7 +100,8 @@ def externalACV(request):
     elif request.method == 'GET':
         pass
     allchamps = CI.get_all_championships()
-    return render(request,'External/championships/champslist.html',{'champs':allchamps})
+    actives = allchamps.filter(status=1)
+    return render(request,'External/championships/champslist.html',{'champs':actives})
 
 def externalRC(request,cID):
     if request.method == 'POST':
@@ -107,7 +116,9 @@ def externalRC(request,cID):
 
 @login_required(login_url='/')
 def fedachiPV(request):
-    return render(request,"members/FedachiUser/initView.html",{'data':'data'})
+    champs_count = CHF.get_all_championships().count()
+    athletes_count = AI.get_all_athletes().count()
+    return render(request,"Internal/principal.html",{'champs':champs_count,'athletes':athletes_count})
 
 @login_required(login_url='/')
 def fedachiACV(request):
@@ -131,24 +142,51 @@ def fedachiRC(request,cID):
     events = CF.get_all_events()
     return render(request,'members/FedachiUser/championships/reviewChampionship.html',{'champ':champ,'stages':stages,'events':events})
 
-
+#_____________ QUERYS ____________________________________
 @login_required(login_url=('/'))
 def QFChampionship(request):
     #cargar todas los torneos
     if request.method == 'GET':
         data = request.GET.dict()
         champ,stages = CHF.get_champ_and_stages(data['id'])
+        if data.get('cStatus'):
+            champ.not_status()
         dataT = {'champ':champ,'stages':stages}
         template = 'members/FedachiUser/championships/champsData.html'
         return render(request,template,dataT)
+
+@login_required(login_url=('/'))        
+def QFDisable(request):
+    if request.method == 'GET':
+        data = request.GET.dict()
+        CHF.disable_stage(data['id'])
+        return HttpResponse(True)
+        #return redirect('fedachi_championships')
+
+#_____________ END QUERYS _________________________________
+
+#_____________ CHANGES _________________________________
+
+@login_required(login_url='/')
+def modifyChampionship(request,champID):
+    data = {'user':''}
+    user = UF.get_type_user(request.user)
+    data['user'] = user[1]
+    if request.method == 'POST':
+        data = request.POST.dict()
+        CHF.modify_championship(champID,data)
+        return redirect('championshipsView')
+    elif request.method == 'GET':
+        data['champ'] = CHF.get_championship(champID)
+    return render(request,'Internal/championships/modifyChampionship.html',data)
 
 @login_required(login_url=('/'))
 def newStage(request,champID):
     if request.method == 'POST':
         data = request.POST.dict()
         CHF.create_stage(data,champID)
-        return redirect('fedachi_championships')
-
+        return redirect('fedachi_championships',{'user':'data'})
+#_____________ END CHANGES _________________________________
 
 def handler404(request, exception, template_name="404.html"):
     return redirect('principalView')

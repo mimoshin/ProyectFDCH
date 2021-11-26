@@ -3,6 +3,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from base.const import EVENT_TYPE_CHOICES
+from base.utils import Qlog_user
 from athlete.models import AthleteInterface as AI
 from championship.models import ChampionshipFactory as CF
 from competition.models import CompetitionFactory as CPF
@@ -12,6 +13,10 @@ from .models import MembersFactory as MF
 
 #_____________ FILTER VIEWS _______________________________
 def principalAthletesView(request):
+    if Qlog_user(request.user):
+        template = 'Internal/members/allAthletes.html'
+    else: 
+        template = 'External/members/allAthletes.html'
     athletes = []
     if request.method == 'POST':
         pass
@@ -20,7 +25,7 @@ def principalAthletesView(request):
         athletes = AI.get_athletes_filter(data)
         if not athletes:
             athletes = 'EMPTY'
-    return render(request,'External/members/allAthletes.html',{'athletes':athletes})
+    return render(request,template,{'athletes':athletes})
 
 @login_required(login_url=('/'))
 def principalAdminsView(request):
@@ -52,6 +57,7 @@ def FedachiAdminChampionships(request):
             return redirect('fedachi_championships')
     template = 'members/FedachiUser/championships/adminChampionships.html'
     return render(request,template,dataT)
+
 
 @login_required(login_url=('/'))
 def FedachiAdminCompetitions(request):

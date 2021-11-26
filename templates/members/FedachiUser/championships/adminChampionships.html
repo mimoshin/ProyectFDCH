@@ -13,6 +13,9 @@
                 <p>Gestionar</p>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'principalAminsView' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
                       <a class="nav-link active bg-primary text-white" href="{% url 'fedachi_championships' %}">Campeonatos</a>
                     </li>
                     <li class="nav-item">
@@ -111,95 +114,6 @@
     </div>
     <!-- END FILE MODAL -->
 
-    <!-- NEW STAGE MODAL -->
-    <div class="modal fade" id="newStage" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" style="max-width: 80%;" role="document">
-            <div class="modal-content">
-                <div class="modal-header row">
-                    <div class="col-8"> 
-                        <h5 class="modal-title color-black" id="MTITLE">Subir archivo con datos</h5>
-                    </div>
-                    <div class="col-1">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-    
-                <div class="modal-body" style="max-height: 250px;">
-                    <form id="formStage" class='user' method="post" action="#" autocomplete="off">
-                        {% csrf_token %}
-                        <!-- FIRST ROW -->
-                        <div class="row">
-                          <div class="col-1"></div>
-                          <div class="form-group col-6">
-                            <label for="text_id" class="color-black"> Nombre de la etapa</label>
-                            <input type="text" class="form-control" name="stage_name" placeholder="Etapa X mañana" id="text_id">        
-                          </div>    
-                          
-                          <div class="col-1"></div>
-                          <div class="col-3">
-                            <label class="color-black"> Seleccione Fecha</label>
-                            <div class="input-group date">
-                              <input type="text" name="stage_date" class="form-control">
-                              <span class="input-group-addon ml-1">
-                                <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-calendar3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
-                                  <path fill-rule="evenodd" d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                                </svg>
-                              </span>            
-                            </div>
-                          </div>
-                        </div>
-                        <!-- END FIRST ROW -->
-                      
-                        <!-- SECOND ROW -->
-                        <div class="row">
-                          <div class="col-1"></div> 
-                          <div class="col-2">
-                            <label class="color-black"> Hora de inicio</label>
-                            <div class="input-group" id="f_hour">
-                              <input type="text" name="init_hour" class="form-control">
-                                <span class="input-group-addon ml-1">
-                                  <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
-                                    <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
-                                  </svg>
-                                </span>          
-                            </div>
-                          </div>
-                      
-                          <div class="col-2">
-                            <label class="color-black"> Hora de termino</label>
-                            <div class="input-group" id="f_hour">
-                              <input type="text" name="finish_hour" class="form-control">
-                                <span class="input-group-addon ml-1">
-                                  <svg width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
-                                    <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
-                                  </svg>
-                                </span>  
-                            </div>
-                          </div>
-                          <div class="col-1"></div>  
-                        </div> 
-                        <br>
-                        <!-- END SECOND ROW -->
-                      
-                        <div class="row">
-                          <div class="col-2"></div> 
-                          <button type="submit" class ="btn btn-primary btn-user col-8 mt-4" style="float:none;text-align:center;">Crear etapa</button>
-                        </div>
-                      </form>
-                </div>
-                <div class="modal-footer">
-                <!--Espacio disponible para alguna funcionalidad-->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END NEW STAGE MODAL -->
-
     <script>
         $('#buttonJson').click(function(){
             $('#fileModal').modal('show');
@@ -238,10 +152,8 @@
                 console.log("acivar o desactivar campeonato")
             }
             else if(this.id == 'buttonNewE'){            
-                url = "{% url 'create_stage' 0 %}".replace('0',$('#idChamp')[0].value)
-                $('#formStage').attr('action',url);
                 $('#magia #stagesModal').modal('hide')
-                $('#newStage').modal('show');
+                $('#newStage2').modal('show');
             }
         });
     </script>

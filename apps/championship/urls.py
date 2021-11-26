@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import QFChampionship, newStage, principalView, allChampionshipsView, reviewChampionship, newChampionship
+from .views import QFChampionship, QFDisable, modifyChampionship, newStage, principalView, allChampionshipsView, reviewChampionship, newChampionship
 
 urlpatterns = [
     path('',principalView,name='principalView'),
@@ -8,6 +8,8 @@ urlpatterns = [
     path('new_championship',newChampionship,name='newChampionship'),
     #CHANGES
     path('new_stage/<int:champID>',newStage,name='create_stage'),
+    path('modify_championship/<int:champID>',modifyChampionship,name='modifyChampionship'),
     #QUERYS
     path('QF_championship',QFChampionship,name="Query_Champ"),
+    path('QF_disablestage',QFDisable,name="Query_DiableStage"),
 ]

@@ -1,9 +1,10 @@
 from os import stat
+from django.contrib.auth.decorators import permission_required
 from django.db import models
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.db.models.signals import pre_save,post_save,pre_delete,post_delete
-from base.const import LIMIT_ATHLETE_CHOICES,LIMIT_CLUB_CHOICES, CATEGORY_CHOICES
+from base.const import LIMIT_ATHLETE_CHOICES,LIMIT_CLUB_CHOICES, CATEGORY_CHOICES, STATUS_CHOICES
 from base.utils import str_to_DateTimeField
 
 
@@ -21,6 +22,7 @@ class Championships(models.Model):
     category = models.CharField(max_length=9,null=False,blank=False,default='000001000')    
     limitClubs = models.IntegerField(choices=LIMIT_CLUB_CHOICES,null=False,blank=False,default=0)
     limitAthletes = models.IntegerField(choices=LIMIT_ATHLETE_CHOICES,null=False,blank=False,default=0)
+    status = models.IntegerField(choices=STATUS_CHOICES,null=False,blank=False,default=1)
     created_at = models.DateTimeField(null=False,blank=False,default=timezone.now)
     updated_at = models.DateTimeField(null=False,blank=False,default=timezone.now)
 
@@ -49,6 +51,16 @@ class Championships(models.Model):
                 option = '<option value="'+str(x)+'">'+CATEGORY_CHOICES[x][1]+'</option>'
                 options.append(option)
         return options
+    
+    def get_status(self):
+        return STATUS_CHOICES[self.status][1]
+
+    def not_status(self):
+        if self.status == 1:
+            self.status = 5
+        elif self.status == 5:
+            self.status = 1
+        self.save()
 
 class Stages(models.Model):
     championshipId = models.ForeignKey(Championships,null=False,blank=False,on_delete=models.CASCADE)
@@ -59,6 +71,7 @@ class Stages(models.Model):
     adminId = models.CharField(max_length=200,null=False,blank=False,default='ADMINISTRADOR')
     numCompetitions = models.IntegerField(default=0)
     numStage = models.IntegerField(default=0)
+    status = models.IntegerField(choices=STATUS_CHOICES,null=False,blank=False,default=1)
     created_at = models.DateTimeField(null=False,blank=False,default=timezone.now)
     updated_at = models.DateTimeField(null=False,blank=False,default=timezone.now)
     
@@ -73,6 +86,16 @@ class Stages(models.Model):
     
     def champ_name(self):
         return self.championshipId.championshipName
+    
+    def get_status(self):
+        return STATUS_CHOICES[self.status][1]
+
+    def not_status(self):
+        if self.status == 1:
+            self.status = 5
+        elif self.status == 5:
+            self.status = 1
+        self.save()
 
 class ChampionshipLogs(models.Model):
     pass
@@ -203,6 +226,10 @@ class ChampionshipFactory():
         champ = Championships.objects.get(id=champID)
         stages = champ.stages_set.all()
         return champ,stages
+    @staticmethod
+    def disable_stage(stageID):
+        stage = Stages.objects.get(id=stageID)
+        stage.not_status()
 
     @staticmethod
     def create_championship(data):
@@ -220,3 +247,41 @@ class ChampionshipFactory():
             Stages.objects.create(championshipId_id=champID,stageName=data['stage_name'])
         except Exception as e:
             print("ERROR AL CREAR ETAPA",e)
+        
+    @staticmethod
+    def modify_championship(champID,data):
+        try:
+            all_category =  ('SC','u16','u18','u20','u23','TD','CD','A','M')
+            
+        
+            champ = Championships.objects.get(id=champID)
+            categor = ''
+
+            for x in all_category:
+                if data.get(x):
+                    data.pop(x)
+                    categor +='1'
+                else:
+                    categor +='0'
+            data['categorys'] = categor   
+        
+            if data['event_name']:
+                champ.championshipName=data['event_name']
+            if data['init_date']:
+                champ.startDate=data['init_date']
+            if data['finish_date']:
+                champ.finishDate=data['finish_date']
+            if data['region']:
+                champ.region=data['region']
+            if data['direction']:
+                champ.address=data['direction']
+            if data['categorys']:
+                champ.category=categor 
+            if data.get('atlexclub'):
+                print("limitar atletas por club")
+                champ.limitClubs=data['limit_club']
+            if data['limit_athle']:
+                champ.limitAthletes=data['limit_athle']
+            champ.save()          
+        except Exception as e:
+            print("ERROR AL Modificar EL CAMPEONATO",e,data)
