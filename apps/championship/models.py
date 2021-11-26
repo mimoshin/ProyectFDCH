@@ -65,7 +65,7 @@ class Championships(models.Model):
 class Stages(models.Model):
     championshipId = models.ForeignKey(Championships,null=False,blank=False,on_delete=models.CASCADE)
     stageName = models.CharField(max_length=200,null=False,blank=False,default='ETAPA')
-    date = models.DateTimeField(null=False,blank=False,default=timezone.now)
+    date = models.DateField(null=False,blank=False,default='2001-01-01')
     starHour = models.TimeField(blank=False,null=False,default='08:00:00')
     finishHour = models.TimeField(blank=False,null=False,default='18:00:00')
     adminId = models.CharField(max_length=200,null=False,blank=False,default='ADMINISTRADOR')

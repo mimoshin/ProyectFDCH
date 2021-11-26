@@ -3,14 +3,14 @@ from athlete.models import Athletes
 from championship.models import*
 from competition.models import*
 from member.models import*
-from base.utils import json_to_list, str_to_DateTimeField
+from base.utils import str_to_DateTimeField
 from .utils import loadPersonalBest
 from championship.models import ChampionshipFactory as CHF
 
 
 class championshipInterface():
     @staticmethod
-    def load_championships():
+    def load_championships(file):
         """
             championshipName = CharField(default='CAMPEONATO')
             startDate = DateTimeField(default=timezone.now)
@@ -23,9 +23,8 @@ class championshipInterface():
             limitClubs = IntegerField(LIMIT_CLUB_CHOICES,default=0)
             limitAthletes = IntegerField(LIMIT_ATHLETE_CHOICES,default=0)
         """
-        jslist = json_to_list('championship.json')
-        try:
-            for data in jslist:
+        for data in file:
+            try:
                 data['initdate'] =  str_to_DateTimeField(data['initdate'])
                 data['findate'] = str_to_DateTimeField(data['findate'])
                 data['created_at'] = str_to_DateTimeField(data['created_at'])
@@ -34,14 +33,18 @@ class championshipInterface():
                 Championships.objects.create(id=data['id'],championshipName=data['name'],startDate=data['initdate'],
                     finishDate=data['findate'],region=data['idRegion'],address=data['address'],created_at=data['created_at'],
                     updated_at=data['updated_at'])
-        except Exception as e:
-            print("Error al cargar atletas:",e)
+            except Exception as e:
+                pass
+                #print("Error al cargar atletas:",e)
 
     @staticmethod
     def delete_championships():
         allchamps = Championships.objects.all()
         for x in allchamps:
-            x.delete()
+            try:
+                x.delete()
+            except:
+                pass
     
     @staticmethod
     def load_stages(file):
@@ -55,9 +58,8 @@ class championshipInterface():
             numCompetitions = models.IntegerField(default=0)
             numStage = models.IntegerField(default=0)
         """
-        try:
-            jslist = json_to_list('stages.json')
-            for data in file:
+        for data in file:
+            try:
                 if data['fecha'] == None:
                     data['fecha'] = "1111-01-01"
                     
@@ -66,8 +68,9 @@ class championshipInterface():
                 data['updated_at'] = str_to_DateTimeField(data['updated_at'])
                 Stages.objects.create(id=data['id'],championshipId_id=data['championship_id'],stageName=data['name'],
                     date=data['fecha'],created_at=data['created_at'],updated_at=data['updated_at'])
-        except Exception as e:
-            print("error al cargar etapas",e)
+            except Exception as e:
+                pass
+                #print("error al cargar etapas",e)
             
     @staticmethod
     def delete_stages():
@@ -77,13 +80,12 @@ class championshipInterface():
     
     @staticmethod
     def load_clubs(file):
-        jslist = json_to_list('clubs.json')
-        try:
-            print("CARGANDO CLUBS")
-            for data in file:
+        for data in file:
+            try:
                 Clubs.objects.create(id=data['id'],clubName=data['name'])
-        except Exception as e:
-            print("error al cargar clubes",e,data['id'])
+            except Exception as e:
+                pass
+                #print("error al cargar clubes",e,data['id'])
 
     @staticmethod
     def delete_clubs():
@@ -130,13 +132,12 @@ class competitionInterface():
 
     @staticmethod
     def load_events(file):
-        #jslist = json_to_list('generalSports.json')
-        jslist = json_to_list('sports.json')
-        try:
-            for data in file:
+        for data in file:
+            try:
                 Events.objects.create(id=data['id'],eventName=data['name'],eventType=data['type'])
-        except Exception as e:
-            print("Error al cargar eventos: ",e,data['id'])
+            except Exception as e:
+                pass
+                #print("Error al cargar eventos: ",e,data['id'])
             
     @staticmethod
     def delete_events():
@@ -164,34 +165,13 @@ class competitionInterface():
 		"updated_at" : "2018-05-26 02:11:01",
 		"competition_type_id" : 1   
         """
-        #jslist = json_to_list('generalCompetitions.json')
-        jslist = json_to_list('competitions.json')
-
-        try:
-            for data in file:
+        for data in file:
+            try:
                 Competitions.objects.create(id=data['id'],eventId_id=data['sport_id'],stageId_id=data['stage_id'],
                     hour=data['hour'],gender=data['sex_id'])
-            """
-            print("CARGANDO COMPETENCIAS A LOS TORNEOS")
-            allChamps = Championships.objects.all()[:2]
-            for champ in allChamps:
-                stages = champ.stages_set.all().values_list('id',flat=True)
-                
-                for data in jslist[0:9]:
-                    Competitions.objects.create(eventId_id=data['eventId'],stageId_id=stages[0],
-                                            hour=data['initDate'],gender=data['gender'],round=1)
-                for date in jslist[10:18]:
-                    Competitions.objects.create(eventId_id=date['eventId'],stageId_id=stages[1],
-                                            hour=date['initDate'],gender=date['gender'],round=1)
-                for dati in jslist[18:27]:
-                    Competitions.objects.create(eventId_id=dati['eventId'],stageId_id=stages[2],
-                                            hour=dati['initDate'],gender=dati['gender'],round=1)
-                for dato in jslist[27:36]:
-                    Competitions.objects.create(eventId_id=dato['eventId'],stageId_id=stages[3],
-                                            hour=dato['initDate'],gender=dato['gender'],round=1)
-            """
-        except Exception as e:
-            print("Error al cargar competencias:",e)
+            except Exception as e:
+                pass
+                #print("Error al cargar competencias:",e)
 
     @staticmethod 
     def delete_competition():
@@ -253,9 +233,7 @@ class competitionInterface():
     #_____SALTO LARGO Y TRIPLE_________________
     @staticmethod
     def load_jumpHeats(file):
-        jslits = json_to_list('jump_head2s.json')
-        try:
-            """
+        """
             "id" : 1,
 		    "fecha_date" : null,
 		    "hora" : null,
@@ -271,11 +249,13 @@ class competitionInterface():
                 competitionId = ForeignKey(Competitions)
                 numberHeat = IntegerField(default=0)
                 observation = CharField(default='S/0')
-            """
-            for data in file:
+        """
+        for data in file:
+            try:
                 JumpHeats.objects.create(id=data['id'],competitionId_id=data['competition_id'],observation=data['serie'])
-        except Exception as e:
-            print("ERROR AL CARGAR JUMPHEATS",e)
+            except Exception as e:
+                pass
+                #print("ERROR AL CARGAR JUMPHEATS",e)
 
     @staticmethod
     def delete_jumpHeats():
@@ -285,9 +265,8 @@ class competitionInterface():
     
     @staticmethod
     def load_jumps(file):
-        jslits = json_to_list('jump2s.json')
-        try:
-            """
+        
+        """
             "id" : 3,
 		"jump_head2_id" : 1,
 		"athlete" : "SANTIAGO SALINAS CABRERA",
@@ -323,8 +302,9 @@ class competitionInterface():
                 strClub = CharField(default=" ")
                 heatId = ForeignKey(JumpHeats)
    
-            """
-            for data in file:
+        """
+        for data in file:
+            try:
                 if data['athlete']:
                     if data['place'] == "DNS":
                         data['place'] = 0
@@ -340,8 +320,9 @@ class competitionInterface():
                         Inscriptions.objects.create(id=ids.id,athleteId_id=4145,strAthle=data['athlete'],competitionId_id=value)
                     except:
                         pass
-        except Exception as e:
-            print("ERROR AL CARGAR JUMPS",e)
+            except Exception as e:
+                pass
+                #print("ERROR AL CARGAR JUMPS",e)
 
     @staticmethod
     def delete_jumps():
@@ -351,7 +332,6 @@ class competitionInterface():
     
     @staticmethod
     def load_jump_participations(file):
-        jslits = json_to_list('jump2s.json')
         """
             "id" : 3,
 		    "first" : "x",
@@ -403,9 +383,7 @@ class competitionInterface():
     #______________SALTO ALTO Y CON GARROCHA__________________
     @staticmethod
     def load_HjumpHeats(file):
-        jslits = json_to_list('hjump_head2s.json')
-        try:
-            """
+        """
                 "id" : 1,
 		        "fecha" : null,
 		        "hora" : null,
@@ -420,18 +398,18 @@ class competitionInterface():
                 competitionId = ForeignKey(Competitions)
                 numberHeat = IntegerField(default=0)
                 observation = CharField(default='S/0')
-            """
-            for data in file:
+        """
+        for data in file:
+            try:
                 hid = data['id']+1000
                 JumpHeats.objects.create(id=hid,competitionId_id=data['competition_id'],observation=data['serie'])
-        except Exception as e:
-            print("ERROR AL CARGAR JUMPHEATS",e)
+            except Exception as e:
+                pass
+                #print("ERROR AL CARGAR JUMPHEATS",e)
     
     @staticmethod
     def load_Hjumps(file):
-        jslits = json_to_list('hjump2s.json')
-        try:
-            """
+        """
                 "id" : 10,
 		        "hjump_head2_id" : 2,
 		        "athlete" : "AGUSTINA CRUZ SEPÚLVEDA",
@@ -453,30 +431,31 @@ class competitionInterface():
                 strClub = CharField(default=" ")
                 heatId = ForeignKey(JumpHeats)
    
-            """
-
-            for data in jslits:
+        """
+        pivot = Athletes.objects.get(firstName='PIVOTE')
+        
+        for data in file:
+            try:
                 if data['athlete']: 
                     place = data['place']
-                    if place == None or place == "" or len(place)>2 or place == 'FC' or place == '-':
-                        data['place'] = 0
-                    if data['achievement'] == None:
-                        data['achievement'] = " "
+                if place == None or place == "" or len(place)>2 or place == 'FC' or place == '-':
+                    data['place'] = 0
+                if data['achievement'] == None:
+                    data['achievement'] = " "
+                hid= data['id']+10000
+                headID = data['hjump_head2_id']+1000
+                
+                JumpAssignments.objects.create(id=hid,athleteId_id=pivot.id,heatId_id=headID,strAthle=data['athlete'],strClub=data['club'],
+                    place=data['place'],result=data['achievement'])
 
-                    hid= data['id']+10000
-                    headID = data['hjump_head2_id']+1000
-
-                    JumpAssignments.objects.create(id=hid,athleteId_id=4144,heatId_id=headID,strAthle=data['athlete'],strClub=data['club'],
-                        place=data['place'],result=data['achievement'])
-
-        except Exception as e:
-            print("ERROR AL CARGAR HJUMPS",e,hid)
+            except Exception as e:
+                print("Fallo ",data)
+                #print("ERROR AL CARGAR HJUMPS",e,hid)
     #______________FIN SALTO ALTO Y CON GARROCHA__________________
     
     #______________PRUEBAS DE PISTA__________________
     @staticmethod
     def load_midHeats(file):
-        jslits = json_to_list('jump_head2s.json')
         try:
             pass
         except Exception as e:
@@ -490,7 +469,6 @@ class competitionInterface():
 
     @staticmethod
     def load_mids(file):
-        jslits = json_to_list('jump_head2s.json')
         try:
             pass
         except Exception as e:
@@ -504,7 +482,6 @@ class competitionInterface():
 
     @staticmethod
     def load_speedHeats(file):
-        jslits = json_to_list('jump_head2s.json')
         try:
             pass
         except Exception as e:
@@ -517,7 +494,6 @@ class competitionInterface():
             x.delete()
     @staticmethod
     def load_speeds(file):
-        jslits = json_to_list('jump_head2s.json')
         try:
             pass
         except Exception as e:
@@ -533,7 +509,6 @@ class competitionInterface():
 #______________LANZAMIENTOS__________________
     @staticmethod
     def load_throwheats(file):
-        jslist = json_to_list('throw_head2s.json')
         for data in file:
             try:
                 """
@@ -566,7 +541,6 @@ class competitionInterface():
 
     @staticmethod
     def load_throws(file):
-        jslits = json_to_list('throw2s.json')
         """
                 "id" : 2,
 		        "throw_head2_id" : 1,
@@ -597,6 +571,7 @@ class competitionInterface():
                 heatId = ForeignKey(JumpHeats)
    
         """
+        pivot = Athletes.objects.get(firstName='PIVOTE')
         for data in file:
             try:
                 if data['athlete']:
@@ -606,7 +581,7 @@ class competitionInterface():
                     elif not isinstance(data['place'],int):
                         data['place'] = 0
                 
-                ThrowAssignments.objects.create(id=data['id'],athleteId_id=4144,heatId_id=data['throw_head2_id'],strAthle=data['athlete'],strClub=data['club'],
+                ThrowAssignments.objects.create(id=data['id'],athleteId_id=pivot.id,heatId_id=data['throw_head2_id'],strAthle=data['athlete'],strClub=data['club'],
                         place=data['place'])
             except Exception as e:
                 print("ERROR AL CARGAR THROWS",e)
@@ -648,7 +623,6 @@ class competitionInterface():
                 heatId = ForeignKey(JumpHeats)
    
         """
-        jslits = json_to_list('throw2s.json')
         participations =   [("first",1),("second",2), 
 		                    ("third",3),("fourth",4),
 		                    ("fifth",5),("sixth",6)]
@@ -700,16 +674,18 @@ class testingInterface():
             print("Error en get_inscriptions",e)
         
     @staticmethod
-    def detectFile(name,json_file):
+    def detectFile(name,json_file,option=False):
         CH = championshipInterface()
         CI = competitionInterface()
         AI = athleteInterface
-        options = {'championship.json':CHF.load_championship,'athletes.json':AI.load_athletes,'clubs.json':CH.load_clubs,'stages.json':CH.load_stages,
-                    'sports.json':CI.load_events,'competitions.json':CI.load_competitions}
-        function = options[str(name)]
-        function(json_file)
-        
-
+        options = { 'championship.json':CHF.load_championship,'athletes.json':AI.load_athletes,
+                    'clubs.json':CH.load_clubs,'stages.json':CH.load_stages,
+                    'sports.json':CI.load_events,'competitions.json':CI.load_competitions,
+                    'hjump2s.json':CI.load_Hjumps,'hjump_head2s.json':CI.load_HjumpHeats,
+                    'jump2s.json':CI.load_jumps,'jump_head2s.json':CI.load_Hjumps}
+        if options.get(str(name)):
+            function = options[str(name)]
+            function(json_file)
 
 
 
@@ -725,9 +701,8 @@ class athleteInterface():
             region_id | club_id
             created_at | updated_at 
         """
-        jslist = json_to_list('athletes.json')
-        try:
-            for data in file:
+        for data in file:
+            try:
                 if data['idClub'] == None:
                     data['idClub'] = data['club_id']
                 if data['idRegion'] == None:
@@ -747,10 +722,9 @@ class athleteInterface():
                                     cellphone=data['cellPhone'], email=data['mail'], size=data['size'], height=data['height'], 
                                     region=data['idRegion'], clubId_id=data['idClub'],
                                     created_at=data['created_at'], updated_at=data['updated_at'])
-        except Exception as e:
-            for a in data:
-                print(a,type(a))
-            print("Error al cargar atletas:",e,"|",data)
+            except Exception as e:
+                pass
+                #print("Error al cargar atletas:",e,"|",data)
 
     @staticmethod
     def delete_athletes():

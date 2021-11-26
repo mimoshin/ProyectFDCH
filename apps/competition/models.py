@@ -169,7 +169,7 @@ class AbstractAssignments(models.Model):
             return self.place
 
     def description(self):
-        if self.athleteId.id == 4144:
+        if self.athleteId.firstName == 'PIVOTE':
             return self.strAthle
         else:
             return self.athleteId.name()

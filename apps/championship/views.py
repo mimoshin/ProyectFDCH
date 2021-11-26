@@ -50,7 +50,7 @@ def internalACV(request):
         pass
     elif request.method == 'GET':
         pass
-    allchamps = CHF.get_all_championships()
+    allchamps = CHF.get_all_championships().order_by('-startDate')
     #allchamps = CI.get_all_championships()
     return render(request,'Internal/championships/champslist.html',{'champs':allchamps})
 
@@ -59,7 +59,7 @@ def internalRC(request,cID):
     if request.method == 'POST':
         data = request.POST.dict()
         #CI.create_stage(data,cID)
-        CHF.create_stage
+        CHF.create_stage(data,cID)
     elif request.method == 'GET':
         pass
     champ,stages = CHF.get_allfor_championship(cID)
@@ -99,7 +99,7 @@ def externalACV(request):
         pass
     elif request.method == 'GET':
         pass
-    allchamps = CI.get_all_championships()
+    allchamps = CI.get_all_championships().order_by('startDate'.desc())
     actives = allchamps.filter(status=1)
     return render(request,'External/championships/champslist.html',{'champs':actives})
 

@@ -50,7 +50,7 @@ class UserFactory():
     @staticmethod
     def get_type_user(name):
         user = User.objects.get(username=name)
-        if user.fedachiadmin.all():
+        if user.fedachiadmin.all() or user.is_staff :
             return [True,"Fedachi"]
         elif user.resultsadmin.all():
             print("resultados")
