@@ -1,6 +1,9 @@
+from os import name
 from django.urls import path
-from .views import (QFcompetitions, QFnewCompetition, QInscriptions, Qcompetitions, Qjumps, change_result, competitionView, download_file, download_startlist, genSeries, lanzV2, newCompetition, newEvent, nuevoatleta, 
-                    otroview, pdfView, probandoGET, resultsView, saltoV2, startView, startlistView, verAtleta)
+from .views import (QFcompetitions, QFnewCompetition, QFparticipations, QInscriptions, QLCompetitions, Qcompetitions, Qjumps, 
+                    change_result, changeAssign, competitionView, download_file, download_startlist, genSeries, insertParticipation, lanzV2, 
+                    newCompetition, newEvent,newTime, nuevoatleta, otroview, pdfView, probandoGET, resultsView, saltoV2, startView, 
+                    startlistView, verAtleta)
 
 
 urlpatterns = [
@@ -24,9 +27,13 @@ urlpatterns = [
     path('Q_jumps/<int:asID>',Qjumps,name='Qjumps'),
     #CHANGES
     path('new_event',newEvent,name='create_event'),
+    path('new_participation',insertParticipation,name='change_participation'),
+    path('new_time',newTime,name='change_time'),
+    path('change_data_assign',changeAssign,name='change_assign'),
     #QUERYS
+    path('QL_competitions',QLCompetitions,name='QueryList_competitions'),
     path('QF_competitions',QFcompetitions,name='Query_competitions'),
     path('QF_newCompetition',QFnewCompetition,name='Query_newCompetition'),
+    path('QF_participations',QFparticipations,name='Query_participations'),
     path('Q_inscriptions',QInscriptions,name='Query_inscriptions'),
-    
 ]

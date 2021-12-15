@@ -52,6 +52,7 @@
                         <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u20" required> u20</li>
                         <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u18" required> u18</li>
                         <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="u16" required> u16</li>
+                        <li class="list-group-item"> <input type="checkbox" class="cate" value="True" name="PREP" required>Preparatoria</li>
                     </ul>
                 </div>
             </div>
@@ -182,7 +183,7 @@
         });
 
         $('.cate').change(function(){
-            for(x=0;x<8;x++)
+            for(x=0;x<9;x++)
             {
                 if($('.cate')[x] != this){
                     $('.cate')[x].required = false;

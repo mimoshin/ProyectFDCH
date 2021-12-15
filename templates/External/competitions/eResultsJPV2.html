@@ -20,8 +20,12 @@
                 <tbody>
                     {% for asign in heat.assign %}
                     <tr>
-                        <td class="text-center">{{asign.place}}</td>
-                        <td class="text-center">-</td>
+                        {% if asign.place == 99 %}
+                            <td class="text-center">-</td>
+                        {% else %}
+                            <td class="text-center">{{asign.place}}</td>
+                        {% endif %}
+                        <td class="text-center">{{asign.competitionNumber}}</td>
                         {% if asign.strAthle == 'PIVOTE' %}
                             <td class="text-left">{{asign.athleteId.name}}</td>
                         {% else %}
@@ -68,7 +72,7 @@
                             <th class="text-center" style="width: 6%;">V.V</th>   
                             <th class="text-center" style="width: 9%;">Intento 5</th>
                             <th class="text-center" style="width: 6%;">V.V</th>    
-                            <th class="text-center" style="width: 9%;">Intento 6</th>
+                            <th class="text-center" style="width: 9%;">Intento 6 911</th>
                             <th class="text-center" style="width: 6%;">V.V</th>                 
                         </tr>
                     </thead>

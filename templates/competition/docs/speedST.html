@@ -31,9 +31,9 @@
     </head>
 
     <body>
-            {% if competition %}
-                {% if heats %}
-                    {% for heat in heats %}
+        {% if competition %}
+            {% if heats %}
+                {% for heat in heats %}
                     <img src="{{url}}" alt="Image" height="45px" style="text-align:right;">
 
                     <div style="line-height: 0.5;">
@@ -88,7 +88,7 @@
                                             <td >--/--/----</td>
                                             <td >{{atle.strClub}}</td>
                                         {% endif %} 
-                                        <td>-</td>
+                                        <td>{{atle.personalBest}}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -98,7 +98,6 @@
                         <p>Firma encargado </p>
                         <p>Rut: 12.345.678-9</p><br><br>
 
-                        <pdf:barcode value="Juez Juanito Perez" type="code128" humanreadable="1" align="right" />
                         <pdf:nextpage>
                     {% endfor %}
                 {% else %}

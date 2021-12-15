@@ -1,5 +1,3 @@
-from os import stat
-from django.contrib.auth.decorators import permission_required
 from django.db import models
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -19,7 +17,7 @@ class Championships(models.Model):
     country = models.CharField(max_length=50,null=False,blank=False,default='PAIS')
     address = models.CharField(max_length=50,null=False,blank=False,default='DIRECCION')
     numberStages = models.IntegerField(default=0)
-    category = models.CharField(max_length=9,null=False,blank=False,default='000001000')    
+    category = models.CharField(max_length=10,null=False,blank=False,default='0000010000')    
     limitClubs = models.IntegerField(choices=LIMIT_CLUB_CHOICES,null=False,blank=False,default=0)
     limitAthletes = models.IntegerField(choices=LIMIT_ATHLETE_CHOICES,null=False,blank=False,default=0)
     status = models.IntegerField(choices=STATUS_CHOICES,null=False,blank=False,default=1)
@@ -37,16 +35,16 @@ class Championships(models.Model):
 
     def get_categorys(self):
         cat = ''
-        for x in range(1,9): 
+        for x in range(1,10): 
             if self.category[x] == '1':
                 cat += CATEGORY_CHOICES[x][1]
-                if x <9:
+                if x <10:
                     cat+=' '
         return cat
 
     def categorys_options(self):
         options = []
-        for x in range(1,9): 
+        for x in range(1,10): 
             if self.category[x] == '1':
                 option = '<option value="'+str(x)+'">'+CATEGORY_CHOICES[x][1]+'</option>'
                 options.append(option)
@@ -61,6 +59,9 @@ class Championships(models.Model):
         elif self.status == 5:
             self.status = 1
         self.save()
+    
+    def get_numStages(self):
+       return self.stages_set.all().count()
 
 class Stages(models.Model):
     championshipId = models.ForeignKey(Championships,null=False,blank=False,on_delete=models.CASCADE)
@@ -139,8 +140,9 @@ class ChampionshipInterface():
 
     @staticmethod
     def create_stage(data,cID):
+        num = int(data['number_stage'])+1
         try:
-            Stages.objects.create(championshipId_id=cID,stageName=data['stage_name'])
+            Stages.objects.create(championshipId_id=cID,stageName=data['stage_name'],numStage=num)
         except Exception as e:
             print("ERROR AL CREAR ETAPA",e)
 
@@ -234,17 +236,20 @@ class ChampionshipFactory():
     @staticmethod
     def create_championship(data):
         try:
-            Championships.objects.create(championshipName=data['event_name'],startDate=data['init_date'],finishDate=data['finish_date'],
+            newChamp = Championships.objects.create(championshipName=data['event_name'],startDate=data['init_date'],finishDate=data['finish_date'],
                                     region=data['region'],address=data['direction'],category=data['categorys'],
                                     limitClubs=data['limit_club'],limitAthletes=data['limit_athle'])
+            return newChamp.id
         except Exception as e:
             print("ERROR AL CREAR EL CAMPEONATO",e)
 
     @staticmethod
     def create_stage(data,champID):
+        num = int(data['number_stage'])+1
+        print("Deberia aparacer ",num)
         try:
             print(data,champID)
-            Stages.objects.create(championshipId_id=champID,stageName=data['stage_name'])
+            Stages.objects.create(championshipId_id=champID,stageName=data['stage_name'],numStage=num)
         except Exception as e:
             print("ERROR AL CREAR ETAPA",e)
         
@@ -285,3 +290,35 @@ class ChampionshipFactory():
             champ.save()          
         except Exception as e:
             print("ERROR AL Modificar EL CAMPEONATO",e,data)
+
+    
+    @staticmethod
+    def get_evt_file(champID):
+        print("reclutar todo de este campeonato",champID)
+        championship = Championships.objects.get(id=champID)
+        print("Campeonato",championship)
+        competitions = []
+        stages = championship.get_stages()
+        print("Etapas",stages)
+        fileqlo = open("lynx.evt",'w+')
+        for stage in stages:
+            comps = stage.competitions_set.all().exclude(eventId__eventType=3).exclude(eventId__eventType=4).exclude(eventId__eventType=5).order_by('hour')
+            for comp in comps:
+                competitions.append(comp)
+                
+
+        for comp in competitions:
+            numcomp = competitions.index(comp)+1
+            numstage = comp.stageId.numStage
+            series = comp.get_relatedHeats()
+            for serie in series:
+                #1,1,1,80 MTS VALLAS PENTATLÓN U14 - SERIE 1 - 09:10 HORAS
+                texto = "%s,%s,%s,%s - %s"%(numstage,numcomp,serie.numberHeat,serie,serie.competitionId.hour)
+                print(texto,"tipo serie")
+                fileqlo.writelines(texto+'\n')
+                atletas = serie.asigned.all()
+                for atleta in atletas:
+                    fileqlo.writelines(atleta.get_data()+"\n")
+        print("ULTIMA SERIE CARGADA: ",serie)
+        print("ULTIMO ATLETA CARGADO: ",atleta.get_data())
+        fileqlo.close()

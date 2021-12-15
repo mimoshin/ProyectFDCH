@@ -6,7 +6,7 @@
             <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'reviewChampionship' cID %}">Volver</a>
             {% if competition.series %}
              <!--<a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}">Ver PDF</a>-->
-             <a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}" download="{{competition.name}} Series">DESCARGAR PLANILLA</a>
+             <a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}" download="{{competition.fileName}} Series">DESCARGAR PLANILLA</a>
             {% endif %}
             <h2 class="text-center">{{competition.name}}</h2> 
             <p class="text-center">{{competition.initDate}}</p>

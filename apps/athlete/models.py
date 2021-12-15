@@ -2,7 +2,7 @@ from datetime import datetime
 from os import stat
 from django.db import models
 from django.utils.dateparse import parse_date
-from base.const import GENDER_CHOICES,CATEGORY_CHOICES, SEX_CHOICES
+from base.const import GENDER_CHOICES,CATEGORY_CHOICES, SEX_CHOICES, STATUS_CHOICES
 from member.models import Clubs
 
 class fileslif(models.Model):
@@ -27,6 +27,7 @@ class Athletes(models.Model):
     email = models.CharField(max_length=30,null=False,blank=False,default='.')
     coach = models.CharField(max_length=10,null=False,blank=False,default='.')
     region = models.CharField(max_length=10,null=False,blank=False,default='.')
+    status = models.IntegerField(choices=STATUS_CHOICES,null=False,blank=False,default=1)
     created_at = models.DateTimeField(auto_now=True,null=False,blank=False)
     updated_at = models.DateTimeField(auto_now=True,null=False,blank=False)
 
@@ -104,17 +105,23 @@ class AthleteInterface():
         
     @staticmethod
     def get_athletes(data):
+        print("buscando atletas de:", data)
         if data['name']:
             try:
                 if data['category']:
                     print("implementar categorias")   
+                else:
+                    print("no pasa naipe")
                 athletes = Athletes.objects.filter(firstName__icontains=data['name'])
                 return athletes
             except Exception as e:
                 print("error en la busqueda de atletas",e)
         else:
             try:
-                athletes = Athletes.objects.all()
+                if data['category'] == '0':
+                    athletes = Athletes.objects.all()
+                else:
+                    athletes = Athletes.objects.filter(categoria=data['category'])
                 return athletes
             except Exception as e:
                 print("error en la busqueda de atletas",e)

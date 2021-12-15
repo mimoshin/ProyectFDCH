@@ -1,5 +1,6 @@
 
 from django.contrib.auth.decorators import login_required
+from django.http import response
 from django.http.response import HttpResponse,FileResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, View
@@ -29,11 +30,12 @@ def resultsView(request,comptID):
 #-------------------INTERNAL VIEWS-------------------------
 @login_required(login_url=('/'))
 def competitionView(request,cID):
+    templates = {1:'iCompetitionSP.html',2:'iCompetitionMD.html',3:'iCompetitionJP.html',4:'iCompetitionPV.html',5:'iCompetitionTW.html'}
     competition = CF.get_competition(cID)
     ctype = competition.get_type()
     insclist = CF.get_inscriptions(cID)
     heats = CF.get_heats(cID,ctype)
-    return render(request,'Internal/competitions/iCompetition.html',{'competition':competition,'heats':heats,'inscriptions':insclist})
+    return render(request,'Internal/competitions/'+templates[ctype],{'competition':competition,'heats':heats,'inscriptions':insclist})
 
 
 @login_required(login_url=('/'))
@@ -95,11 +97,12 @@ def Qcompetitions(request):
             data = CF.get_compt_for_atle(dataGET)
         return HttpResponse(data)
 
-def nuevaQCOMP(request,data):
-    return render('Internal/athlete/inscriptionOptions.html',{'data':data})
-        
 @login_required
 def genSeries(request,cID):
+    if request.method == 'GET':
+        data = request.GET.dict()
+        CF.generate_series(cID,data)
+        return HttpResponse(False)
     print("generar series")
     CF.generate_series(cID)
     return redirect('competition',cID)
@@ -217,7 +220,8 @@ def probandoGET(request):
 
 def verAtleta(request,id):
     athle = Athletes.objects.get(id=id)
-    return render(request,'External/atleta.html',{'atleta':athle})
+    comps = CF.get_athlete_results(athle)
+    return render(request,'External/atleta.html',{'atleta':athle,'competitions':comps})
 
 def nuevoatleta(request):
     if request.method == 'POST':
@@ -225,6 +229,24 @@ def nuevoatleta(request):
     return render(request,'External/nuevo.html',{'atleta':'data'})
 
 #_____________ QUERYS ____________________________________
+@login_required(login_url=('/'))
+def newInsc(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        print("consultando para cargar pruebas",data)
+        compts = CF.get_compt_for_atle(data)
+    return render(request,'Internal/athlete/inscriptionOptions.html',{'data':compts,'athle':data['atle'],'champ':data['champ']})
+        
+
+
+@login_required(login_url=('/'))
+def QLCompetitions(request):
+    #Carga todas las competencias relacionadas a un torneo
+    if request.method == 'GET':
+        data = request.GET.dict()
+        compts = CF.get_competitions_champ(data['id'])
+        return render(request,'members/FedachiUser/competitions/compInscription.html',{'compts':compts})
+
 def Qjumps(request,asID):
     if request.method == 'POST':
         print("consultando saltos del atleta en la serie : ",asID)
@@ -258,14 +280,27 @@ def QFnewCompetition(request):
        
         return render(request,template,dataT)
 
+def QFparticipations(request):
+    template = {'1':'Internal/competitions/jumpParticipations.html',
+                '2':'Internal/competitions/participations.html'}
+    if request.method == 'GET':
+        data  = request.GET.dict()
+        participations = CF.get_my_participations(data['id'],data['type'])
+        return render(request,template[data['type']],{'participations':participations,'id':data['id']})
 
+
+@login_required(login_url=('/'))
 def QInscriptions(request):
     if request.method == 'GET':
         dataGET = request.GET.dict()
         if dataGET['obj'] == 'load_compt':
-            print("consultando para cargar pruebas",dataGET)
             data = CF.get_compt_for_atle(dataGET)
-        return render(request,'Internal/athlete/inscriptionOptions.html',{'data':data,'athle':dataGET['atle']})
+        return render(request,'Internal/athlete/inscriptionOptions.html',{'data':data,'athle':dataGET['atle']})    
+    
+    if request.method == 'POST':
+        data = request.POST.dict()
+        compts = CF.get_compt_for_atle(data)
+        return render(request,'Internal/athlete/inscriptionOptions.html',{'data':compts,'athle':data['atle'],'champ':data['champ']})
 #__________________________________
 
 #_____________ CHANGES ____________________________________
@@ -275,4 +310,23 @@ def newEvent(request):
         data = request.POST.dict()
         CF.new_event(data)
         return redirect('fedachi_events')
+
+def insertParticipation(request):
+    if request.method == 'GET':
+        data  = request.GET.dict()
+        pResponse = CF.set_participations(data)
+        return HttpResponse(pResponse)
+
+def newTime(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        tResponse = CF.set_time(data)
+        return HttpResponse(tResponse)
+
+def changeAssign(request):
+    if request.method == 'GET':
+        data = request.GET.dict()
+        print("queriendo cambiar",data)
+        response = CF.set_assign(data)
+        return HttpResponse(response)
 #_____________ END CHANGES ________________________________

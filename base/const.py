@@ -9,9 +9,11 @@ SEX_CHOICES = ((0,'DEFAULT'),(1,'MUJER'),(2,'HOMBRE'),(3,' '))
 
 CATEGORY_CHOICES = [(0,'SIN CATEGORIA'),(1,'U16'),(2,'U18'),(3,'U20'),
                     (4,'U23'),(5,'TD'),(6,'CD'),
-                    (7,'A'),(8,'M')]
+                    (7,'A'),(8,'M'),(9,'Preparatoria')]
 #CHAMPIONSHIP
 STATUS_CHOICES = ((0,'DEFAULT'),(1,'ACTIVO'),(2,'REALIZADO'),(3,'SUSPENDIDO'),(4,'APLAZADO'),(5,'DESACTIVADO'))
+INSCRIPTION_CHOICE = ((0,'DEFAULT'),(1,'TITULAR'),(2,'RESERVA'))
+
 #COMPETITION
 EVENT_TYPE_CHOICES = ((0,'DEFAULT'),(1,'VELOCIDAD'),(2,'MEDIOFONDO'),(3,'SALTO'),(4,'GARROCHA'),(5,'LANZAMIENTO'))
 

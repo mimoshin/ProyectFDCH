@@ -20,8 +20,12 @@
                 <tbody>
                     {% for atle in heat.assign %}
                     <tr>
-                        <td class="text-center">0</td>
-                        <td class="text-center">0</td>
+                        {% if atle.place == 99 %}
+                            <td class="text-center">-</td>
+                        {% else %}
+                            <td class="text-center">{{atle.place}}</td>
+                        {% endif %}
+                        <td class="text-center">{{atle.competitionNumber}}</td>
                         {% if atle.strAthle == 'PIVOTE' %}
                             <td>{{atle.athleteId.name}}</td>
                             <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>
@@ -31,7 +35,7 @@
                             <td >--/--/----</td>
                             <td >{{atle.strClub}}</td>
                         {% endif %} 
-                        <td class="text-center">Mejor Salto</td>
+                        <td class="text-center">{{atle.result}}</td>
                         <td><button class="btn btn-sm btn-primary intentos" id="{{atle.id}}">Ver Intentos</button></td>
                     </tr>
                     {% endfor %}
@@ -54,41 +58,7 @@
               </div>
             </div>
             <div class="modal-body" style="max-height: 250px;">
-                <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
-                    <table class="table table-sm table-striped table-bordered" >
-                        <thead class="table-info">
-                            <tr>
-                                <th class="text-center" style="width: 9%;">Intento 1</th>
-                                <th class="text-center" style="width: 6%;">V.V</th>
-                                <th class="text-center" style="width: 9%;">Intento 2</th>
-                                <th class="text-center" style="width: 6%;">V.V</th>    
-                                <th class="text-center" style="width: 9%;">Intento 3</th>
-                                <th class="text-center" style="width: 6%;">V.V</th>    
-                                <th class="text-center" style="width: 9%;">Intento 4</th>
-                                <th class="text-center" style="width: 6%;">V.V</th>   
-                                <th class="text-center" style="width: 9%;">Intento 5</th>
-                                <th class="text-center" style="width: 6%;">V.V</th>    
-                                <th class="text-center" style="width: 9%;">Intento 6</th>
-                                <th class="text-center" style="width: 6%;">V.V</th>                 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td class="text-center">+2.0 m/s</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">+2.0 m/s</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">+2.0 m/s</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">+2.0 m/s</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">+2.0 m/s</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">+2.0 m/s</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- load table -->
             </div>
     
             <div class="modal-footer">
@@ -99,10 +69,13 @@
         </div>
       </div>
 
-      <script>
-          $('.intentos').on('click',function(){
-            //+$('.modal-body').html("<p id="hola">CARGAR RESULTADOS DEL ATLETA "+this.id+"</p>");
+    <script>
+        $('.intentos').on('click',function(){
+            $('.modal-body').load("{% url 'Query_participations'%}?id="+this.id+"&type=1");
             $('#exampleModal').modal('show');
           })
-      </script>
+        $("#exampleModal").on('hidden.bs.modal', function () {
+            location.reload();
+        });
+    </script>
 {% endblock %}

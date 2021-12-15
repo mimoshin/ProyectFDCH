@@ -8,6 +8,26 @@ from .utils import loadPersonalBest
 from championship.models import ChampionshipFactory as CHF
 
 
+
+class competencia(models.Model):
+    campeonato = models.CharField(max_length=200,default='')
+    evento = models.CharField(max_length=200,default='')
+    titulo = models.CharField(max_length=200,default='')
+    hora = models.CharField(max_length=200,default='')
+
+class serie(models.Model):
+    competencia = models.ForeignKey(competencia,on_delete=models.CASCADE)
+    numeroserie = models.CharField(max_length=200,default='')
+
+class competidor:
+    competencia = models.ForeignKey(serie,on_delete=models.CASCADE)
+    lugar = models.CharField(max_length=200,default='')
+    nombre = models.CharField(max_length=200,default='')
+    apellido = models.CharField(max_length=200,default='')
+    colegio = models.CharField(max_length=200,default='')
+    tiempo = models.CharField(max_length=200,default='')
+    ides = models.CharField(max_length=200,default='')
+
 class championshipInterface():
     @staticmethod
     def load_championships(file):
@@ -644,6 +664,20 @@ class competitionInterface():
         for x in tlist:
             x.delete()
 #________FIN LANZAMIENTOS________________
+    @staticmethod
+    def new_result(data):
+        options = {'1':SpeedAssignments,'2':MidAssignments}
+        lista = data.split(',')
+        ids = lista[12].split('|')
+        selected = options[ids[2]]
+        asigned = selected.objects.get(id=ids[1])
+        asigned.place = lista[0] #lugar
+        asigned.result = lista[6] #tiempo
+        asigned.save()
+        print("DAtos de las WEA: ",asigned)
+        if len(lista) >11:
+            print("Atleta: %s %s del club: %s Lugar %s - Tiempo: %s ID:%s"%(lista[4],lista[3],lista[5],lista[0],lista[6],lista[12]))
+        #print("debo ingresar los datos de ",lista)
 
 class memberInterface():
     @staticmethod
@@ -731,3 +765,5 @@ class athleteInterface():
         atlist = Athletes.objects.all()
         for x in atlist:
             x.delete()
+
+    

@@ -1,0 +1,173 @@
+
+{% if participations %}
+<table class="table table-sm table-striped table-bordered">
+    <thead class="table-info">
+        <tr>
+            <th class="text-center" style="width: 9%;">Intento 1</th>
+            <th class="text-center" style="width: 8%;">V.V </th>
+            <th class="text-center" style="width: 9%;">Intento 2</th>
+            <th class="text-center" style="width: 8%;">V.V</th>    
+            <th class="text-center" style="width: 9%;">Intento 3</th>    
+            <th class="text-center" style="width: 8%;">V.V</th>            
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {% if participations.0 %}
+                <td class="text-center">
+                    <input class="participation" type="text" style="width: 60%;" id="p1" value="{{participations.0.result}}">
+                </td>
+                <td class="text-center">
+                    <input class="wind" type="text" style="width: 60%;" id="wind1" value="{{participations.0.wind}}">
+                </td>
+            {% else %}
+                <td class="text-center">
+                    <input class="participation" type="text" style="width: 60%;" id="p1">
+                </td>
+                <td class="text-center">
+                    <input class="wind" type="text" style="width: 60%;" id="wind1">
+                </td>
+            {% endif %}
+    
+            {% if participations.1 %}
+                <td class="text-center">
+                    <input class="participation" type="text" style="width: 60%;" id="p2" value="{{participations.1.result}}">
+                </td>
+                <td class="text-center">
+                    <input class="wind" type="text" style="width: 60%;" id="wind2" value="{{participations.1.wind}}">
+                </td>
+            {% else %}
+                <td class="text-center">
+                    <input class="participation" type="text" style="width: 60%;" id="p2">
+                </td>
+                <td class="text-center">
+                    <input class="wind" type="text" style="width: 60%;" id="wind2">
+                </td>
+            {% endif %}
+
+            {% if participations.2 %}
+                <td class="text-center">
+                    <input class="participation" type="text" style="width: 60%;" id="p3" value="{{participations.2.result}}">
+                </td>
+                <td class="text-center">
+                    <input class="wind" type="text" style="width: 60%;" id="wind3" value="{{participations.2.wind}}">
+                </td>
+            {% else %}
+                <td class="text-center">
+                    <input class="participation" type="text" style="width: 60%;" id="p3">
+                </td>
+                <td class="text-center">
+                    <input class="wind" type="text" style="width: 60%;" id="wind3">
+                </td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td class="text-center" colspan="2">
+                <button class="btn btn-sm btn-success throw" id="1">Guardar</button>
+            </td>
+            <td class="text-center" colspan="2">
+                <button class="btn btn-sm btn-success throw" id="2">Guardar</button>
+            </td>
+            <td class="text-center" colspan="2">
+                <button class="btn btn-sm btn-success throw" id="3">Guardar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-sm table-striped table-bordered">
+    <thead class="table-info">
+        <tr>
+            <th class="text-center" style="width: 9%;">Intento 4</th>
+            <th class="text-center" style="width: 8%;">V.V</th>
+            <th class="text-center" style="width: 9%;">Intento 5</th>
+            <th class="text-center" style="width: 8%;">V.V</th>    
+            <th class="text-center" style="width: 9%;">Intento 6</th>
+            <th class="text-center" style="width: 8%;">V.V</th>                
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <tr>
+                {% if participations.3 %}
+                    <td class="text-center">
+                        <input class="participation" type="text" style="width: 60%;" id="p4" value="{{participations.3.result}}">
+                    </td>
+                    <td class="text-center">
+                        <input class="wind" type="text" style="width: 60%;" id="wind4" value="{{participations.3.wind}}">
+                    </td>
+                {% else %}
+                    <td class="text-center">
+                        <input class="participation" type="text" style="width: 60%;" id="p4">
+                    </td>
+                    <td class="text-center">
+                        <input class="wind" type="text" style="width: 60%;" id="wind4">
+                    </td>
+                {% endif %}
+                {% if participations.4 %}
+                    <td class="text-center">
+                        <input class="participation" type="text" style="width: 60%;" id="p5" value="{{participations.4.result}}">
+                    </td>
+                    <td class="text-center">
+                        <input class="wind" type="text" style="width: 60%;" id="wind5" value="{{participations.4.wind}}">
+                    </td>
+                {% else %}
+                    <td class="text-center">
+                        <input class="participation" type="text" style="width: 60%;" id="p5">
+                    </td>
+                    <td class="text-center">
+                        <input class="wind" type="text" style="width: 60%;" id="wind5">
+                    </td>
+                {% endif %}
+                {% if participations.5 %}
+                    <td class="text-center">
+                        <input class="participation" type="text" style="width: 60%;" id="p6" value="{{participations.5.result}}">
+                    </td>
+                    <td class="text-center">
+                        <input class="wind" type="text" style="width: 60%;" id="wind6" value="{{participations.5.wind}}">
+                    </td>
+                {% else %}
+                    <td class="text-center">
+                        <input class="participation" type="text" style="width: 60%;" id="p6">
+                    </td>
+                    <td class="text-center">
+                        <input class="wind" type="text" style="width: 60%;" id="wind6">
+                    </td>
+                {% endif %}
+            </tr>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="2">
+                <button class="btn btn-sm btn-success throw" id="4">Guardar</button>
+            </td>
+            <td class="text-center" colspan="2">
+                <button class="btn btn-sm btn-success throw" id="5">Guardar</button>
+            </td>
+            <td class="text-center" colspan="2">
+                <button class="btn btn-sm btn-success throw" id="6">Guardar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+
+<script>
+$('.throw').click(function(){
+    participation = $('.participation#p'+this.id)[0].value;
+    viento = $('#wind'+this.id)[0].value;
+    if(viento || participation){
+        $.get("{% url 'change_participation' %}",
+            {'id':'{{id}}','type':'1','number':this.id,'participation':participation,'wind':viento},
+            function(response){
+                if(response == 'False'){
+                        alert("Datos incorrectos");
+                    } 
+            }
+        );
+    }
+    else{
+        console.log("no hay datos");
+    }
+   
+});
+</script>

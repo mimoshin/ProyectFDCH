@@ -1,0 +1,119 @@
+
+{% if participations %}
+    <table class="table table-sm table-striped table-bordered">
+        <thead class="table-info">
+            <tr>
+                <th class="text-center" style="width: 9%;">Intento 1</th>
+                <th class="text-center" style="width: 9%;">Intento 2</th> 
+                <th class="text-center" style="width: 9%;">Intento 3</th>              
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    {% if participations.0 %}
+                        <input class="participation" type="text" style="width: 60%;" id="p1" value="{{participations.0.result}}">
+                    {% else %}
+                        <input class="participation" type="text" style="width: 60%;" id="p1">
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if participations.1 %}
+                        <input class="participation" type="text" style="width: 60%;" id="p2" value="{{participations.1.result}}">
+                    {% else %}
+                        <input class="participation" type="text" style="width: 60%;" id="p2">
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if participations.2 %}
+                        <input class="participation" type="text" style="width: 60%;" id="p3" value="{{participations.2.result}}">
+                    {% else %}
+                        <input class="participation" type="text" style="width: 60%;" id="p3">
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-success throw" id="1">Guardar</button>
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-success throw" id="2">Guardar</button>
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-success throw" id="3">Guardar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-sm table-striped table-bordered">
+        <thead class="table-info">
+            <tr>
+                <th class="text-center" style="width: 9%;">Intento 4</th>
+                <th class="text-center" style="width: 9%;">Intento 5</th>
+                <th class="text-center" style="width: 9%;">Intento 6</th>              
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <tr>
+                    <td class="text-center">
+                        {% if participations.3 %}
+                            <input class="participation" type="text" style="width: 60%;" id="p4" value="{{participations.3.result}}">
+                        {% else %}
+                            <input class="participation" type="text" style="width: 60%;" id="p4">
+                        {% endif %}                  
+                    </td>
+                    <td class="text-center">
+                        {% if participations.4 %}
+                            <input class="participation" type="text" style="width: 60%;" id="p5" value="{{participations.4.result}}">
+                        {% else %}
+                            <input class="participation" type="text" style="width: 60%;" id="p5">
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if participations.5 %}
+                            <input class="participation" type="text" style="width: 60%;" id="p6" value="{{participations.5.result}}">
+                        {% else %}
+                            <input class="participation" type="text" style="width: 60%;" id="p6">
+                        {% endif %}
+                    </td>
+                </tr>
+            </tr>
+            <tr>
+                <td class="text-center"> 
+                    <button class="btn btn-sm btn-success throw" id="4">Guardar</button>
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-success throw" id="5">Guardar</button>
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-success throw" id="6">Guardar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}
+
+<script>
+    $('.throw').click(function(){
+        participation = $(".participation#p"+this.id)[0].value;
+        console.log(participation);
+        if(participation){
+            $.get("{% url 'change_participation' %}",
+                {'id':'{{id}}','type':'2','number':this.id,'participation':participation},
+                function(response){
+                    if(response == 'False'){
+                        alert("Datos incorrectos");
+                    }
+                }
+            );
+        }
+        else{
+            console.log("no hay datos");
+        }    
+    });
+</script>
+
+<!--

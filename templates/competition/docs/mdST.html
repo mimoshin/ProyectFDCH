@@ -31,12 +31,12 @@
     </head>
 
     <body>
-            {% if competition %}
-                {% if heats %}
-                    {% for heat in heats %}
+        {% if competition %}
+            {% if heats %}
+                {% for heat in heats %}
                     <img src="{{url}}" alt="Image" height="45px" style="text-align:right;">
 
-                    <div style="line-height: 0.5;">
+                   <div style="line-height: 0.5;">
                         <h1 class="center sub">Campeonato </h1>
                         <h4 class="center">Chile</h4>
                     </div>
@@ -78,7 +78,7 @@
                             <tbody>
                                 {% for atle in heat.assign %}
                                     <tr>
-                                        <td>{{atle.line}}</td>
+                                        <td>{{atle.competitionNumber}}</td>
                                         {% if atle.strAthle == 'PIVOTE' %}
                                             <td>{{atle.athleteId.name}}</td>
                                             <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>
@@ -88,7 +88,7 @@
                                             <td >--/--/----</td>
                                             <td >{{atle.strClub}}</td>
                                         {% endif %} 
-                                        <td>-</td>
+                                        <td>{{atle.personalBest}}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -98,7 +98,6 @@
                         <p>Firma encargado </p>
                         <p>Rut: 12.345.678-9</p><br><br>
 
-                        <pdf:barcode value="Juez Juanito Perez" type="code128" humanreadable="1" align="right" />
                         <pdf:nextpage>
                     {% endfor %}
                 {% else %}
@@ -132,6 +131,5 @@
                     </tbody>
                 </table> 
             {% endif %}
-            
     </body>
 </html>

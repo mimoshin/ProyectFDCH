@@ -45,7 +45,7 @@ class ChampForm(forms.Form):
     #event_name = models.CharField(max_length=50, null=False, default='NOMBRE_CAMPEONATO') 
     limit_club = forms.IntegerField()
     #limit_club = models.IntegerField(choices=limit_club_choices, default=0)
-    categorys = forms.CharField(label='Categoria',max_length=9)
+    categorys = forms.CharField(label='Categoria',max_length=10)
     #category = models.CharField(max_length=8,default='00000000')
     region = forms.CharField(label='Region',max_length=20)
     #region = models.CharField(max_length=50, null=False, default='REGION')
@@ -58,7 +58,7 @@ class ChampForm(forms.Form):
     finish_date = forms.DateTimeField(initial=datetime.datetime.today)
     #finish_date = models.DateTimeField(default=timezone.now, null=False)
     
-    all_category =  ('SC','u16','u18','u20','u23','TD','CD','A','M')
+    all_category =  ('SC','u16','u18','u20','u23','TD','CD','A','M','PREP')
     
     def __init__(self,data=None):
         if data:

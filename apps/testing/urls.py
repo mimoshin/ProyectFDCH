@@ -48,5 +48,5 @@ urlpatterns = [
     path('detectandofile',detectFile,name='detectFiles'),
     #PRUEBAS
     path('probandopdf',generate_pdf,name='gerar_pdf'),
-    
+    path('get_results',getResults,name='get_result'),
 ]

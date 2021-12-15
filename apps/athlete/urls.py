@@ -4,7 +4,7 @@ urlpatterns = [
     path('inscription/<int:cID>',athletesInscription,name='athletesInscription'),
     path('atleta/<int:AID>',veratleta,name='veratleta'),
     path('filescarga',fileslifV,name='verfile'),
-    path('prueba',alternative,name='probandoinscripcion'),
+    path('insc_athlete/<int:champ>',alternative,name='athlete_inscription'),
     #QUERYS
     path('QF_athletes',QFathletes,name='Query_athletes'),
     #CHANGES

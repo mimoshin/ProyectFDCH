@@ -19,7 +19,7 @@
                 <tbody>
                     {% for atle in heat.assign %}
                     <tr>
-                        <td class="text-center">0</td>
+                        <td class="text-center">{{atle.place}}</td>
                         <td class="text-center">{{atle.line}}</td>
                         {% if atle.strAthle == 'PIVOTE' %}
                             <td>{{atle.athleteId.name}}</td>

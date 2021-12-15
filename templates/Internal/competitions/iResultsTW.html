@@ -4,22 +4,27 @@
 {% block tables %}
     {% if heats_data %}
         {% for heat in heats_data %}
-            <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
-                <table class="table table-sm table-striped taborder table-bordered" >
+        <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+            <table class="table table-sm table-striped taborder table-bordered" >
                 <thead class="table-info">
                     <tr>
                         <th class="text-center" style="width: 3%;">Lugar</th>
                         <th class="text-center" style="width: 3%;">Dorsal</th>
                         <th class="text-center" style="width: 20%;">Atleta</th>
-                        <th class="text-center" style="width: 12%;">A. N.</th>
-                        <th class="text-center" style="width: 8%;">Club</th>
-                        <th class="text-center" style="width: 15%;">Marca</th>
+                        <th class="text-center" style="width: 4%;">A. N.</th>
+                        <th class="text-center" style="width: 12%;">Club</th>
+                        <th class="text-center" style="width: 6%;">Marca</th>  
+                        <th style="width: 3%;"></th>              
                     </tr>
                 </thead>
                 <tbody>
                     {% for atle in heat.assign %}
                     <tr>
-                        <td class="text-center">{{atle.place}}</td>
+                        {% if atle.place == 99 %}
+                            <td class="text-center">-</td>
+                        {% else %}
+                            <td class="text-center">{{atle.place}}</td>
+                        {% endif %}
                         <td class="text-center">0</td>
                         {% if atle.strAthle == 'PIVOTE' %}
                             <td>{{atle.athleteId.name}}</td>
@@ -30,38 +35,49 @@
                             <td >--/--/----</td>
                             <td >{{atle.strClub}}</td>
                         {% endif %} 
-                        <td class="text-center marks"> 
-                            <input class="text-center inputmark" type="text" value="{{atle.result}}" id="{{heat.heat.id}}-{{atle.athleteId.id}}">
-                            <button class=" btn btn-sm btn-success markbutton" id="{{heat.heat.id}}-{{atle.athleteId.id}}">G</button>
-                            <button class=" btn btn-sm btn-warning resetmark" id="{{heat.heat.id}}-{{atle.athleteId.id}}">R</button>
-                        </td>
+                        <td class="text-center">{{atle.result}}</td>
+                        <td><button class="btn btn-sm btn-primary intentos" id="{{atle.id}}"> Ver Intentos</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% endfor %} 
     {% else %}
-        <h3 class="text-center">No hay series registradas hasta el momento.</h3>
+    <h3 class="text-center">No hay series registradas hasta el momento.</h3>
     {% endif %}
-    <script>
-        $('.markbutton').on('click',function(){
-            value = $('#'+this.id)[0].value;
 
-            $.post("{% url 'results_view' cpi %}",
-                {'csrfmiddlewaretoken':'{{csrf_token}}','atleta':this.id,'value':value},
-                function(response){
-                    if (response){
-                        location.reload();
-                    }
-                    console.log('error');
-                }
-            );
-        })
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 80%;" role="document">
+    <div class="modal-content">
+        <div class="modal-header row">
+        <div class="col-8"> <h5 class="modal-title color-black">CAROLAINE ANDREA </h5></div>
+        <div class="col-1">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        </div>
+        <div class="modal-body" style="max-height: 250px;">
+            <h3 class="text-center mt-4 mb-3"><u>{{heat.heat.serie}}</u></h4>
+                <!-- load table -->
+        </div>
+
+        <div class="modal-footer">
+        <!--Espacio disponible para alguna funcionalidad-->
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+    <script>
+    $('.intentos').on('click',function(){
+        $('.modal-body').load("{% url 'Query_participations'%}?id="+this.id+"&type=2");
+        $('#exampleModal').modal('show');
+    })
+
+    $("#exampleModal").on('hidden.bs.modal', function () {
+        location.reload();
+    });
     </script>
-    <style>
-        .inputmark{
-            float: left;
-            width:50%;
-        }
-    </style>
 {% endblock %}

@@ -60,7 +60,7 @@ def adminCompetitions(request):
 
 @login_required(login_url=('/'))
 def adminInscriptions(request):
-    all_champs = CHI.get_all_championships()
+    all_champs = CHI.get_all_championships().order_by('-startDate')
     if request.method == 'POST':
         data = request.POST.dict()
         print(data)
@@ -247,3 +247,9 @@ def detectFile(request):
         return redirect('fedachi_championships')
         #return render(request,"testing/uploadFiles.html",{'data':'data'})
     return render(request,"testing/uploadFiles.html",{'data':'data'})
+
+def getResults(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        CPI.new_result(data['data'])
+    return HttpResponse("hola")

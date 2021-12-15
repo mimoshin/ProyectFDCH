@@ -1,0 +1,242 @@
+{% extends 'Internal/iBase.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    {% if competition %}
+        <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'reviewChampionship' competition.get_CID %}">Volver</a>
+        <h2 class="text-center"> RESULTADOS {{competition.name}}</h2> 
+        <p class="text-center">{{competition.initDate}}</p>
+
+        
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-sm table-striped" style="border-collapse: separate;border-spacing: 5px;">
+                    <thead >
+                        <tr>
+                            <th class="table-info">Cantidad de inscritos</th>
+                            <td class="table-warning text-center">{{inscriptions|length}}</td>
+                            <th class="table-info">Series creadas</th>
+                            <td class="table-warning text-center">{{ heats|length }}</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            
+            {% if competition.series %}
+            <div class="col-3">
+                <button class="btn btn-sm btn-danger" id="deleteseries">Eliminar series</button>
+            </div>
+            <div class="col-3">
+                <a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}">Ver PDF</a>
+                <a type="button" class="btn btn-sm btn-warning" href="{% url 'prueba3' competition.id %}" download="{{competition.name}} Series">DESCARGAR PLANILLA</a>        
+            </div>
+            {% else %}
+            <div class="col-3">
+                <button class="btn btn-sm btn-primary" id="seriesbutton">Generar series</button>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="row">
+            <div class="table-responsive col-4">
+                <p class="text-center">Inscritos</p>
+                <table class="table table-sm taborder table-striped">
+                    <thead class="table-info">
+                        <tr><th>Atleta</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for ins in inscriptions %}
+                        <tr>
+                            {% if ins.strAthle == 'PIVOTE' %}
+                            <td>{{ins.athleteId.name}}</td>
+                            {% else %}
+                            <td>{{ins.strAthle}}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if competition.series %}
+            <div class="col-8">
+                <p class="text-center">Series</p>
+                <table class="table table-sm taborder table-striped" style="width: 100%;">
+                    <thead class="table-info">
+                        <tr>
+                            <th style="width: 5%;">Dorsal</th>
+                            <th style="width: 50%;">Atleta</th>
+                            <th style="width: 5%;">Serie</th>
+                            <th style="width: 40%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for heat in heats %}
+                        {% for atle in heat.assign %}
+                        <tr class="mt-2" sty>
+                            <td>
+                                <input class="form-control form-control-sm" type="text" name="line" id="dorsal-{{atle.id}}" value="{{atle.competitionNumber}}" style="width: 100%;text-align: center;">
+                            </td>
+                            {% if atle.strAthle == 'PIVOTE' %}
+                                <td>{{atle.athleteId.name}}</td>
+                            {% else %}
+                                <td>{{atle.strAthle}}</td>
+                            {% endif %}
+                            <td>
+                                <input class="form-control form-control-sm" type="text" name="serie" id="serie-{{atle.id}}" value="{{atle.heatId.numberHeat}}" style="width: 100%;text-align: center;"></td>
+                            <td style="text-align: center;">
+                                 <button class="btn btn-sm btn-success modbutton" id="mod-{{atle.id}}">Modificar</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr style="height: 30px;background-color: white;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+       
+        
+    {% else %}
+        <h1 class="text-center">Error</h1>
+    {% endif %}
+</div>
+
+
+<!-- MODAL CREATE SERIES -->
+<div class="modal fade" id="seriesmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Generar series</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <div class="modal-body">
+                    <input type="hidden" name="totalathletes">
+                    <label for="">Cantidad de atletas por serie</label>
+                    <select name="" id="maxathletes">
+                        <option value="">Seleccione cantidad</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary" id="sendseries">confirmar</button>
+                
+                <div id="hola">
+                    que wea hay aca
+                </div>
+            </div>
+            
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- END MODAL -->
+
+
+<!-- MODAL DELETE SERIES -->
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Generar series</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <div class="modal-body">
+                {% if competition.series %}
+                    {% for heat in heats %}
+                        <p>{{heat.heat}} <button class="btn btn-sm btn-danger">Eliminar</button></p>
+                        
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- END MODAL -->
+
+<script>
+    total = '{{inscriptions|length}}';
+    max = 0;
+    entero = 0;
+    restante = 0;
+
+    $(document).ready(function(){
+        if(total>4){
+            for(x=4;x<=total;x+=4){
+                $('#maxathletes').append($('<option></option>').attr('value', x).text(x));
+            }
+        }
+    });
+
+    $('#seriesbutton').click(function(){
+        $('#seriesmodal').modal('show');
+    })
+
+    $('#deleteseries').click(function(){
+        $('#deletemodal').modal('show');
+    });
+
+    $('#maxathletes').change(function(){
+        max = this.value;
+        entero = parseInt(total/max);
+        restante = total%max;
+        //console.log(entero,"--",restante);
+        if(entero>0){
+            texto = "<p>Se generaran:</p><p>"+entero+" series de "+max+" personas</p>"
+            if(restante>0){
+                texto +="<p>1 serie de "+restante+" personas</p>"
+            }
+        }
+        console.log(texto);
+        $('#hola').html(texto);
+    })
+
+    $('#sendseries').click(function(){
+        console.log("Enviar datos")
+        console.log(total,max,entero,restante);
+        $.get("{% url 'genSeries' competition.id %}",
+            {'total':total,'max':max,'entero':entero,'restante':restante},
+            function(response){
+                if(response == 'True'){
+                    location.reload();
+                }
+                else{
+                    console.log("j")
+                    //alert(" la corneta")
+                }
+            })
+    })
+
+    $('.modbutton').click(function(){
+        console.log(this.id);
+        myID = this.id.split('-')[1];
+        console.log(myID);
+        serie = $('#serie-'+myID)[0].value
+        dorsal = $('#dorsal-'+myID)[0].value
+        $.get("{% url 'change_assign'%}",
+            {'competition':'{{competition.id}}','type':'{{competition.get_type}}','assign':myID,'dorsal':dorsal,'serie':serie},
+            function(response){
+                if(response == 'True'){
+                    location.reload();
+                }
+                else{
+                    alert("Datos incorrectos");
+                    location.reload();
+                }
+        });
+    });
+  
+</script>
+{% endblock %}

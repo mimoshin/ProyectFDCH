@@ -1,32 +1,70 @@
 {% if data %}
-<form method="post" action="{% url 'probandoinscripcion' %}">
+<form method="post" action="{% url 'athlete_inscription' champ %}">
     <input type="text" name="athlete" value="{{athle}}" hidden>
         {% csrf_token %}
-        <table class="table">
+        <table class="table taborder">
             <thead class="table-info">
                 <tr>
                     <th>Prueba</th>
                     <th>Categoria</th>
                     <th>Marca</th>
+                    <th>Tipo</th>
                     <th>Inscribir</th>
                 </tr>    
             </thead>
             <tbody id='competitions_body'>
-                {% for compt in data %}
+                {% for competitions in data %}
                 <tr>
-                    <td id="{{compt.id}}">{{compt.eventId.name}}</td>
-                    <td>{{compt.get_category}}</td>
-                    <td><input type="text" id="mark{{compt.pk}}" name="marka{{compt.pk}}"></td>
-                    <td><div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="s{{compt.pk}}" name="COMPT|{{compt.pk}}">
-                            <label class="custom-control-label" for="s{{compt.pk}}"></label>
-                        </div>
-                    </td>
-                </tr>
+                    <td id="{{competitions.competition.id}}">{{competitions.competition.eventId.name}}</td>
+                    <td>{{competitions.competition.get_category}}</td>
+                    
+                    {% if competitions.status %}
+                            <td>--</td>
+                            <td>Atleta inscrita</td>
+                            <td>T o R</td>
+                        </tr>
+                    {% else %}
+                            <td><input type="text" id="mark{{competitions.competition.id}}" name="marka|{{competitions.competition.id}}"></td>
+                            <td>
+                                <select name="tipeInsc|{{competitions.competition.id}}" id="types-{{competitions.competition.id}}" >
+                                    <option value="">Seleccione</option>
+                                    <option value="1">Titular</option>
+                                    <option value="2">Reserva</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="check|{{competitions.competition.id}}" name="COMPT|{{competitions.competition.id}}">
+                                    <label class="custom-control-label" for="check|{{competitions.competition.id}}"></label>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                    {% endif %}
                 {% endfor %}          
             </tbody>
         </table>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Inscribir</button>
+        <button type="submit" class="btn btn-primary" id="sendForm">Inscribir</button>
     </form>
+
+    <script>
+        $(document).ready(function(){
+            counter = $('.custom-control-input').length
+            if(counter == 0){
+                $( '#sendForm').prop( "disabled", true );
+            }
+        });
+
+        $('.custom-control-input').change(function(){
+            myID = this.id.split('|')[1];
+            if(this.checked){
+                $('#types-'+myID).prop('required',true);
+            }
+            else{
+                $('#types-'+myID).prop('required',false);
+            }
+        })
+
+    </script>
 {% endif %}

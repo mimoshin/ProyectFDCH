@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import QFChampionship, QFDisable, modifyChampionship, newStage, principalView, allChampionshipsView, reviewChampionship, newChampionship
+from .views import QFChampionship, QFDisable, QFileEvt, modifyChampionship, newStage, principalView, allChampionshipsView, reviewChampionship, newChampionship
 
 urlpatterns = [
     path('',principalView,name='principalView'),
@@ -12,4 +12,5 @@ urlpatterns = [
     #QUERYS
     path('QF_championship',QFChampionship,name="Query_Champ"),
     path('QF_disablestage',QFDisable,name="Query_DiableStage"),
+    path('download_evt/<int:champID>',QFileEvt,name='download_evt'),
 ]

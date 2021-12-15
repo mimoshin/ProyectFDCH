@@ -8,26 +8,38 @@
                 <table class="table table-sm table-striped taborder table-bordered" >
                 <thead class="table-info">
                     <tr>
-                        <th class="text-center" style="width: 5%;">Lugar</th>
-                        <th class="text-center" style="width: 5%;">Pista</th>
-                        <th class="text-center" style="width: 40%;">Atleta</th>
-                        <th class="text-center" style="width: 12%;">A. N.</th>
-                        <th class="text-center" style="width: 8%;">Pais</th>
-                        <th class="text-center" style="width: 15%;">Marca</th>
+                        <th class="text-center" style="width: 3%;">Lugar</th>
+                        <th class="text-center" style="width: 3%;">Pista</th>
+                        <th class="text-center" style="width: 20%;">Atleta</th>
+                        <th class="text-center" style="width: 3%;">A. N.</th>
+                        <th class="text-center" style="width: 12%;">Club</th>
+                        <th class="text-center" style="width: 6%;">Marca</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for atle in heat.assign %}
+                    {% for asign in heat.assign %}
                     <tr>
-                        <td class="text-center">{{atle.place}}</td>
-                        <td class="text-center">{{atle.line}}</td>
-                        <td class="text-center">{{atle.athlete}} {{atle.id}}</td>
-                        <td class="text-center">10 ENE 2000</td>
-                        <td class="text-center">Chile</td>
+                        {% if asign.place == 99 %}
+                            <td class="text-center">-</td>
+                        {% else %}
+                            <td class="text-center">{{asign.place}}</td>
+                        {% endif %}
+                        <td class="text-center">{{asign.line}}</td>
+
+                        {% if asign.strAthle == 'PIVOTE' %}
+                            <td>{{asign.athlete}}</td>
+                            <td>{{asign.athleteId.birthdate |date:"d/m/Y"}}</td>
+                            <td>{{asign.athleteId.clubId}}</td>
+                        {% else %}
+                            <td >{{asign.strAthle}}</td>
+                            <td >--/--/----</td>
+                            <td >{{asign.strClub}}</td>
+                        {% endif %}   
+                        
                         <td class="text-center"> 
-                            <input class="text-center inputmark" type="text" value="{{atle.result}}" id="{{heat.heat.id}}-{{atle.athleteId.id}}">
-                            <button class=" btn btn-sm btn-success markbutton" id="{{heat.heat.id}}-{{atle.athleteId.id}}">G</button>
-                            <button class=" btn btn-sm btn-warning resetmark" id="{{heat.heat.id}}-{{atle.athleteId.id}}">R</button>
+                            <input class="text-center inputmark" type="text" value="{{asign.get_result}}" id="atle{{heat.heat.id}}-{{asign.athleteId.id}}">
+                            <button class=" btn btn-sm btn-success markbutton" id="{{heat.heat.id}}-{{asign.athleteId.id}}">Guardar</button>
+                            <!--<button class=" btn btn-sm btn-warning resetmark" id="{{heat.heat.id}}-{{atle.athleteId.id}}">R</button>-->
                         </td>
                     </tr>
                     {% endfor %}
@@ -38,13 +50,18 @@
             <h3 class="text-center">No hay series registradas hasta el momento.</h3>
     {% endif %}
     <script>
-        
         $('.markbutton').on('click',function(){
-            value = $('#'+this.id)[0].value;
-            if(value.match(',')){
-                alert("Ingrese el valor con punto, en vez de una coma")
-            }
-           else{
+            participation = $('#atle'+this.id)[0].value;
+            $.post("{% url 'change_time' %}",
+                {'csrfmiddlewaretoken':'{{csrf_token}}','atleta':this.id,'participation':participation,'type':'1','comp':'{{competition.get_type}}'},
+                function(response){
+                    if(response == 'False'){
+                        alert("Datos incorrectos");
+                        location.reload();
+                    }
+                }
+            );
+            /*
             $.post("{% url 'results_view' cpi %}",
                 {'csrfmiddlewaretoken':'{{csrf_token}}','atleta':this.id,'value':value},
                 function(response){
@@ -53,8 +70,7 @@
                     }
                     console.log('error');
                 }
-            );
-           }
+            );*/
         });
     </script>
     <style>

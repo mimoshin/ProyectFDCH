@@ -46,7 +46,7 @@ def FedachiAV(request):
 @login_required(login_url=('/'))
 def FedachiAdminChampionships(request):
     #Administracion de campeonatos USER: FEDACHI
-    all_champs = CF.get_all_championships()
+    all_champs = CF.get_all_championships().order_by('-startDate')
     dataT = {'data':'F.Championship.A.V','champs':all_champs}
     if request.method == 'POST':
         files = request.FILES

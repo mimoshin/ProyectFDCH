@@ -13,7 +13,7 @@
   <div class="container-fluid mt-2">
     <!--principal_content-->  
     {% if champ %}
-      <h3 class="text-center">{{champ.name}}</h3>
+      <h3 class="text-center">{{champ.name}} {{champ.get_numStages}}</h3>
     {% else %}
       <h3 class="text-center">Campeonato</h3>
     {% endif %}
@@ -23,7 +23,9 @@
    
     <div class="container-fluid mb-2"> 
       <a type="button" class="btn btn-sm btn-success float-right" href="{% url 'championshipsView' %}">Volver</a>
-        
+      <!--<button class="btn btn-sm btn-success float-right mr-4" id="EVTFILE">EVT 1</button>-->
+      
+      <a type="button" class="btn btn-sm btn-success float-right mr-4" href="{% url 'download_evt' champ.id %}" download="lynx.evt">EVT </a>
       <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">
         Nueva etapa
       </button>
@@ -141,10 +143,10 @@
                         </td>
                         <td>
                           <select class="form-control" name="category" id="category{{cards.stage.id}}">
-                            {% if champ.get_num_categorys == 1%}
+                            {% if champ.get_num_categorys == 1 %}
                               {{champ.categorys_options | safe}}
                             {% else %}
-                              <option value="">CATEGORIA 233</option>
+                              <option value="">CATEGORIA</option>
                               {% for x in champ.categorys_options %}
                                 {{x | safe}}
                               {% endfor %}
@@ -262,7 +264,7 @@
               <div class="col-1"></div>  
             </div> <br>
             <!-- end_second_row -->
-            <input type="text" name="number_stage" hidden value="{{champ.number_stages}}">
+            <input type="text" name="number_stage" hidden value="{{champ.get_numStages}}">
             <div class="row">
                <!-- spacer -->
               <div class="col-2"></div> 
@@ -307,13 +309,14 @@
 
     $('.accept').click(function(){
       my_id = this.id;
+
       data = {'csrfmiddlewaretoken': '{{csrf_token}}',
               'time':$('#time'+my_id)[0].value,
               'compt':$('#compt'+my_id)[0].value,
               'round':$('#round'+my_id)[0].value,
               'category':$('#category'+my_id)[0].value,
               'gender':$('#gender'+my_id)[0].value,
-              'comb':$('#comb'+my_id)[0].value,};
+              'comb':$('#comb'+my_id)[0].value};
       
       $.post("{% url 'newCompetition' 0 %}".replace('0',my_id), 
         data, 
@@ -334,5 +337,14 @@
     $(document).ready(function(){
     $('input.timepicker').timepicker({});
 });
+
+    $('#EVTFILE').click(function(){
+      $.get("{% url 'download_evt' champ.id %}",
+        {'champ':'{{champ.id}}'},
+        function(){
+          console.log("hola")
+        }
+      );
+    });
     </script>
 {% endblock %}

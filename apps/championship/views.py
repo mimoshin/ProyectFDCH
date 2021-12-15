@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import HttpResponse, JsonResponse,FileResponse
 from django.shortcuts import render,redirect 
 from base.settings import DATABASES
 from base.utils import Qlog_user
@@ -58,12 +58,11 @@ def internalACV(request):
 def internalRC(request,cID):
     if request.method == 'POST':
         data = request.POST.dict()
-        #CI.create_stage(data,cID)
         CHF.create_stage(data,cID)
+        return redirect('reviewChampionship',cID)
     elif request.method == 'GET':
         pass
     champ,stages = CHF.get_allfor_championship(cID)
-    #champ,stages = CI.get_allfor_championship(cID)
     events = CF.get_all_events()
     return render(request,'Internal/championships/reviewChampionship.html',{'champ':champ,'stages':stages,'events':events})
 
@@ -77,12 +76,12 @@ def newChampionship(request):
         data = request.POST
         form = ChampForm(data)
         if form.is_valid():
-             form.is_valid_log()
-             CHF.create_championship(form.data)
-             #CI.create_championship(form.data)
+             #form.is_valid_log()
+             champID = CHF.create_championship(form.data)
+             return redirect('reviewChampionship',champID)
         else:
             print("formulario no valido")
-        return redirect('championshipsView')
+            return redirect('principalView')
     elif request.method == 'GET':
         pass
     return render(request,'Internal/championships/newChampionship.html',data)
@@ -99,7 +98,7 @@ def externalACV(request):
         pass
     elif request.method == 'GET':
         pass
-    allchamps = CI.get_all_championships().order_by('startDate'.desc())
+    allchamps = CI.get_all_championships().order_by('-startDate')
     actives = allchamps.filter(status=1)
     return render(request,'External/championships/champslist.html',{'champs':actives})
 
@@ -163,6 +162,11 @@ def QFDisable(request):
         return HttpResponse(True)
         #return redirect('fedachi_championships')
 
+@login_required(login_url=('/'))
+def QFileEvt(request,champID):
+    CHF.get_evt_file(champID)
+    response = FileResponse(open('lynx.evt','rb'))
+    return response
 #_____________ END QUERYS _________________________________
 
 #_____________ CHANGES _________________________________

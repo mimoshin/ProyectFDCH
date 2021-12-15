@@ -60,7 +60,7 @@
     
     <script>
         $('#idChamp').change(function(){ 
-            $('#magia').load("{% url 'Q_competitions' %}?id="+this.value);
+            $('#magia').load("{% url 'QueryList_competitions' %}?id="+this.value);
         });
     
         $('#magia').on('click','button.botonfind',function(){

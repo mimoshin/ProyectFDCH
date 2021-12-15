@@ -5,7 +5,7 @@
 
 {% block content %} 
     <div class="container-fluid">
-        <h2 class="text-center mt-4">{{champ.name}}</h2>
+        <h2 class="text-center mt-4">{{champ.name}} </h2>
         <!--
         <h6 class="text-center">{{champ.init_date}} | {{champ.finish_date}}</h6>
         <p class="text-center">{{champ.event_place}}</p>
@@ -64,11 +64,8 @@
                                     <td>{{atle.clubId}}</td>
                                     <td>{{atle.gender}}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-primary" onclick="inscriptiond('{{atle.gender}}','{{atle.id}}')">Inscribir</button>
-                                        <!--<button type="button" class="btn btn-sm btn-primary" 
-                                        value="{{atle.first_name}} {{atle.flast_name}} | {{atle.gender}}" 
-                                        onclick="inscription(this)" id="pk{{atle.pk}}">Inscribir</button>
-                                        -->
+                                        
+                                        <button class="btn btn-sm btn-primary insbutton" id="{{atle.gender}}-{{atle.id}}">Inscribir</button>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -108,64 +105,14 @@
 </div>
 
     <script>
-        function inscription(btn){
-            text_split = btn.value.split('|');
-            console.log(text_split);
-            $('#exampleModalLabel').html('Inscribir a '+text_split[0]);
-            $('#athlete_inscription_pk')[0].value = btn.id.substring(2);
+        $('.insbutton').click(function(){
+            data = this.id.split('-');
+            $('#competitions_body').load("{% url 'Query_inscriptions' %}",
+                {'csrfmiddlewaretoken':'{{csrf_token}}','champ':'{{champ.pk}}',
+                'category':'{{request.GET.category}}','gender':data[0],'atle':data[1]});
             $('#exampleModal').modal('show');
-        }
 
-        function inscriptiond(gender,id_atle){
-            console.log(gender,id_atle);
-            //Query_inscriptions
-            //Qcompetitions
-            $.get("{% url 'Query_inscriptions' %}",
-                {'obj':'load_compt','champ':'{{champ.pk}}','category':'{{request.GET.category}}',
-                 'gender':gender,'atle':id_atle},
-                  function(response){
-                      $('#competitions_body').html(response);
-                  }
-            )
-            $('#exampleModal').modal('show');        
-        }
+        });
     </script>
 
 {% endblock %}
-
-<form method="post" action="{% url 'probandoinscripcion' %}">
-    {% csrf_token %}
-    <div class="modal-body">
-      <table class="table">
-          <thead class="table-info">
-            <tr>
-                <th>Prueba</th>
-                <th>Categoria</th>
-                <th>Marca</th>
-                <th>Inscribir</th>
-            </tr>    
-          </thead>
-          <tbody id='competitions_body'>
-              {% for data in competitions %}
-              {% if data.str_cat == request.GET.category %}
-              <tr>
-                  <td>{{data.test_fk}}</td>
-                  <td>{{data.gender}}</td>
-                  <td>{{data.categorys}}</td>
-                  <td><input type="text" id="mark{{data.pk}}" name="marka{{data.pk}}"></td>
-                  <td><div class="custom-control custom-switch">
-                          <input type="checkbox" class="custom-control-input" id="s{{data.pk}}" name="val|{{data.pk}}">
-                          <label class="custom-control-label" for="s{{data.pk}}"></label>
-                      </div>
-                  </td>
-              </tr>
-              {% endif %}
-              {% endfor %}          
-          </tbody>
-      </table>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-  <button type="submit" class="btn btn-primary">Inscribir</button>
-</div>
-</form>

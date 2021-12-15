@@ -19,8 +19,12 @@
                 <tbody>
                     {% for atle in heat.assign %}
                     <tr>
-                        <td class="text-center">0</td>
-                        <td class="text-center">0</td>
+                        {% if atle.place == 99 %}
+                            <td class="text-center">-</td>
+                        {% else %}
+                            <td class="text-center">{{atle.place}}</td>
+                        {% endif %}
+                        <td class="text-center">{{atle.competitionNumber}}</td>
                         {% if atle.strAthle == 'PIVOTE' %}
                             <td>{{atle.athleteId.name}}</td>
                             <td>{{atle.athleteId.birthdate |date:"d/m/Y"}}</td>

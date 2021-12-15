@@ -26,31 +26,31 @@ def athletesInscription(request,cID):
 
 
 
-def alternative(request):
+def alternative(request,champ):
     #Hacer Seguimiento a la inscripcion
     if request.method == 'POST':
         data_dict = request.POST.dict()
+        print("DICCIONARIO",data_dict)
         data_list = list(request.POST)
-        id_comp, compts = [], []
+        print("LISTA",data_list)
+        id_comp = []
         try:
             atleta = request.POST['athlete']
-            print("datalist",data_list)
             for x in data_list:
                 if 'COMPT' in x:
                     cpk = x.split('|')[1]
                     id_comp.append(cpk)
-            for a in id_comp:
-                compts.append(CF.get_competition(a))
-            for x in id_comp:
-                CF.new_inscription(atleta,x)
-
             print("atleta %s queriendo inscribirse a las pruebas:" %(atleta))
-            for b in compts:
-                print(b.pk)
+            for x in id_comp:
+                mark = data_dict["marka|"+x]
+                typeInsc = data_dict["tipeInsc|"+x]
+                print(atleta,x,mark,typeInsc)
+                CF.new_inscription(atleta,x,mark,typeInsc)
+
         except Exception as e:
             print("error al inscribir atleta",e)
-            
-        #return redirect('/atletas/inscripcion/33?name=&category=1')
+        
+        return redirect('athletesInscription',champ)
     return redirect('principalView')
 #----------------------------------------------------------
 

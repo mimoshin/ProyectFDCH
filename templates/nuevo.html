@@ -2,14 +2,11 @@
 {% if compts %}
 <div class="input-group">
     <select class="form-control mr-2" name="vale" id="competitions">
-        <option value="0000">Seleccione</option>
+        <option value="0000">Seleccione la wea</option>
         {% for option in compts %}
             <option value="{{option.id}}">{{option.description}}</option>
         {% endfor %}
     </select>
     <button class="botonfind btn btn-sm btn-primary">Buscar</button>
 </div>
-    
-    
-    
 {% endif %}
